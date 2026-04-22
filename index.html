@@ -341,6 +341,147 @@ textarea{resize:vertical;min-height:72px}
   .stat-val,.sv { font-size:19px !important; }
   .stat-label,.slb { font-size:10px !important; }
 }
+
+/* ================================================================
+   MODERN DASHBOARD STYLES
+   ================================================================ */
+.dash-new-stats .dash-stat-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+  cursor: default;
+}
+.dash-new-stats .dash-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15,23,42,.08);
+}
+.dash-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 70px; height: 70px;
+  border-radius: 0 0 0 70px;
+  opacity: .12;
+}
+.dash-stat-card.c-teal::before   { background: #0f766e; }
+.dash-stat-card.c-blue::before   { background: #1d4ed8; }
+.dash-stat-card.c-green::before  { background: #16a34a; }
+.dash-stat-card.c-red::before    { background: #dc2626; }
+.dash-stat-card.c-purple::before { background: #7c3aed; }
+.dash-stat-card.c-orange::before { background: #f59e0b; }
+.dash-stat-card.c-pink::before   { background: #db2777; }
+
+.dash-stat-card .dsc-icon {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 10px;
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.dash-stat-card.c-teal   .dsc-icon { background: linear-gradient(135deg,#0f766e,#14b8a6); }
+.dash-stat-card.c-blue   .dsc-icon { background: linear-gradient(135deg,#1d4ed8,#3b82f6); }
+.dash-stat-card.c-green  .dsc-icon { background: linear-gradient(135deg,#16a34a,#22c55e); }
+.dash-stat-card.c-red    .dsc-icon { background: linear-gradient(135deg,#dc2626,#ef4444); }
+.dash-stat-card.c-purple .dsc-icon { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
+.dash-stat-card.c-orange .dsc-icon { background: linear-gradient(135deg,#f59e0b,#fbbf24); }
+.dash-stat-card.c-pink   .dsc-icon { background: linear-gradient(135deg,#db2777,#ec4899); }
+
+.dash-stat-card .dsc-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.dash-stat-card .dsc-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.dash-stat-card .dsc-trend {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  display: inline-block;
+}
+.dash-stat-card .dsc-trend.up   { background:#dcfce7; color:#166534; }
+.dash-stat-card .dsc-trend.down { background:#fee2e2; color:#991b1b; }
+.dash-stat-card .dsc-trend.neutral { background:#f1f5f9; color:#475569; }
+
+/* Quick action buttons */
+.dash-quick-btn {
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  font-family: Tajawal, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: all .2s;
+}
+.dash-quick-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(15,23,42,.08);
+  border-color: #0f766e;
+  color: #0f766e;
+}
+.dash-quick-btn .dqi {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Status breakdown bars */
+.status-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+.status-bar-label {
+  min-width: 100px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+}
+.status-bar-track {
+  flex: 1;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.status-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width .4s ease;
+}
+.status-bar-count {
+  min-width: 40px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
 </style>
 
 <!-- ============================================================ -->
@@ -400,6 +541,43 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
   console.log('ℹ️ Firebase disabled. Enable by setting FIREBASE_ENABLED=true and providing config.');
 }
 </script>
+
+<!-- ============================================================ -->
+<!-- EMAILJS SDK (للإشعارات عبر البريد)                              -->
+<!-- ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+// ================================================================
+// 📧 EMAILJS CONFIGURATION — ضع هنا البيانات من EmailJS.com
+// ================================================================
+// كيفية الحصول على هذه البيانات:
+// 1. سجّل مجاناً في https://www.emailjs.com (200 إيميل/شهر مجاناً)
+// 2. من Email Services: أضف Gmail أو خدمة أخرى → انسخ Service ID
+// 3. من Email Templates: أنشئ قالباً → انسخ Template ID  
+// 4. من Account > API Keys: انسخ Public Key
+// ================================================================
+
+const emailjsConfig = {
+  publicKey:  "YOUR_PUBLIC_KEY_HERE",
+  serviceId:  "YOUR_SERVICE_ID_HERE",
+  templateId: "YOUR_TEMPLATE_ID_HERE",
+  adminEmail: "director@firdaws.ma"   // إيميل المدير العام - غيّره لإيميلك
+};
+
+const EMAIL_NOTIFICATIONS_ENABLED = false;  // اضبط true بعد الإعداد
+
+// تهيئة EmailJS
+if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_HERE") {
+  try {
+    emailjs.init({ publicKey: emailjsConfig.publicKey });
+    console.log('%c📧 EmailJS Ready', 'background:#1e40af;color:#fff;padding:4px 10px;border-radius:4px');
+  } catch(e) { console.error('EmailJS init failed:', e); }
+} else {
+  console.log('ℹ️ Email notifications disabled');
+}
+</script>
+
 </head>
 <body class="logged-out">
 
@@ -498,25 +676,83 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
 
 <!-- ======== DASHBOARD ======== -->
 <div id="page-dashboard" class="page">
-  <div class="cards-grid" id="dash-stats"></div>
+  
+  <!-- HERO BANNER -->
+  <div style="background:linear-gradient(135deg,#0f766e 0%,#065f46 100%);color:#fff;border-radius:18px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(15,118,110,0.2)">
+    <div style="position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%"></div>
+    <div style="position:absolute;bottom:-30px;left:-30px;width:130px;height:130px;background:rgba(255,255,255,0.05);border-radius:50%"></div>
+    <div style="position:relative;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <div>
+        <div style="font-size:12px;opacity:.8;font-weight:600;margin-bottom:4px" id="dash-greeting-time">مرحباً بعودتك</div>
+        <div style="font-size:22px;font-weight:800;margin-bottom:3px" id="dash-greeting-name">المدير العام</div>
+        <div style="font-size:12.5px;opacity:.85" id="dash-greeting-date"></div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:36px;font-weight:800;line-height:1" id="dash-hero-count">0</div>
+        <div style="font-size:11px;opacity:.85;margin-top:4px;font-weight:600">👥 مريض تحت الرعاية</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- MAIN STATS GRID -->
+  <div class="dash-new-stats" id="dash-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px"></div>
+  
+  <!-- QUICK ACTIONS -->
+  <div class="card" style="margin-bottom:20px;border-radius:14px;border:1px solid #e2e8f0">
+    <div style="padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:14px;font-weight:800;color:#0f172a">⚡ إجراءات سريعة</span>
+    </div>
+    <div id="dash-quick-actions" style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px"></div>
+  </div>
+  
+  <!-- MAIN CONTENT GRID -->
   <div class="dash-grid">
     <div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">👥 آخر المرضى</span><button class="btn btn-outline btn-sm" onclick="goPageByName('patients')">عرض الكل</button></div>
-        <div class="card-body"><table><thead><tr><th>المريض</th><th>نوع السرطان</th><th>الحالة</th><th>المصاريف</th></tr></thead><tbody id="dash-recent-patients"></tbody></table></div>
+      <!-- Recent Patients -->
+      <div class="card" style="border-radius:14px;border:1px solid #e2e8f0;overflow:hidden">
+        <div class="card-header" style="background:linear-gradient(90deg,#f0fdfa,#ecfeff)">
+          <span class="card-title">👥 آخر المرضى</span>
+          <button class="btn btn-outline btn-sm" onclick="goPageByName('patients')">عرض الكل →</button>
+        </div>
+        <div class="card-body">
+          <table>
+            <thead><tr><th>المريض</th><th>نوع السرطان</th><th>الحالة</th><th class="finance-admin-only">المصاريف</th></tr></thead>
+            <tbody id="dash-recent-patients"></tbody>
+          </table>
+        </div>
       </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">📅 أقرب زيارات اليوم والغد</span></div>
+      
+      <!-- Today's Visits -->
+      <div class="card" style="border-radius:14px;border:1px solid #e2e8f0;overflow:hidden">
+        <div class="card-header" style="background:linear-gradient(90deg,#fef3c7,#fef9c3)">
+          <span class="card-title">📅 أقرب زيارات اليوم والغد</span>
+        </div>
         <div class="card-body" id="dash-today-visits" style="padding:14px"></div>
       </div>
     </div>
+    
     <div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">💹 ملخص مالي الشهر</span></div>
+      <!-- Status Overview -->
+      <div class="card" style="border-radius:14px;border:1px solid #e2e8f0;overflow:hidden">
+        <div class="card-header" style="background:linear-gradient(90deg,#f1f5f9,#e0f2fe)">
+          <span class="card-title">📊 توزيع حالات المرضى</span>
+        </div>
+        <div style="padding:16px" id="dash-status-breakdown"></div>
+      </div>
+      
+      <!-- Finance Summary (admin+finance only) -->
+      <div class="card finance-admin-only" style="border-radius:14px;border:1px solid #e2e8f0;overflow:hidden">
+        <div class="card-header" style="background:linear-gradient(90deg,#ecfdf5,#f0fdf4)">
+          <span class="card-title">💹 ملخص مالي الشهر</span>
+        </div>
         <div style="padding:16px" id="dash-finance-summary"></div>
       </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">⚡ آخر فواتير الخدمات</span></div>
+      
+      <!-- Utilities (admin+finance only) -->
+      <div class="card finance-admin-only" style="border-radius:14px;border:1px solid #e2e8f0;overflow:hidden">
+        <div class="card-header" style="background:linear-gradient(90deg,#fef2f2,#fff7ed)">
+          <span class="card-title">⚡ آخر فواتير الخدمات</span>
+        </div>
         <div style="padding:14px" id="dash-utilities"></div>
       </div>
     </div>
@@ -659,7 +895,7 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
           <button class="ft" onclick="setF(this,'ff','دخل');renderFinance()">مداخيل</button>
           <button class="ft" onclick="setF(this,'ff','مصروف');renderFinance()">مصاريف</button>
         </div>
-        <button class="btn btn-primary" onclick="openFinanceModal()">➕ إضافة قيد</button>
+        <button class="btn btn-primary finance-admin-only" onclick="openFinanceModal()">➕ إضافة قيد</button>
         <button class="btn btn-success btn-sm" onclick="openDonationReceiptBlank()" style="background:#dcfce7;color:#166534;border:1.5px solid #86efac">🧾 وصل تبرع</button>
       </div>
       <div class="card">
@@ -692,7 +928,7 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
       <button class="ft" onclick="setF(this,'pexpf','دعم مالي');renderPexp()">دعم مالي</button>
       <button class="ft" onclick="setF(this,'pexpf','نقل');renderPexp()">نقل</button>
     </div>
-    <button class="btn btn-primary" onclick="openPexpModal()">➕ إضافة مصروف مريض</button>
+    <button class="btn btn-primary finance-admin-only" onclick="openPexpModal()">➕ إضافة مصروف مريض</button>
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">💰 مصاريف المرضى</span></div>
@@ -719,7 +955,7 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
         <button class="ft" onclick="setF(this,'sf','مدفوع');renderSalaries()">مدفوع</button>
         <button class="ft" onclick="setF(this,'sf','غير مدفوع');renderSalaries()">غير مدفوع</button>
       </div>
-      <button class="btn btn-primary" onclick="openSalaryModal()">➕ صرف راتب</button>
+      <button class="btn btn-primary finance-admin-only" onclick="openSalaryModal()">➕ صرف راتب</button>
       <button class="btn btn-outline btn-sm" onclick="printAllSalarySlips()">🖨️ طباعة الكل</button>
     </div>
   </div>
@@ -735,7 +971,7 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
         <button class="ft" onclick="setF(this,'eexpf','مشتريات');renderEmpExpenses()">🛒 مشتريات</button>
         <button class="ft" onclick="setF(this,'eexpf','أخرى');renderEmpExpenses()">أخرى</button>
       </div>
-      <button class="btn btn-primary" onclick="openEmpExpenseModal()">➕ إضافة مصروف</button>
+      <button class="btn btn-primary finance-admin-only" onclick="openEmpExpenseModal()">➕ إضافة مصروف</button>
     </div>
     <div class="cards-grid-3" id="eexp-stats"></div>
     <div class="card">
@@ -814,7 +1050,7 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
       <button class="ft" onclick="setF(this,'uf','إيجار/سكن');renderUtil()">إيجار/سكن</button>
       <button class="ft" onclick="setF(this,'uf','أخرى');renderUtil()">أخرى</button>
     </div>
-    <button class="btn btn-primary" onclick="openUtilModal()">➕ إضافة فاتورة</button>
+    <button class="btn btn-primary finance-admin-only" onclick="openUtilModal()">➕ إضافة فاتورة</button>
   </div>
   <div class="dash-grid">
     <div class="card">
@@ -866,27 +1102,90 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
 
 <!-- ======== REPORTS ======== -->
 <div id="page-reports" class="page">
-  <div class="cards-grid" id="rep-stats"></div>
-  <div class="dash-grid-3">
-    <div class="card">
-      <div class="card-header"><span class="card-title">📊 مصاريف لكل مريض</span></div>
-      <div style="padding:14px" id="rep-patient-chart"></div>
+  
+  <!-- Tab buttons -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button id="rep-tab-medical" class="btn btn-primary" onclick="switchReportTab('medical')" style="flex:1;min-width:180px">🏥 التقارير الطبية والمتابعة</button>
+    <button id="rep-tab-financial" class="btn btn-outline finance-admin-only" onclick="switchReportTab('financial')" style="flex:1;min-width:180px">💰 التقارير المالية المفصلة</button>
+  </div>
+  
+  <!-- TAB 1: MEDICAL REPORTS (accessible to all) -->
+  <div id="rep-medical-tab">
+    <div class="cards-grid" id="rep-stats"></div>
+    <div class="dash-grid-3">
+      <div class="card">
+        <div class="card-header"><span class="card-title">🏥 أنواع السرطان</span></div>
+        <div style="padding:14px" id="rep-cancer-chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 توزيع الحالات</span></div>
+        <div style="padding:14px" id="rep-status-chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">⚰️ الوفيات وحالات الإيقاف</span></div>
+        <div style="padding:14px" id="rep-deceased-chart"></div>
+      </div>
     </div>
     <div class="card">
-      <div class="card-header"><span class="card-title">🏥 أنواع السرطان</span></div>
-      <div style="padding:14px" id="rep-cancer-chart"></div>
+      <div class="card-header">
+        <span class="card-title">📋 قائمة المرضى مع المتابعة</span>
+        <button class="btn btn-outline btn-sm" onclick="window.print()">🖨️ طباعة</button>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>المريض</th><th>نوع السرطان</th><th>المرحلة</th><th>الحالة الحالية</th><th>تاريخ التشخيص</th><th>عدد الزيارات</th><th>آخر زيارة</th><th>آخر تحديث حالة</th></tr></thead><tbody id="rep-table"></tbody></table>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-header"><span class="card-title">💹 المالية (6 أشهر)</span></div>
-      <div style="padding:14px" id="rep-finance-chart"></div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-header">
+        <span class="card-title">📜 أرشيف تغييرات الحالة</span>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>المريض</th><th>من</th><th>إلى</th><th>تاريخ التغيير</th><th>بواسطة</th></tr></thead><tbody id="rep-status-history"></tbody></table>
+      </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">📋 تقرير شامل بالمرضى</span>
-      <button class="btn btn-outline btn-sm" onclick="window.print()">🖨️ طباعة</button>
+  
+  <!-- TAB 2: FINANCIAL REPORTS (admin + finance only) -->
+  <div id="rep-financial-tab" style="display:none">
+    <div class="finance-admin-only">
+      <div class="cards-grid" id="rep-fin-stats"></div>
+      <div class="dash-grid-3">
+        <div class="card">
+          <div class="card-header"><span class="card-title">📊 مصاريف لكل مريض</span></div>
+          <div style="padding:14px" id="rep-patient-chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">💹 المالية (6 أشهر)</span></div>
+          <div style="padding:14px" id="rep-finance-chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">💰 توزيع المصاريف</span></div>
+          <div style="padding:14px" id="rep-expense-chart"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">💳 تقرير المصاريف الكامل</span>
+          <button class="btn btn-outline btn-sm" onclick="window.print()">🖨️ طباعة</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>التاريخ</th><th>النوع</th><th>المستفيد</th><th>الوصف</th><th>المبلغ</th></tr></thead><tbody id="rep-fin-expenses"></tbody></table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-header">
+          <span class="card-title">📥 تقرير المداخيل الكامل</span>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>التاريخ</th><th>النوع</th><th>المصدر</th><th>الوصف</th><th>المبلغ</th></tr></thead><tbody id="rep-fin-income"></tbody></table>
+        </div>
+      </div>
     </div>
-    <table><thead><tr><th>المريض</th><th>نوع السرطان</th><th>المرحلة</th><th>الحالة</th><th>عدد الزيارات</th><th>مصاريف الجمعية</th><th>آخر زيارة</th></tr></thead><tbody id="rep-table"></tbody></table>
+    <div class="no-access" style="display:none;text-align:center;padding:60px 20px">
+      <div style="font-size:48px;margin-bottom:12px">🔒</div>
+      <div style="font-size:16px;font-weight:700;color:#dc2626">ليس لديك صلاحية الوصول للتقارير المالية</div>
+      <div style="font-size:13px;color:#64748b;margin-top:6px">هذه التقارير متاحة للمدير العام والمسؤول المالي فقط</div>
+    </div>
   </div>
 </div>
 
@@ -1013,7 +1312,17 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
       <div class="form-group"><label>تاريخ التشخيص</label><input type="date" id="p-ddate"></div>
       <div class="form-group"><label>المستشفى / المركز</label><input id="p-hospital" placeholder="اسم المستشفى"></div>
       <div class="form-group"><label>نوع العلاج</label><select id="p-treatment"><option value="">-- اختر --</option><option>جراحة</option><option>علاج كيماوي</option><option>علاج إشعاعي</option><option>علاج مناعي</option><option>علاج هرموني</option><option>متابعة فقط</option><option>متعدد</option></select></div>
-      <div class="form-group"><label>الحالة</label><select id="p-status"><option value="نشط">نشط</option><option value="متابعة">متابعة</option><option value="حرج">حرج</option><option value="تعافى">تعافى</option></select></div>
+      <div class="form-group"><label>الحالة</label><select id="p-status" onchange="togglePStatusOther()">
+  <option value="نشط">نشط</option>
+  <option value="متابعة">متابعة</option>
+  <option value="حرج">حرج</option>
+  <option value="تعافى">تعافى</option>
+  <option value="أوقف العلاج">🛑 أوقف العلاج</option>
+  <option value="منقطع">📵 منقطع عن الجمعية</option>
+  <option value="متوفى">⚰️ متوفى</option>
+  <option value="آخر">✏️ شيء آخر (اكتب الحالة)</option>
+</select>
+<input type="text" id="p-status-other" placeholder="اكتب الحالة..." style="margin-top:8px;display:none"></div>
       <div class="form-group full"><label>ملاحظات طبية</label><textarea id="p-notes" placeholder="..."></textarea></div>
       <div class="section-div">الوضع الاجتماعي</div>
       <div class="form-group"><label>الحالة الاجتماعية</label><select id="p-social"><option>متزوج</option><option>أعزب</option><option>مطلق</option><option>أرمل/ة</option></select></div>
@@ -1477,6 +1786,29 @@ const NAV_CONFIG = [
   ]},
 ];
 
+// ================================================================
+// ADMIN-ONLY helpers (للادمين والمدير العام فقط)
+// ================================================================
+function isAdmin() {
+  if (!currentUser) return false;
+  return currentUser.role === 'superadmin' || currentUser.role === 'admin';
+}
+function isFinanceAdmin() {
+  if (!currentUser) return false;
+  return currentUser.role === 'superadmin' || currentUser.role === 'admin' || currentUser.role === 'finance';
+}
+// Show elements only for admins via CSS class
+function applyAdminOnlyVisibility() {
+  const admin = isAdmin();
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = admin ? '' : 'none';
+  });
+  const finAdmin = isFinanceAdmin();
+  document.querySelectorAll('.finance-admin-only').forEach(el => {
+    el.style.display = finAdmin ? '' : 'none';
+  });
+}
+
 function hasPermission(permKey) {
   if (!currentUser) return false;
   if (currentUser.role === 'superadmin') return true;
@@ -1502,9 +1834,18 @@ function buildNav() {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
   const isAr = currentLang !== 'fr';
+  
+  // Pages that are FINANCE-ADMIN ONLY (hidden from all except superadmin + admin + finance)
+  const FINANCE_ONLY_PAGES = ['finance', 'patient-expenses', 'salaries', 'vehicles', 'utilities'];
+  const canSeeFinance = isFinanceAdmin();
+  
   let html = '';
   NAV_CONFIG.forEach(group => {
-    const visibleItems = group.items.filter(item => hasPermission(item.perm));
+    const visibleItems = group.items.filter(item => {
+      // Hide finance-only pages from non-finance users
+      if (FINANCE_ONLY_PAGES.includes(item.page) && !canSeeFinance) return false;
+      return hasPermission(item.perm);
+    });
     if (!visibleItems.length) return;
     html += `<div class="nav-label">${isAr ? group.group : group.groupFr}</div>`;
     visibleItems.forEach(item => {
@@ -1590,6 +1931,13 @@ function goPage(el) {
 }
 
 function goPageByName(name) {
+  // Block finance pages for non-finance users
+  const FINANCE_ONLY = ['finance','patient-expenses','salaries','vehicles','utilities'];
+  if (FINANCE_ONLY.includes(name) && !isFinanceAdmin()) {
+    alert('⚠️ هذه الصفحة متاحة للمدير العام والمسؤول المالي فقط');
+    goPageByName('dashboard');
+    return;
+  }
   // Check permission before navigating
   const navItem = NAV_CONFIG.flatMap(g=>g.items).find(i=>i.page===name);
   if (navItem && !hasPermission(navItem.perm)) {
@@ -1621,6 +1969,8 @@ function renderPage(name) {
     gsheets: renderGsPage, settings: renderSettings
   };
   if(fn[name]) fn[name]();
+  // Apply role-based visibility after each render
+  setTimeout(applyAdminOnlyVisibility, 50);
 }
 
 // ===================== HELPERS =====================
@@ -1704,6 +2054,17 @@ function resetUploads(p){
 
 // ===================== PATIENT =====================
 let editPatientId = null;
+
+// Toggle custom status input field
+function togglePStatusOther() {
+  const sel = document.getElementById('p-status');
+  const other = document.getElementById('p-status-other');
+  if (sel && other) {
+    other.style.display = sel.value === 'آخر' ? 'block' : 'none';
+    if (sel.value !== 'آخر') other.value = '';
+  }
+}
+
 function openPatientModal(id=null){
   editPatientId=id;
   const fields=['name','pid','dob','gender','phone','gphone','address','cancer','stage','ddate','hospital','treatment','status','notes','social','family','needs'];
@@ -1722,13 +2083,27 @@ function openPatientModal(id=null){
     document.getElementById('p-ddate').value=p.ddate||'';
     document.getElementById('p-hospital').value=p.hospital||'';
     document.getElementById('p-treatment').value=p.treatment||'';
-    document.getElementById('p-status').value=p.status||'نشط';
+    (function(){
+      const standard = ['نشط','متابعة','حرج','تعافى','أوقف العلاج','منقطع','متوفى'];
+      const sel = document.getElementById('p-status');
+      const other = document.getElementById('p-status-other');
+      const st = p.status || 'نشط';
+      if (standard.includes(st)) {
+        sel.value = st;
+        if (other) { other.style.display = 'none'; other.value = ''; }
+      } else {
+        sel.value = 'آخر';
+        if (other) { other.style.display = 'block'; other.value = st; }
+      }
+    })();
     document.getElementById('p-notes').value=p.notes||'';
     document.getElementById('p-social').value=p.social||'متزوج';
     document.getElementById('p-family').value=p.family||'';
     document.getElementById('p-needs').value=p.needs||'';
     document.getElementById('m-patient-title').textContent='✏️ تعديل بيانات المريض';
   } else {
+    const _so = document.getElementById('p-status-other');
+    if (_so) { _so.style.display='none'; _so.value=''; }
     document.getElementById('m-patient-title').textContent='➕ إضافة مريض جديد';
   }
   resetUploads(p);
@@ -1760,8 +2135,40 @@ function savePatient(){
     addedDate:today(),
     idFront:tempImg.front,idBack:tempImg.back,photo:tempImg.photo
   };
-  if(editPatientId){data.id=editPatientId;const i=patients.findIndex(x=>x.id===editPatientId);if(i>=0)patients[i]=data;}
-  else{data.id=uid();patients.unshift(data);}
+  // Track status history
+  if (editPatientId) {
+    const existing = patients.find(x => x.id === editPatientId);
+    if (existing) {
+      data.statusHistory = existing.statusHistory || [];
+      // If status changed, log it
+      if (existing.status !== data.status) {
+        data.statusHistory.push({
+          from: existing.status || '—',
+          to: data.status,
+          date: today(),
+          by: currentUser ? currentUser.username : 'unknown',
+          timestamp: new Date().toISOString()
+        });
+      }
+      // Preserve existing images if not re-uploaded
+      if (!tempImg.front && existing.idFront) data.idFront = existing.idFront;
+      if (!tempImg.back && existing.idBack) data.idBack = existing.idBack;
+      if (!tempImg.photo && existing.photo) data.photo = existing.photo;
+    }
+    data.id=editPatientId;
+    const i=patients.findIndex(x=>x.id===editPatientId);
+    if(i>=0)patients[i]=data;
+  } else {
+    data.id=uid();
+    data.statusHistory = [{
+      from: '—',
+      to: data.status,
+      date: today(),
+      by: currentUser ? currentUser.username : 'unknown',
+      timestamp: new Date().toISOString()
+    }];
+    patients.unshift(data);
+  }
   saveAll();
   const {idFront,idBack,photo,...noImg}=data;
   syncGS('PATIENT',{...noImg,hasIdFront:!!idFront,hasIdBack:!!idBack,hasPhoto:!!photo});
@@ -1797,9 +2204,9 @@ function renderPatients(){
       <td style="font-weight:700;color:var(--teal-d)">${fmtNum(exp)} ${settings.currency||"درهم"}</td>
       <td><div style="display:flex;gap:4px">
         <button class="btn btn-outline btn-xs" onclick="showPatientDetail(${p.id})">🔍</button>
-        <button class="btn btn-outline btn-xs" onclick="openPatientModal(${p.id})">✏️</button>
+        <button class="btn btn-outline btn-xs admin-only" onclick="openPatientModal(${p.id})">✏️</button>
         <button class="btn btn-purple btn-xs" onclick="printPatientCard(${p.id})" title="طباعة الملف">🖨️</button>
-      <button class="btn btn-danger btn-xs" onclick="deletePatient(${p.id})">🗑️</button>
+      <button class="btn btn-danger btn-xs admin-only" onclick="deletePatient(${p.id})">🗑️</button>
       </div></td>
     </tr>`;
   }).join('');
@@ -1905,7 +2312,7 @@ function renderVisits(){
     <td>${v.doctor||v.hospital||'—'}</td><td>${statusBadge(v.vstatus)}</td>
     <td style="font-weight:700;color:var(--teal-d)">${fmtNum(v.cost)} ${settings.currency||"درهم"}</td>
     <td>${v.nextDate?fmtDate(v.nextDate)+' '+(v.nextTime||''):'—'}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deleteVisit(${v.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteVisit(${v.id})">🗑️</button></td>
   </tr>`).join('');
 }
 
@@ -2065,7 +2472,7 @@ function renderTransport(){
       <td><div style="display:flex;gap:3px">
         <button class="btn btn-outline btn-xs" onclick="showTripDetail(${t.id})" title="تفاصيل">🔍</button>
         <button class="btn btn-purple btn-xs" onclick="printTripSheet(${t.id})" title="طباعة ورقة النقل">🖨️</button>
-        <button class="btn btn-danger btn-xs" onclick="deleteTransport(${t.id})">🗑️</button>
+        <button class="btn btn-danger btn-xs admin-only" onclick="deleteTransport(${t.id})">🗑️</button>
       </div></td>
     </tr>`;
   }).join('');
@@ -2208,7 +2615,7 @@ function renderFuel2(){
     <td style="font-size:12px">${f.qty?f.qty+' ل':'—'}</td>
     <td style="font-weight:800;color:var(--teal-d)">${fmtNum(f.cost)} ${settings.currency||'د.م.'}</td>
     <td style="font-size:12px;color:var(--slate-l)">${f.km?fmtNum(f.km)+' كم':'—'}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deleteFuelTr(${f.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteFuelTr(${f.id})">🗑️</button></td>
   </tr>`).join('');
 
   // Charts
@@ -2274,7 +2681,7 @@ function renderVehicleCards(){
         </div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-success btn-sm" style="flex:1" onclick="openFuelModal()">⛽ وقود/صيانة</button>
-          <button class="btn btn-danger btn-xs" onclick="deleteVehicle(${vc.id})" title="حذف السيارة">🗑️</button>
+          <button class="btn btn-danger btn-xs admin-only" onclick="deleteVehicle(${vc.id})" title="حذف السيارة">🗑️</button>
         </div>
       </div>
     </div>`;
@@ -2335,7 +2742,7 @@ function renderFinance(){
     <td>${f.party||'—'}</td>
     <td><div style="display:flex;gap:4px;align-items:center">
       ${f.type==='دخل'?`<button class="btn btn-xs" style="background:#dcfce7;color:#166534;font-size:11px" onclick="openDonationReceipt(${f.id})" title="وصل تبرع / إيصال">🧾</button>`:''}
-      <button class="btn btn-danger btn-xs" onclick="deleteFinance(${f.id})">🗑️</button>
+      <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteFinance(${f.id})">🗑️</button>
     </div></td>
   </tr>`).join('');
   // Charts
@@ -2405,7 +2812,7 @@ function renderPexp(){
     <td style="font-weight:700;color:var(--red)">${fmtNum(e.amount)} ${settings.currency||"درهم"}</td>
     <td>${e.source||'—'}</td>
     <td>${e.ref||'—'}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deletePexp(${e.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs finance-admin-only" onclick="deletePexp(${e.id})">🗑️</button></td>
   </tr>`).join('');
 }
 
@@ -2498,7 +2905,7 @@ function renderSalaries(){
     <td><div style="display:flex;gap:3px">
       <button class="btn btn-purple btn-xs" onclick="printSalarySlip(${s.id})" title="طباعة / عرض القسيمة">🖨️</button>
       <button class="btn btn-success btn-xs" onclick="downloadSalarySlip(${s.id})" title="تحميل PDF">⬇️</button>
-      <button class="btn btn-danger btn-xs" onclick="deleteSalary(${s.id})">🗑️</button>
+      <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteSalary(${s.id})">🗑️</button>
     </div></td>
   </tr>`).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">👔</div><p>${t("no_salaries")}</p></div></td></tr>`;
   const etbody=document.getElementById('employees-table');
@@ -2508,7 +2915,7 @@ function renderSalaries(){
     <td style="font-weight:700;color:var(--teal-d)">${fmtNum(e.baseSalary)} ${settings.currency||"درهم"}</td>
     <td>${fmtDate(e.hireDate)}</td>
     <td>${statusBadge(e.status)}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deleteEmployee(${e.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteEmployee(${e.id})">🗑️</button></td>
   </tr>`).join(''):`<tr><td colspan="6"><div class="empty"><div class="ei">👥</div><p>${t("no_employees")}</p></div></td></tr>`;
 }
 
@@ -2594,7 +3001,7 @@ function renderVehicles(){
     <td>${f.qty||'—'}</td>
     <td style="font-weight:700;color:var(--teal-d)">${fmtNum(f.cost)} ${settings.currency||"درهم"}</td>
     <td>${f.km?fmtNum(f.km)+' كم':'—'}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deleteFuel(${f.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteFuel(${f.id})">🗑️</button></td>
   </tr>`).join(''):`<tr><td colspan="7"><div class="empty"><div class="ei">⛽</div><p>${t("no_fuel_logs")}</p></div></td></tr>`;
   // Vehicles list
   const vlist=document.getElementById('vehicles-list');
@@ -2603,7 +3010,7 @@ function renderVehicles(){
     return`<div style="background:#f8fafc;border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
       <div><div style="font-weight:700;font-size:13px">🚗 ${v.name}</div><div style="font-size:11px;color:var(--slate-l);margin-top:2px">${v.model||''} · ${v.fuelType} · ${fmtNum(v.km)} كم</div></div>
       <div style="text-align:left"><div>${statusBadge(v.status)}</div><div style="font-size:11px;color:var(--teal-d);font-weight:700;margin-top:3px">${fmtNum(Math.round(vcost))} ر.س</div></div>
-      <button class="btn btn-danger btn-xs" onclick="deleteVehicle(${v.id})" style="margin-right:8px">🗑️</button>
+      <button class="btn btn-danger btn-xs admin-only" onclick="deleteVehicle(${v.id})" style="margin-right:8px">🗑️</button>
     </div>`;
   }).join(''):`<div class="empty" style="padding:24px 10px"><div class="ei">🚗</div><p>لا توجد سيارات</p></div>`;
   // Chart
@@ -2664,7 +3071,7 @@ function renderUtil(){
     <td style="font-weight:700;color:var(--teal-d)">${fmtNum(u.amount)} ${settings.currency||"درهم"}</td>
     <td>${statusBadge(u.status)}</td>
     <td>${u.notes||'—'}</td>
-    <td><button class="btn btn-danger btn-xs" onclick="deleteUtil(${u.id})">🗑️</button></td>
+    <td><button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteUtil(${u.id})">🗑️</button></td>
   </tr>`).join(''):`<tr><td colspan="7"><div class="empty"><div class="ei">⚡</div><p>${t("no_bills")}</p></div></td></tr>`;
   // Chart
   const byType={};
@@ -2721,7 +3128,7 @@ function renderAdmins(){
     <td><div style="display:flex;gap:4px">
       <button class="btn btn-outline btn-xs" onclick="openAdminModalV2(${a.id})">✏️</button>
       <button class="btn btn-outline btn-xs" onclick="toggleAdminStatus(${a.id})">${a.status==='نشط'?'⏸️':'▶️'}</button>
-      ${a.id !== currentUser?.id ? `<button class="btn btn-danger btn-xs" onclick="deleteAdmin(${a.id})">🗑️</button>` : ''}
+      ${a.id !== currentUser?.id ? `<button class="btn btn-danger btn-xs admin-only" onclick="deleteAdmin(${a.id})">🗑️</button>` : ''}
     </div></td>
   </tr>`).join('');
   // Rebuild permission matrix
@@ -2729,129 +3136,420 @@ function renderAdmins(){
 }
 
 // ===================== DASHBOARD =====================
-function renderDash(){
-  const totalPat=patients.length;
-  const activePat=patients.filter(p=>p.status==='نشط').length;
-  const totalPexp=patientExp.reduce((s,e)=>s+e.amount,0);
-  const totalIncome=finance.filter(f=>f.type==='دخل').reduce((s,f)=>s+f.amount,0);
-  const totalOutcome=finance.filter(f=>f.type==='مصروف').reduce((s,f)=>s+f.amount,0);
-  const totalSalaries=salaries.filter(s=>s.status==='مدفوع').reduce((s,x)=>s+x.net,0);
-  const totalUtils=utilities.reduce((s,u)=>s+u.amount,0);
-  document.getElementById('dash-stats').innerHTML=`
-    <div class="stat-card c-teal"><div class="stat-icon">👥</div><div class="stat-val">${totalPat}</div><div class="stat-label">${t("total_patients")}</div><div class="stat-sub sub-green">▲ ${activePat} نشط</div></div>
-    <div class="stat-card c-green"><div class="stat-icon">📥</div><div class="stat-val">${fmtNum(Math.round(totalIncome))}</div><div class="stat-label">${t("org_income")} (${settings.currency||"د.م."})</div></div>
-    <div class="stat-card c-red"><div class="stat-icon">📤</div><div class="stat-val">${fmtNum(Math.round(totalOutcome+totalPexp+totalSalaries+totalUtils))}</div><div class="stat-label">${t("total_out")} (${settings.currency||"د.م."})</div></div>
-    <div class="stat-card c-${(totalIncome-totalOutcome-totalPexp-totalSalaries-totalUtils)>=0?'purple':'orange'}"><div class="stat-icon">💰</div><div class="stat-val">${fmtNum(Math.round(Math.abs(totalIncome-totalOutcome-totalPexp-totalSalaries-totalUtils)))}</div><div class="stat-label">الرصيد ${(totalIncome-totalOutcome-totalPexp-totalSalaries-totalUtils)>=0?'(فائض)':'(عجز)'} (ر.س)</div></div>`;
-  // Recent patients
-  const rpTbody=document.getElementById('dash-recent-patients');
-  rpTbody.innerHTML=patients.slice(0,5).map(p=>`<tr>
+function renderDash() {
+  const totalPat = patients.length;
+  const activePat = patients.filter(p => p.status === 'نشط').length;
+  const followupPat = patients.filter(p => p.status === 'متابعة').length;
+  const criticalPat = patients.filter(p => p.status === 'حرج').length;
+  const recoveredPat = patients.filter(p => p.status === 'تعافى').length;
+  const deceasedPat = patients.filter(p => p.status === 'متوفى').length;
+  const stoppedPat = patients.filter(p => p.status === 'أوقف العلاج' || p.status === 'منقطع').length;
+  const totalVisits = visits.length;
+  const upcomingVisits = visits.filter(v => v.vstatus === 'مجدولة' && v.date >= today()).length;
+  const upcomingTransports = transports.filter(t => t.status === 'مجدولة' && t.date >= today()).length;
+  
+  // ========== HERO BANNER ==========
+  const greetEl = document.getElementById('dash-greeting-time');
+  const nameEl = document.getElementById('dash-greeting-name');
+  const dateEl = document.getElementById('dash-greeting-date');
+  const countEl = document.getElementById('dash-hero-count');
+  
+  if (greetEl) {
+    const hour = new Date().getHours();
+    let greeting = '👋 صباح الخير';
+    if (hour >= 18) greeting = '🌙 مساء الخير';
+    else if (hour >= 12) greeting = '🌤️ مساء الخير';
+    greetEl.textContent = greeting;
+  }
+  if (nameEl && currentUser) nameEl.textContent = currentUser.name || currentUser.username;
+  if (dateEl) {
+    const now = new Date();
+    const days = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+    const months = ['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'];
+    dateEl.textContent = days[now.getDay()] + ' · ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  }
+  if (countEl) countEl.textContent = totalPat;
+  
+  // ========== MODERN STAT CARDS ==========
+  let statsHTML = '';
+  statsHTML += `<div class="dash-stat-card c-teal"><div class="dsc-icon">👥</div><div class="dsc-label">إجمالي المرضى</div><div class="dsc-value">${totalPat}</div><div class="dsc-trend up">▲ ${activePat} نشط</div></div>`;
+  statsHTML += `<div class="dash-stat-card c-blue"><div class="dsc-icon">📋</div><div class="dsc-label">الزيارات</div><div class="dsc-value">${totalVisits}</div><div class="dsc-trend neutral">${upcomingVisits} قادمة</div></div>`;
+  statsHTML += `<div class="dash-stat-card c-orange"><div class="dsc-icon">🚐</div><div class="dsc-label">رحلات النقل</div><div class="dsc-value">${transports.length}</div><div class="dsc-trend neutral">${upcomingTransports} مجدولة</div></div>`;
+  statsHTML += `<div class="dash-stat-card c-green"><div class="dsc-icon">🎉</div><div class="dsc-label">تعافوا</div><div class="dsc-value">${recoveredPat}</div><div class="dsc-trend up">بفضل الله</div></div>`;
+  
+  if (criticalPat > 0) {
+    statsHTML += `<div class="dash-stat-card c-red"><div class="dsc-icon">⚠️</div><div class="dsc-label">حالات حرجة</div><div class="dsc-value">${criticalPat}</div><div class="dsc-trend down">تحتاج متابعة</div></div>`;
+  }
+  if (deceasedPat > 0) {
+    statsHTML += `<div class="dash-stat-card c-pink"><div class="dsc-icon">⚰️</div><div class="dsc-label">متوفى</div><div class="dsc-value">${deceasedPat}</div><div class="dsc-trend neutral">رحمهم الله</div></div>`;
+  }
+  
+  // Financial cards - ADMIN + FINANCE ONLY
+  if (isFinanceAdmin()) {
+    const totalIncome = finance.filter(f => f.type === 'دخل').reduce((s,f) => s + (f.amount||0), 0);
+    const totalOutcome = finance.filter(f => f.type === 'مصروف').reduce((s,f) => s + (f.amount||0), 0);
+    const totalPexp = patientExp.reduce((s,e) => s + (e.amount||0), 0);
+    const totalSalaries = salaries.filter(s => s.status==='مدفوع').reduce((s,x) => s + (x.net||0), 0);
+    const totalUtils = utilities.reduce((s,u) => s + (u.amount||0), 0);
+    const totalOut = totalOutcome + totalPexp + totalSalaries + totalUtils;
+    const balance = totalIncome - totalOut;
+    const cur = settings.currency || 'د.م.';
+    
+    statsHTML += `<div class="dash-stat-card c-green"><div class="dsc-icon">📥</div><div class="dsc-label">المداخيل (${cur})</div><div class="dsc-value">${fmtNum(Math.round(totalIncome))}</div><div class="dsc-trend up">إجمالي</div></div>`;
+    statsHTML += `<div class="dash-stat-card c-red"><div class="dsc-icon">📤</div><div class="dsc-label">المصاريف (${cur})</div><div class="dsc-value">${fmtNum(Math.round(totalOut))}</div><div class="dsc-trend down">إجمالي</div></div>`;
+    statsHTML += `<div class="dash-stat-card c-${balance>=0?'purple':'orange'}"><div class="dsc-icon">💰</div><div class="dsc-label">الرصيد (${cur})</div><div class="dsc-value">${fmtNum(Math.round(Math.abs(balance)))}</div><div class="dsc-trend ${balance>=0?'up':'down'}">${balance>=0?'فائض':'عجز'}</div></div>`;
+  }
+  
+  document.getElementById('dash-stats').innerHTML = statsHTML;
+  
+  // ========== QUICK ACTIONS (role-aware) ==========
+  const qaEl = document.getElementById('dash-quick-actions');
+  if (qaEl) {
+    let qaHTML = '';
+    if (hasPermission('patients_write')) {
+      qaHTML += `<button class="dash-quick-btn" onclick="openPatientModal()"><span class="dqi">➕</span><span>إضافة مريض</span></button>`;
+    }
+    if (hasPermission('visits_write')) {
+      qaHTML += `<button class="dash-quick-btn" onclick="openVisitModal()"><span class="dqi">📋</span><span>إضافة زيارة</span></button>`;
+    }
+    if (hasPermission('transport_write')) {
+      qaHTML += `<button class="dash-quick-btn" onclick="openTransportModal()"><span class="dqi">🚐</span><span>رحلة نقل</span></button>`;
+    }
+    if (isFinanceAdmin()) {
+      qaHTML += `<button class="dash-quick-btn" onclick="openFinanceModal()"><span class="dqi">💹</span><span>قيد مالي</span></button>`;
+      qaHTML += `<button class="dash-quick-btn" onclick="openPexpModal()"><span class="dqi">💰</span><span>مصروف مريض</span></button>`;
+    }
+    qaHTML += `<button class="dash-quick-btn" onclick="goPageByName('reports')"><span class="dqi">📈</span><span>التقارير</span></button>`;
+    qaEl.innerHTML = qaHTML;
+  }
+  
+  // ========== RECENT PATIENTS ==========
+  const showExp = isFinanceAdmin();
+  const rpTbody = document.getElementById('dash-recent-patients');
+  rpTbody.innerHTML = patients.slice(0,5).map(p => `<tr>
     <td><div class="name-cell"><div class="avatar">${initials(p.name)}</div>${p.name}</div></td>
-    <td>${p.cancer||'—'}</td><td>${statusBadge(p.status)}</td>
-    <td style="font-weight:700;color:var(--teal-d)">${fmtNum(pExpTotal(p.id))} ${settings.currency||"درهم"}</td>
-  </tr>`).join('')||`<tr><td colspan="4"><div class="empty" style="padding:20px"><div class="ei">👤</div><p>لا يوجد مرضى</p></div></td></tr>`;
-  // Today/upcoming visits
-  const now=today();
-  const upcomingV=visits.filter(v=>(v.date===now||v.date>now)&&v.vstatus==='مجدولة').sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
-  const upcomingT=transports.filter(t=>(t.date===now||t.date>now)&&t.status==='مجدولة').sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
-  document.getElementById('dash-today-visits').innerHTML=`
-    ${upcomingV.length?upcomingV.map(v=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <div style="width:8px;height:8px;border-radius:50%;background:${v.date===now?'var(--green)':'var(--blue)'}"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:600">${pName(v.patientId)}</div><div style="font-size:11px;color:var(--slate-l)">${v.type} · ${fmtDate(v.date)} ${v.time||''}</div></div>
-      <span class="badge ${v.date===now?'b-green':'b-blue'}">${v.date===now?'اليوم':'قادم'}</span>
-    </div>`).join(''):''}
-    ${upcomingT.length?upcomingT.map(t=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--orange)"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:600">🚐 ${pName(t.patientId)}</div><div style="font-size:11px;color:var(--slate-l)">نقل → ${t.to||''} · ${fmtDate(t.date)} ${t.time||''}</div></div>
-      <span class="badge b-orange">نقل</span>
-    </div>`).join(''):''}
-    ${!upcomingV.length&&!upcomingT.length?'<div class="empty" style="padding:20px"><div class="ei">📅</div><p>لا توجد مواعيد قادمة</p></div>':''}`;
-  // Finance summary
-  const cm=thisMonth();
-  const monthIn=finance.filter(f=>f.type==='دخل'&&f.date?.startsWith(cm)).reduce((s,f)=>s+f.amount,0);
-  const monthOut=finance.filter(f=>f.type==='مصروف'&&f.date?.startsWith(cm)).reduce((s,f)=>s+f.amount,0);
-  const monthSal=salaries.filter(s=>s.month===cm).reduce((s,x)=>s+x.net,0);
-  const monthUtil=utilities.filter(u=>u.month===cm).reduce((s,u)=>s+u.amount,0);
-  document.getElementById('dash-finance-summary').innerHTML=`
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <span style="font-size:13px;color:var(--slate-l)">مداخيل هذا الشهر</span>
-      <span style="font-size:13px;font-weight:700;color:var(--green)">+${fmtNum(Math.round(monthIn))} ${settings.currency||"درهم"}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <span style="font-size:13px;color:var(--slate-l)">مصاريف تشغيلية</span>
-      <span style="font-size:13px;font-weight:700;color:var(--red)">-${fmtNum(Math.round(monthOut))} ${settings.currency||"درهم"}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <span style="font-size:13px;color:var(--slate-l)">رواتب الشهر</span>
-      <span style="font-size:13px;font-weight:700;color:var(--red)">-${fmtNum(Math.round(monthSal))} ${settings.currency||"درهم"}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9">
-      <span style="font-size:13px;color:var(--slate-l)">فواتير الخدمات</span>
-      <span style="font-size:13px;font-weight:700;color:var(--red)">-${fmtNum(Math.round(monthUtil))} ${settings.currency||"درهم"}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0">
-      <span style="font-size:13px;font-weight:800">الرصيد الشهري</span>
-      <span style="font-size:14px;font-weight:800;color:${(monthIn-monthOut-monthSal-monthUtil)>=0?'var(--teal)':'var(--red)'}">
-        ${(monthIn-monthOut-monthSal-monthUtil)>=0?'+':''}${fmtNum(Math.round(monthIn-monthOut-monthSal-monthUtil))} ر.س
-      </span>
-    </div>`;
-  // Utilities recent
-  const recentU=utilities.slice(0,4);
-  document.getElementById('dash-utilities').innerHTML=recentU.length?recentU.map(u=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f1f5f9">
-      <div><div style="font-size:13px;font-weight:600">${u.type}</div><div style="font-size:10px;color:var(--slate-l)">${u.month||fmtDate(u.date)}</div></div>
-      <div style="text-align:left"><div style="font-weight:700;color:var(--teal-d);font-size:13px">${fmtNum(u.amount)} ${settings.currency||'درهم'}</div>${statusBadge(u.status)}</div>
-    </div>`).join(''):'<div class="empty" style="padding:16px"><div class="ei">⚡</div><p>${t("no_bills")}</p></div>';
+    <td>${p.cancer||'—'}</td>
+    <td>${statusBadge(p.status)}</td>
+    ${showExp ? `<td class="finance-admin-only" style="font-weight:700;color:var(--teal-d)">${fmtNum(pExpTotal(p.id))} ${settings.currency||"درهم"}</td>` : ''}
+  </tr>`).join('') || `<tr><td colspan="${showExp?4:3}"><div class="empty" style="padding:20px"><div class="ei">👤</div><p>لا يوجد مرضى</p></div></td></tr>`;
+  
+  // ========== UPCOMING VISITS ==========
+  const now = today();
+  const upcomingV = visits.filter(v => (v.date === now || v.date > now) && v.vstatus === 'مجدولة').sort((a,b) => a.date.localeCompare(b.date)).slice(0, 5);
+  const upcomingT = transports.filter(t => (t.date === now || t.date > now) && t.status === 'مجدولة').sort((a,b) => a.date.localeCompare(b.date)).slice(0, 3);
+  
+  document.getElementById('dash-today-visits').innerHTML = 
+    (upcomingV.length ? upcomingV.map(v => `<div style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid #f1f5f9;border-radius:8px;transition:background .2s" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+      <div style="width:10px;height:10px;border-radius:50%;background:${v.date === now ? '#16a34a' : '#3b82f6'};box-shadow:0 0 0 4px ${v.date === now ? '#dcfce7' : '#dbeafe'}"></div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:700;color:#0f172a">${pName(v.patientId)}</div>
+        <div style="font-size:11px;color:#64748b">${v.type || ''} · ${fmtDate(v.date)}${v.time ? ' · ' + v.time : ''}</div>
+      </div>
+      <span style="font-size:10px;background:${v.date === now ? '#dcfce7' : '#dbeafe'};color:${v.date === now ? '#166534' : '#1e40af'};padding:3px 8px;border-radius:10px;font-weight:700">${v.date === now ? 'اليوم' : 'قادم'}</span>
+    </div>`).join('') : '<div style="text-align:center;padding:28px 10px;color:#94a3b8;font-size:13px">✨ لا زيارات قادمة</div>') +
+    (upcomingT.length ? '<div style="padding:10px 0 6px;font-size:11px;font-weight:800;color:#64748b;border-top:1px dashed #e2e8f0;margin-top:10px">🚐 رحلات النقل القادمة</div>' + upcomingT.map(t => `<div style="display:flex;align-items:center;gap:10px;padding:8px;background:#fff7ed;border-radius:8px;margin-bottom:5px">
+      <div style="font-size:18px">🚐</div>
+      <div style="flex:1">
+        <div style="font-size:12.5px;font-weight:700">${t.toHospital || 'نقل'}</div>
+        <div style="font-size:11px;color:#92400e">${fmtDate(t.date)}${t.time ? ' · ' + t.time : ''}</div>
+      </div>
+    </div>`).join('') : '');
+  
+  // ========== STATUS BREAKDOWN CHART ==========
+  const statusMap = {};
+  patients.forEach(p => { const s = p.status || 'غير محدد'; statusMap[s] = (statusMap[s]||0) + 1; });
+  const statusArr = Object.entries(statusMap).sort((a,b) => b[1] - a[1]);
+  const maxStat = statusArr[0]?.[1] || 1;
+  const statusColors = {
+    'نشط': '#16a34a', 'متابعة': '#0ea5e9', 'حرج': '#dc2626',
+    'تعافى': '#0f766e', 'أوقف العلاج': '#f59e0b', 'منقطع': '#64748b', 'متوفى': '#ef4444'
+  };
+  const sbEl = document.getElementById('dash-status-breakdown');
+  if (sbEl) sbEl.innerHTML = statusArr.length ? statusArr.map(([k,v]) => `
+    <div class="status-bar-row">
+      <div class="status-bar-label">${k}</div>
+      <div class="status-bar-track">
+        <div class="status-bar-fill" style="width:${(v/maxStat*100).toFixed(0)}%;background:${statusColors[k] || '#0f766e'}"></div>
+      </div>
+      <div class="status-bar-count">${v}</div>
+    </div>`).join('') : '<div style="text-align:center;padding:20px;color:#94a3b8">لا توجد بيانات</div>';
+  
+  // ========== FINANCE SUMMARY (admin + finance only) ==========
+  if (isFinanceAdmin()) {
+    const thisMonth = new Date().toISOString().slice(0, 7);
+    const mIncome = finance.filter(f => f.type === 'دخل' && (f.date||'').startsWith(thisMonth)).reduce((s,f) => s + (f.amount||0), 0);
+    const mOutcome = finance.filter(f => f.type === 'مصروف' && (f.date||'').startsWith(thisMonth)).reduce((s,f) => s + (f.amount||0), 0);
+    const mPexp = patientExp.filter(e => (e.date||'').startsWith(thisMonth)).reduce((s,e) => s + (e.amount||0), 0);
+    const cur = settings.currency || 'د.م.';
+    const fsEl = document.getElementById('dash-finance-summary');
+    if (fsEl) fsEl.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9">
+        <span style="font-size:12.5px;color:#334155">📥 مداخيل الشهر</span>
+        <span style="font-weight:800;color:#16a34a">${fmtNum(Math.round(mIncome))} ${cur}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9">
+        <span style="font-size:12.5px;color:#334155">📤 مصاريف الشهر</span>
+        <span style="font-weight:800;color:#dc2626">${fmtNum(Math.round(mOutcome))} ${cur}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9">
+        <span style="font-size:12.5px;color:#334155">💰 دعم المرضى</span>
+        <span style="font-weight:800;color:#f59e0b">${fmtNum(Math.round(mPexp))} ${cur}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 4px">
+        <span style="font-size:13px;font-weight:700;color:#0f172a">🎯 الصافي الشهري</span>
+        <span style="font-weight:800;color:${(mIncome - mOutcome - mPexp) >= 0 ? '#16a34a' : '#dc2626'};font-size:16px">${fmtNum(Math.round(mIncome - mOutcome - mPexp))} ${cur}</span>
+      </div>`;
+    
+    // Utilities
+    const utilEl = document.getElementById('dash-utilities');
+    const recentUtils = utilities.slice().sort((a,b) => (b.date||'').localeCompare(a.date||'')).slice(0, 4);
+    if (utilEl) utilEl.innerHTML = recentUtils.length ? recentUtils.map(u => `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:12.5px">
+        <div>
+          <div style="font-weight:700">${u.type || '—'}</div>
+          <div style="font-size:10.5px;color:#64748b">${u.date || '—'}</div>
+        </div>
+        <div style="font-weight:800;color:#dc2626">${fmtNum(u.amount)} ${cur}</div>
+      </div>`).join('') : '<div style="text-align:center;padding:16px;color:#94a3b8;font-size:12px">لا توجد فواتير</div>';
+  }
+  
+  // Apply role-based visibility
+  setTimeout(applyAdminOnlyVisibility, 50);
 }
 
+
 // ===================== REPORTS =====================
-function renderReports(){
-  const totalPat=patients.length;
-  const totalVisits=visits.length;
-  const totalPexp=patientExp.reduce((s,e)=>s+e.amount,0);
-  const totalIncome=finance.filter(f=>f.type==='دخل').reduce((s,f)=>s+f.amount,0);
-  document.getElementById('rep-stats').innerHTML=`
-    <div class="stat-card c-teal"><div class="stat-icon">👥</div><div class="stat-val">${totalPat}</div><div class="stat-label">${t("total_patients")}</div></div>
-    <div class="stat-card c-blue"><div class="stat-icon">📋</div><div class="stat-val">${totalVisits}</div><div class="stat-label">${t("total_visits")}</div></div>
-    <div class="stat-card c-red"><div class="stat-icon">💸</div><div class="stat-val">${fmtNum(Math.round(totalPexp))}</div><div class="stat-label">مصاريف المرضى (ر.س)</div></div>
-    <div class="stat-card c-green"><div class="stat-icon">📥</div><div class="stat-val">${fmtNum(Math.round(totalIncome))}</div><div class="stat-label">${t("total_income")} (${settings.currency||"د.م."})</div></div>`;
-  // Patient expense chart
-  const perPat=patients.map(p=>({name:p.name,total:pExpTotal(p.id)})).sort((a,b)=>b.total-a.total).slice(0,8);
-  const maxP=perPat[0]?.total||1;
-  document.getElementById('rep-patient-chart').innerHTML=perPat.length?perPat.map(p=>`<div class="chart-row"><span class="chart-label">${p.name.split(' ')[0]}</span><div class="chart-track"><div class="chart-fill c-orange" style="width:${(p.total/maxP*100).toFixed(0)}%"></div></div><span class="chart-val">${fmtNum(Math.round(p.total))}</span></div>`).join(''):`<div class="empty" style="padding:20px 10px"><div class="ei">📊</div><p>لا توجد بيانات</p></div>`;
-  // Cancer types
-  const byType={};
-  patients.forEach(p=>{if(p.cancer) byType[p.cancer]=(byType[p.cancer]||0)+1;});
-  const typesSorted=Object.entries(byType).sort((a,b)=>b[1]-a[1]);
-  const maxT=typesSorted[0]?.[1]||1;
-  document.getElementById('rep-cancer-chart').innerHTML=typesSorted.length?typesSorted.map(([type,count])=>`<div class="chart-row"><span class="chart-label">${type.replace('سرطان ','')}</span><div class="chart-track"><div class="chart-fill c-red" style="width:${(count/maxT*100).toFixed(0)}%"></div></div><span class="chart-val">${count} مريض</span></div>`).join(''):`<div class="empty" style="padding:20px 10px"><div class="ei">🏥</div><p>لا توجد بيانات</p></div>`;
-  // Finance last 6 months
-  const months=[];
-  for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
-  const fData=months.map(m=>({
-    m,
-    income:finance.filter(f=>f.type==='دخل'&&f.date?.startsWith(m)).reduce((s,f)=>s+f.amount,0),
-    expense:finance.filter(f=>f.type==='مصروف'&&f.date?.startsWith(m)).reduce((s,f)=>s+f.amount,0)
-  }));
-  const maxF=Math.max(...fData.map(d=>Math.max(d.income,d.expense)),1);
-  document.getElementById('rep-finance-chart').innerHTML=fData.map(d=>`
-    <div class="chart-row"><span class="chart-label" style="min-width:60px">${d.m.slice(5)}</span>
-    <div style="flex:1"><div class="chart-track" style="margin-bottom:3px"><div class="chart-fill c-green" style="width:${(d.income/maxF*100).toFixed(0)}%"></div></div>
-    <div class="chart-track"><div class="chart-fill c-red" style="width:${(d.expense/maxF*100).toFixed(0)}%"></div></div></div>
-    </div>`).join('');
-  // Report table
-  const tbody=document.getElementById('rep-table');
-  tbody.innerHTML=patients.length?patients.map(p=>{
-    const pvs=visits.filter(v=>v.patientId===p.id);
-    const lastV=pvs.sort((a,b)=>b.date.localeCompare(a.date))[0];
-    return`<tr>
-      <td><div class="name-cell"><div class="avatar">${initials(p.name)}</div>${p.name}</div></td>
-      <td>${p.cancer||'—'}</td><td>${p.stage||'—'}</td>
-      <td>${statusBadge(p.status)}</td><td>${pvs.length}</td>
-      <td style="font-weight:700;color:var(--teal-d)">${fmtNum(pExpTotal(p.id))} ${settings.currency||"درهم"}</td>
-      <td>${lastV?fmtDate(lastV.date):'—'}</td>
+function renderReports() {
+  // MEDICAL REPORTS (accessible to all roles) - No financial amounts shown
+  const totalPat = patients.length;
+  const activePat = patients.filter(p => p.status === 'نشط' || p.status === 'متابعة').length;
+  const deceasedPat = patients.filter(p => p.status === 'متوفى').length;
+  const stoppedPat = patients.filter(p => p.status === 'أوقف العلاج' || p.status === 'منقطع').length;
+  const recoveredPat = patients.filter(p => p.status === 'تعافى').length;
+  const totalVisits = visits.length;
+  
+  const repStats = document.getElementById('rep-stats');
+  if (repStats) repStats.innerHTML = `
+    <div class="stat-card c-teal"><div class="stat-icon">👥</div><div class="stat-val">${totalPat}</div><div class="stat-label">إجمالي المرضى</div></div>
+    <div class="stat-card c-green"><div class="stat-icon">✅</div><div class="stat-val">${activePat}</div><div class="stat-label">نشط / متابعة</div></div>
+    <div class="stat-card c-blue"><div class="stat-icon">🎉</div><div class="stat-val">${recoveredPat}</div><div class="stat-label">تعافوا</div></div>
+    <div class="stat-card c-orange"><div class="stat-icon">🛑</div><div class="stat-val">${stoppedPat}</div><div class="stat-label">أوقف/منقطع</div></div>
+    <div class="stat-card c-red"><div class="stat-icon">⚰️</div><div class="stat-val">${deceasedPat}</div><div class="stat-label">متوفى</div></div>
+    <div class="stat-card c-purple"><div class="stat-icon">📋</div><div class="stat-val">${totalVisits}</div><div class="stat-label">إجمالي الزيارات</div></div>`;
+  
+  // Cancer types chart
+  const cancerMap = {};
+  patients.forEach(p => { if(p.cancer) cancerMap[p.cancer] = (cancerMap[p.cancer]||0) + 1; });
+  const cancerArr = Object.entries(cancerMap).sort((a,b)=>b[1]-a[1]);
+  const maxC = cancerArr[0]?.[1] || 1;
+  const cEl = document.getElementById('rep-cancer-chart');
+  if (cEl) cEl.innerHTML = cancerArr.length ? cancerArr.map(([k,v]) => `
+    <div class="chart-row"><span class="chart-label">${k}</span>
+    <div class="chart-track"><div class="chart-fill c-teal" style="width:${(v/maxC*100).toFixed(0)}%"></div></div>
+    <span class="chart-val">${v}</span></div>`).join('') : '<div class="empty" style="padding:20px;text-align:center;color:#94a3b8">لا توجد بيانات</div>';
+  
+  // Status distribution chart
+  const statusMap = {};
+  patients.forEach(p => { const s = p.status || 'غير محدد'; statusMap[s] = (statusMap[s]||0) + 1; });
+  const statusArr = Object.entries(statusMap).sort((a,b)=>b[1]-a[1]);
+  const maxS = statusArr[0]?.[1] || 1;
+  const sEl = document.getElementById('rep-status-chart');
+  if (sEl) sEl.innerHTML = statusArr.length ? statusArr.map(([k,v]) => {
+    const color = k==='متوفى'?'c-red':k==='نشط'?'c-green':k==='تعافى'?'c-blue':k==='أوقف العلاج'||k==='منقطع'?'c-orange':'c-teal';
+    return `<div class="chart-row"><span class="chart-label">${k}</span>
+    <div class="chart-track"><div class="chart-fill ${color}" style="width:${(v/maxS*100).toFixed(0)}%"></div></div>
+    <span class="chart-val">${v}</span></div>`;
+  }).join('') : '<div class="empty" style="padding:20px;text-align:center;color:#94a3b8">لا توجد بيانات</div>';
+  
+  // Deceased/stopped detail
+  const deceased = patients.filter(p => p.status === 'متوفى' || p.status === 'أوقف العلاج' || p.status === 'منقطع');
+  const dEl = document.getElementById('rep-deceased-chart');
+  if (dEl) dEl.innerHTML = deceased.length ? deceased.slice(0, 10).map(p => {
+    const histEntry = (p.statusHistory || []).filter(h => h.to === p.status).slice(-1)[0];
+    const dateStr = histEntry ? histEntry.date : '—';
+    const icon = p.status === 'متوفى' ? '⚰️' : p.status === 'أوقف العلاج' ? '🛑' : '📵';
+    return `<div style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12.5px;display:flex;justify-content:space-between"><span>${icon} <strong>${p.name}</strong></span><span style="color:#64748b">${dateStr}</span></div>`;
+  }).join('') : '<div class="empty" style="padding:20px;text-align:center;color:#94a3b8">لا توجد حالات</div>';
+  
+  // Medical follow-up table (NO financial data)
+  const tbl = document.getElementById('rep-table');
+  if (tbl) tbl.innerHTML = patients.length ? patients.map(p => {
+    const pVisits = visits.filter(v => v.patientId === p.id);
+    const lastVisit = pVisits.length ? pVisits.sort((a,b)=>b.date.localeCompare(a.date))[0].date : '—';
+    const statusColor = p.status === 'متوفى' ? '#dc2626' : p.status === 'نشط' ? '#16a34a' : p.status === 'تعافى' ? '#0ea5e9' : p.status === 'أوقف العلاج' ? '#f59e0b' : '#64748b';
+    const lastHist = (p.statusHistory || []).slice(-1)[0];
+    const lastHistDate = lastHist ? lastHist.date : '—';
+    return `<tr>
+      <td style="font-weight:600">${p.name}</td>
+      <td>${p.cancer || '—'}</td>
+      <td>${p.stage || '—'}</td>
+      <td><span style="color:${statusColor};font-weight:700">${p.status || '—'}</span></td>
+      <td>${p.ddate || '—'}</td>
+      <td style="text-align:center">${pVisits.length}</td>
+      <td>${lastVisit}</td>
+      <td style="color:#64748b;font-size:11px">${lastHistDate}</td>
     </tr>`;
-  }).join(''):`<tr><td colspan="7"><div class="empty"><div class="ei">📋</div><p>لا توجد بيانات</p></div></td></tr>`;
+  }).join('') : '<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:30px">لا توجد بيانات</td></tr>';
+  
+  // Status history archive
+  const allHistory = [];
+  patients.forEach(p => {
+    (p.statusHistory || []).forEach(h => {
+      allHistory.push({ patient: p.name, ...h });
+    });
+  });
+  allHistory.sort((a,b) => (b.timestamp || b.date).localeCompare(a.timestamp || a.date));
+  
+  const histEl = document.getElementById('rep-status-history');
+  if (histEl) histEl.innerHTML = allHistory.length ? allHistory.slice(0, 100).map(h => `
+    <tr>
+      <td style="font-weight:600">${h.patient}</td>
+      <td><span style="color:#64748b">${h.from || '—'}</span></td>
+      <td><span style="font-weight:700;color:${h.to==='متوفى'?'#dc2626':h.to==='نشط'?'#16a34a':'#0f766e'}">${h.to}</span></td>
+      <td>${h.date || '—'}</td>
+      <td style="font-size:11px;color:#64748b">${h.by || '—'}</td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px">لا يوجد سجل</td></tr>';
+  
+  // Also render financial if user is admin
+  if (isFinanceAdmin()) {
+    renderFinancialReports();
+  }
+  
+  // Apply visibility after render
+  setTimeout(applyAdminOnlyVisibility, 50);
 }
+
+// ================================================================
+// FINANCIAL REPORTS (admin + finance only)
+// ================================================================
+function renderFinancialReports() {
+  if (!isFinanceAdmin()) return;
+  
+  const totalPexp = patientExp.reduce((s, e) => s + (e.amount||0), 0);
+  const totalIncome = finance.filter(f => f.type === 'دخل').reduce((s,f) => s + (f.amount||0), 0);
+  const totalExpense = finance.filter(f => f.type === 'مصروف').reduce((s,f) => s + (f.amount||0), 0);
+  const totalSalaries = salaries.reduce((s,sl) => s + (sl.net||0), 0);
+  const totalUtils = (utilities || []).reduce((s,u) => s + (u.amount||0), 0);
+  const balance = totalIncome - totalExpense - totalPexp - totalSalaries - totalUtils;
+  const cur = settings.currency || 'د.م.';
+  
+  const fStats = document.getElementById('rep-fin-stats');
+  if (fStats) fStats.innerHTML = `
+    <div class="stat-card c-green"><div class="stat-icon">📥</div><div class="stat-val">${fmtNum(Math.round(totalIncome))}</div><div class="stat-label">المداخيل (${cur})</div></div>
+    <div class="stat-card c-red"><div class="stat-icon">📤</div><div class="stat-val">${fmtNum(Math.round(totalExpense))}</div><div class="stat-label">المصاريف العامة (${cur})</div></div>
+    <div class="stat-card c-orange"><div class="stat-icon">💸</div><div class="stat-val">${fmtNum(Math.round(totalPexp))}</div><div class="stat-label">مصاريف المرضى (${cur})</div></div>
+    <div class="stat-card c-purple"><div class="stat-icon">💼</div><div class="stat-val">${fmtNum(Math.round(totalSalaries))}</div><div class="stat-label">الرواتب (${cur})</div></div>
+    <div class="stat-card c-blue"><div class="stat-icon">💡</div><div class="stat-val">${fmtNum(Math.round(totalUtils))}</div><div class="stat-label">الفواتير (${cur})</div></div>
+    <div class="stat-card ${balance>=0?'c-teal':'c-red'}"><div class="stat-icon">${balance>=0?'✅':'⚠️'}</div><div class="stat-val">${fmtNum(Math.round(balance))}</div><div class="stat-label">الرصيد (${cur})</div></div>`;
+  
+  // Patient expense chart (top 8)
+  const perPat = patients.map(p => ({ name: p.name, total: pExpTotal(p.id) })).filter(x => x.total > 0).sort((a,b) => b.total - a.total).slice(0, 8);
+  const maxP = perPat[0]?.total || 1;
+  const pEl = document.getElementById('rep-patient-chart');
+  if (pEl) pEl.innerHTML = perPat.length ? perPat.map(p => `
+    <div class="chart-row"><span class="chart-label">${p.name.split(' ')[0]}</span>
+    <div class="chart-track"><div class="chart-fill c-orange" style="width:${(p.total/maxP*100).toFixed(0)}%"></div></div>
+    <span class="chart-val">${fmtNum(Math.round(p.total))}</span></div>`).join('') : '<div class="empty" style="padding:20px;text-align:center;color:#94a3b8">لا توجد بيانات</div>';
+  
+  // Finance chart (6 months)
+  const last6 = [];
+  const now = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2, '0');
+    const monthIncome = finance.filter(f => f.type === 'دخل' && (f.date||'').startsWith(key)).reduce((s,f) => s + (f.amount||0), 0);
+    const monthExp = finance.filter(f => f.type === 'مصروف' && (f.date||'').startsWith(key)).reduce((s,f) => s + (f.amount||0), 0);
+    last6.push({ month: key.slice(2), income: monthIncome, expense: monthExp });
+  }
+  const maxF = Math.max(...last6.map(m => Math.max(m.income, m.expense)), 1);
+  const fEl = document.getElementById('rep-finance-chart');
+  if (fEl) fEl.innerHTML = last6.map(m => `
+    <div style="margin-bottom:10px">
+      <div style="font-size:11px;color:#64748b;margin-bottom:3px">${m.month}</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden"><div style="height:100%;background:#16a34a;width:${(m.income/maxF*100).toFixed(0)}%"></div></div>
+        <span style="font-size:11px;color:#166534;font-weight:700;min-width:60px">${fmtNum(Math.round(m.income))}</span>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-top:3px">
+        <div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden"><div style="height:100%;background:#dc2626;width:${(m.expense/maxF*100).toFixed(0)}%"></div></div>
+        <span style="font-size:11px;color:#991b1b;font-weight:700;min-width:60px">${fmtNum(Math.round(m.expense))}</span>
+      </div>
+    </div>`).join('');
+  
+  // Expense breakdown
+  const catMap = { 'مصاريف المرضى': totalPexp, 'الرواتب': totalSalaries, 'الفواتير': totalUtils, 'مصاريف عامة': totalExpense };
+  const totalAll = Object.values(catMap).reduce((s,v)=>s+v, 0) || 1;
+  const eEl = document.getElementById('rep-expense-chart');
+  if (eEl) eEl.innerHTML = Object.entries(catMap).map(([k,v]) => `
+    <div class="chart-row"><span class="chart-label">${k}</span>
+    <div class="chart-track"><div class="chart-fill c-red" style="width:${(v/totalAll*100).toFixed(0)}%"></div></div>
+    <span class="chart-val">${fmtNum(Math.round(v))}</span></div>`).join('');
+  
+  // All expenses table
+  const allExpenses = [];
+  patientExp.forEach(e => {
+    const p = patients.find(x => x.id === e.patientId);
+    allExpenses.push({ date: e.date, type: 'مصروف مريض', beneficiary: p?.name || '—', desc: e.desc || e.type || '—', amount: e.amount });
+  });
+  finance.filter(f => f.type === 'مصروف').forEach(f => {
+    allExpenses.push({ date: f.date, type: 'مصروف عام', beneficiary: f.source || '—', desc: f.desc || '—', amount: f.amount });
+  });
+  salaries.forEach(s => {
+    const emp = employees.find(x => x.id === s.empId);
+    allExpenses.push({ date: s.date, type: 'راتب', beneficiary: emp?.name || '—', desc: 'راتب ' + (s.month||''), amount: s.net });
+  });
+  allExpenses.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  
+  const expTbl = document.getElementById('rep-fin-expenses');
+  if (expTbl) expTbl.innerHTML = allExpenses.length ? allExpenses.slice(0,200).map(e => `
+    <tr>
+      <td>${e.date || '—'}</td>
+      <td><span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">${e.type}</span></td>
+      <td>${e.beneficiary}</td>
+      <td style="color:#64748b;font-size:12px">${e.desc}</td>
+      <td style="font-weight:700;color:#991b1b">${fmtNum(e.amount)} ${cur}</td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px">لا توجد مصاريف</td></tr>';
+  
+  // Income table
+  const allIncome = finance.filter(f => f.type === 'دخل').sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  const incTbl = document.getElementById('rep-fin-income');
+  if (incTbl) incTbl.innerHTML = allIncome.length ? allIncome.slice(0,200).map(f => `
+    <tr>
+      <td>${f.date || '—'}</td>
+      <td><span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">${f.source || 'تبرع'}</span></td>
+      <td>${f.donor || '—'}</td>
+      <td style="color:#64748b;font-size:12px">${f.desc || '—'}</td>
+      <td style="font-weight:700;color:#166534">+${fmtNum(f.amount)} ${cur}</td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px">لا توجد مداخيل</td></tr>';
+}
+
+// ================================================================
+// Switch between medical and financial report tabs
+// ================================================================
+function switchReportTab(tab) {
+  const medTab = document.getElementById('rep-medical-tab');
+  const finTab = document.getElementById('rep-financial-tab');
+  const medBtn = document.getElementById('rep-tab-medical');
+  const finBtn = document.getElementById('rep-tab-financial');
+  
+  if (tab === 'financial') {
+    if (!isFinanceAdmin()) {
+      alert('⚠️ هذه التقارير متاحة للمدير العام والمسؤول المالي فقط');
+      return;
+    }
+    if (medTab) medTab.style.display = 'none';
+    if (finTab) finTab.style.display = 'block';
+    if (medBtn) { medBtn.classList.remove('btn-primary'); medBtn.classList.add('btn-outline'); }
+    if (finBtn) { finBtn.classList.remove('btn-outline'); finBtn.classList.add('btn-primary'); }
+    renderFinancialReports();
+  } else {
+    if (medTab) medTab.style.display = 'block';
+    if (finTab) finTab.style.display = 'none';
+    if (medBtn) { medBtn.classList.remove('btn-outline'); medBtn.classList.add('btn-primary'); }
+    if (finBtn) { finBtn.classList.remove('btn-primary'); finBtn.classList.add('btn-outline'); }
+  }
+}
+
 
 // ===================== SETTINGS =====================
 function renderSettings(){
@@ -4628,7 +5326,7 @@ function renderEmpExpenses() {
     <td>${statusBadge(e.status)}</td>
     <td><div style="display:flex;gap:3px">
       <button class="btn btn-purple btn-xs" onclick="printEexpSlip(${e.id})" title="طباعة وصل">🖨️</button>
-      <button class="btn btn-danger btn-xs" onclick="deleteEexp(${e.id})">🗑️</button>
+      <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteEexp(${e.id})">🗑️</button>
     </div></td>
   </tr>`).join('');
 }
@@ -4670,7 +5368,7 @@ function renderEmployeesTab() {
           </div>
           <div style="display:flex;gap:6px">
             <button class="btn btn-primary btn-sm" style="flex:1" onclick="printEmpSheet(${emp.id})">🖨️ بطاقة الموظف</button>
-            <button class="btn btn-danger btn-xs" onclick="deleteEmployee(${emp.id})">🗑️</button>
+            <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteEmployee(${emp.id})">🗑️</button>
           </div>
         </div>
       </div>`;
@@ -5659,6 +6357,125 @@ function tStatus(s) {
   } else {
     setTimeout(start, 500);
   }
+})();
+
+
+
+// ================================================================
+// 📧 EMAIL NOTIFICATIONS — إشعارات للمدير العام عند أي تغيير
+// ================================================================
+(function() {
+  if (typeof EMAIL_NOTIFICATIONS_ENABLED === 'undefined' || !EMAIL_NOTIFICATIONS_ENABLED) {
+    console.log('ℹ️ Email notifications: disabled');
+    return;
+  }
+  if (typeof emailjs === 'undefined' || !emailjs) {
+    console.log('ℹ️ EmailJS not loaded');
+    return;
+  }
+
+  // ===== Mapping localStorage keys to human-readable labels =====
+  const COLLECTION_LABELS = {
+    'patients':    { ar: 'مرضى',           icon: '👤' },
+    'visits':      { ar: 'زيارات',          icon: '📋' },
+    'transports':  { ar: 'رحلات نقل',       icon: '🚐' },
+    'patientExp':  { ar: 'مصاريف مرضى',    icon: '💰' },
+    'finance':     { ar: 'مداخيل/مصاريف',  icon: '💹' },
+    'employees':   { ar: 'موظفون',         icon: '👔' },
+    'salaries':    { ar: 'رواتب',          icon: '💼' },
+    'vehicles':    { ar: 'سيارات',         icon: '🚗' },
+    'fuelLogs':    { ar: 'وقود وصيانة',    icon: '⛽' },
+    'utilities':   { ar: 'فواتير',         icon: '⚡' },
+    'frd_admins':  { ar: 'مستخدمون',       icon: '🔐' }
+  };
+
+  // ===== Send email notification =====
+  function sendAdminNotification(collection, changeType, itemCount, diff) {
+    const label = COLLECTION_LABELS[collection];
+    if (!label) return;
+    
+    const userName = (typeof currentUser !== 'undefined' && currentUser) 
+      ? (currentUser.name || currentUser.username) : 'غير معروف';
+    
+    const params = {
+      to_email:     emailjsConfig.adminEmail,
+      subject:      label.icon + ' تحديث: ' + label.ar,
+      collection:   label.ar,
+      change_type:  changeType,
+      item_count:   itemCount,
+      user_name:    userName,
+      change_date:  new Date().toLocaleString('ar-MA'),
+      change_details: diff || '—',
+      org_name:     (typeof settings !== 'undefined' && settings.name) ? settings.name : 'جمعية فردوس'
+    };
+    
+    emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, params)
+      .then(function() {
+        console.log('📧 Email sent to admin for:', collection);
+      })
+      .catch(function(e) {
+        console.log('Email send failed:', e && e.text || e);
+      });
+  }
+
+  // ===== Detect WHAT changed (add / edit / delete) =====
+  function detectChangeType(key, oldData, newData) {
+    try {
+      const oldArr = oldData ? JSON.parse(oldData) : [];
+      const newArr = newData ? JSON.parse(newData) : [];
+      if (!Array.isArray(oldArr) || !Array.isArray(newArr)) return null;
+      
+      if (newArr.length > oldArr.length) {
+        const newItem = newArr.find(n => !oldArr.some(o => o.id === n.id));
+        const name = newItem ? (newItem.name || newItem.username || newItem.desc || '—') : '—';
+        return { type: 'إضافة جديدة', count: newArr.length, diff: 'تمت إضافة: ' + name };
+      }
+      if (newArr.length < oldArr.length) {
+        return { type: 'حذف', count: newArr.length, diff: 'تم حذف عنصر' };
+      }
+      // Same length - check for edits
+      for (let i = 0; i < newArr.length; i++) {
+        const oldItem = oldArr.find(o => o.id === newArr[i].id);
+        if (oldItem && JSON.stringify(oldItem) !== JSON.stringify(newArr[i])) {
+          const name = newArr[i].name || newArr[i].username || newArr[i].desc || '—';
+          return { type: 'تعديل', count: newArr.length, diff: 'تم تعديل: ' + name };
+        }
+      }
+      return null;
+    } catch(e) { return null; }
+  }
+
+  // ===== Hook localStorage.setItem to send notifications =====
+  // (Firebase hook is separate - this sends EMAILS only)
+  const _origSetItem = localStorage.setItem.bind(localStorage);
+  const pendingEmails = {};
+  
+  localStorage.setItem = function(key, value) {
+    const oldValue = localStorage.getItem(key);
+    _origSetItem(key, value);  // preserve original behavior
+    
+    // Only send email for tracked collections
+    if (!COLLECTION_LABELS[key]) return;
+    
+    // Don't send on initial load (when oldValue is null)
+    if (!oldValue) return;
+    
+    // Don't send if value didn't actually change
+    if (oldValue === value) return;
+    
+    // Detect what changed
+    const change = detectChangeType(key, oldValue, value);
+    if (!change) return;
+    
+    // Debounce: batch multiple rapid changes into one email
+    clearTimeout(pendingEmails[key]);
+    pendingEmails[key] = setTimeout(function() {
+      sendAdminNotification(key, change.type, change.count, change.diff);
+      delete pendingEmails[key];
+    }, 3000);
+  };
+
+  console.log('%c📧 Email notification hooks active', 'background:#1e40af;color:#fff;padding:4px 10px;border-radius:4px');
 })();
 
 </script>
