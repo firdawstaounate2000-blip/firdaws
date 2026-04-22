@@ -774,7 +774,7 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title" id="patients-lbl">المرضى</span></div>
-    <table><thead><tr><th>المريض</th><th>رقم الهوية</th><th>نوع السرطان</th><th>المرحلة</th><th>الهاتف</th><th>الحالة</th><th>المصاريف</th><th>إجراءات</th></tr></thead><tbody id="patients-table"></tbody></table>
+    <table><thead><tr><th>المريض</th><th>رقم الهوية</th><th>نوع السرطان</th><th>المرحلة</th><th>الهاتف</th><th>الحالة</th><th class="finance-admin-only">المصاريف</th><th>إجراءات</th></tr></thead><tbody id="patients-table"></tbody></table>
   </div>
 </div>
 
@@ -792,7 +792,7 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">📋 سجل الزيارات والمواعيد</span></div>
-    <table><thead><tr><th>المريض</th><th>التاريخ</th><th>الوقت</th><th>نوع الزيارة</th><th>الطبيب/المستشفى</th><th>الحالة</th><th>التكلفة</th><th>الموعد القادم</th><th>إجراءات</th></tr></thead><tbody id="visits-table"></tbody></table>
+    <table><thead><tr><th>المريض</th><th>التاريخ</th><th>الوقت</th><th>نوع الزيارة</th><th>الطبيب/المستشفى</th><th>الحالة</th><th class="finance-admin-only">التكلفة</th><th>الموعد القادم</th><th>إجراءات</th></tr></thead><tbody id="visits-table"></tbody></table>
   </div>
 </div>
 
@@ -1647,6 +1647,7 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
       <select id="ad-role" onchange="renderPermCheckboxesV2(this.value)">
         <option value="superadmin">👑 مدير عام</option>
         <option value="admin">🔧 مدير</option>
+        <option value="manager">📋 مسيّر الجمعية</option>
         <option value="medical">🏥 طاقم طبي</option>
         <option value="finance">💹 مالي / Comptable</option>
         <option value="social">🤝 اجتماعي</option>
@@ -1753,7 +1754,19 @@ function doLogin() {
   generateNotifs();
 }
 
-function roleLabel(r) { return r==='superadmin'?'مدير عام':r==='admin'?'مدير':'مشاهد' }
+function roleLabel(r) {
+  const labels = {
+    superadmin: 'مدير عام',
+    admin: 'مدير',
+    manager: 'مسيّر الجمعية',
+    finance: 'مسؤول مالي',
+    medical: 'طبي',
+    social: 'اجتماعي',
+    driver: 'سائق',
+    viewer: 'مشاهد'
+  };
+  return labels[r] || r || 'مشاهد';
+}
 
 // ================================================================
 // COMPLETE PERMISSIONS SYSTEM
@@ -1790,12 +1803,18 @@ const NAV_CONFIG = [
 // ADMIN-ONLY helpers (للادمين والمدير العام فقط)
 // ================================================================
 function isAdmin() {
+  // Superadmin, admin, manager can edit/delete patient/visit/transport data (not finance)
   if (!currentUser) return false;
-  return currentUser.role === 'superadmin' || currentUser.role === 'admin';
+  return currentUser.role === 'superadmin' 
+      || currentUser.role === 'admin' 
+      || currentUser.role === 'manager';
 }
 function isFinanceAdmin() {
+  // Only superadmin + admin + finance can see/edit financial data
   if (!currentUser) return false;
-  return currentUser.role === 'superadmin' || currentUser.role === 'admin' || currentUser.role === 'finance';
+  return currentUser.role === 'superadmin' 
+      || currentUser.role === 'admin' 
+      || currentUser.role === 'finance';
 }
 // Show elements only for admins via CSS class
 function applyAdminOnlyVisibility() {
@@ -1820,11 +1839,12 @@ function hasPermission(permKey) {
   // Fallback: role-based defaults (in case perms not set)
   const roleDefaults = {
     admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data'],
-    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','pexp_view','pexp_write','reports_view'],
-    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data'],
-    social:   ['patients_view','patients_write','pexp_view','pexp_write','transport_view','transport_write','reports_view'],
-    driver:   ['transport_view','transport_write','vehicles_view','vehicles_write'],
-    viewer:   ['patients_view','visits_view','transport_view','finance_view','pexp_view','reports_view'],
+    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data'],
+    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view'],
+    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view'],
+    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view'],
+    driver:   ['transport_view','transport_write'],
+    viewer:   ['patients_view','visits_view','transport_view','reports_view'],
   };
   const allowed = roleDefaults[currentUser.role] || [];
   return allowed.includes(permKey);
@@ -2201,7 +2221,7 @@ function renderPatients(){
       <td><div class="name-cell">${ph}<div><div style="font-weight:600">${p.name}</div><div style="font-size:10px;color:var(--slate-l)">${p.gender||''} ${p.dob?'· '+calcAge(p.dob)+' سنة':''}</div></div></div></td>
       <td>${p.pid||'—'}</td><td>${p.cancer||'—'}</td><td>${p.stage||'—'}</td><td>${p.phone||'—'}</td>
       <td>${statusBadge(p.status)}</td>
-      <td style="font-weight:700;color:var(--teal-d)">${fmtNum(exp)} ${settings.currency||"درهم"}</td>
+      <td class="finance-admin-only" style="font-weight:700;color:var(--teal-d)">${fmtNum(exp)} ${settings.currency||"درهم"}</td>
       <td><div style="display:flex;gap:4px">
         <button class="btn btn-outline btn-xs" onclick="showPatientDetail(${p.id})">🔍</button>
         <button class="btn btn-outline btn-xs admin-only" onclick="openPatientModal(${p.id})">✏️</button>
@@ -2241,7 +2261,7 @@ function showPatientDetail(id){
         ${p.photo?`<div style="text-align:center"><div style="font-size:10px;color:var(--slate-l);margin-bottom:4px">الصورة الشخصية</div><img src="${p.photo}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid var(--teal)"></div>`:''}
       </div>
     </div>`:''}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    ${isFinanceAdmin() ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:11.5px;font-weight:800;color:var(--teal);border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">📋 آخر الزيارات (${pvs.length})</div>
         ${pvs.slice(0,4).map(v=>`<div class="visit-card"><div><div class="visit-date">${fmtDate(v.date)} ${v.time||''} · ${v.type}</div><div class="visit-notes">${v.notes||'—'}</div></div><div class="visit-cost">${fmtNum(v.cost)} ${settings.currency||'درهم'}</div></div>`).join('')||'<p style="color:var(--slate-l);font-size:12px">${t("no_visits")}</p>'}
@@ -2250,7 +2270,10 @@ function showPatientDetail(id){
         <div style="font-size:11.5px;font-weight:800;color:var(--teal);border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">💰 المصاريف (${fmtNum(totalExp)} ${settings.currency||'درهم'})</div>
         ${pes.slice(0,5).map(e=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:12px"><span>${e.type} - ${e.desc||''}</span><span style="font-weight:700;color:var(--teal-d)">${fmtNum(e.amount)} ${settings.currency||"درهم"}</span></div>`).join('')||'<p style="color:var(--slate-l);font-size:12px">${t("no_pexp")}</p>'}
       </div>
-    </div>
+    </div>` : `<div>
+      <div style="font-size:11.5px;font-weight:800;color:var(--teal);border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">📋 آخر الزيارات (${pvs.length})</div>
+      ${pvs.slice(0,6).map(v=>`<div class="visit-card"><div><div class="visit-date">${fmtDate(v.date)} ${v.time||''} · ${v.type}</div><div class="visit-notes">${v.notes||'—'}</div></div></div>`).join('')||'<p style="color:var(--slate-l);font-size:12px">${t("no_visits")}</p>'}
+    </div>`}
     <div style="margin-top:14px">
       <div style="font-size:11.5px;font-weight:800;color:var(--teal);border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">🚐 آخر رحلات النقل (${pts.length})</div>
       ${pts.slice(0,3).map(t=>`<div class="visit-card" style="border-color:var(--orange)"><div><div class="visit-date">${fmtDate(t.date)} ${t.time||''}</div><div class="visit-notes">${t.from||''} → ${t.to||''}</div></div><div style="font-size:12px;font-weight:700;color:var(--orange)">${statusBadge(t.status)}</div></div>`).join('')||'<p style="color:var(--slate-l);font-size:12px">لا توجد رحلات</p>'}
@@ -2310,7 +2333,7 @@ function renderVisits(){
     <td><div class="name-cell"><div class="avatar">${initials(pName(v.patientId))}</div>${pName(v.patientId)}</div></td>
     <td>${fmtDate(v.date)}</td><td>${v.time||'—'}</td><td>${v.type}</td>
     <td>${v.doctor||v.hospital||'—'}</td><td>${statusBadge(v.vstatus)}</td>
-    <td style="font-weight:700;color:var(--teal-d)">${fmtNum(v.cost)} ${settings.currency||"درهم"}</td>
+    <td class="finance-admin-only" style="font-weight:700;color:var(--teal-d)">${fmtNum(v.cost)} ${settings.currency||"درهم"}</td>
     <td>${v.nextDate?fmtDate(v.nextDate)+' '+(v.nextTime||''):'—'}</td>
     <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteVisit(${v.id})">🗑️</button></td>
   </tr>`).join('');
@@ -2445,11 +2468,14 @@ function renderTransport(){
   const totalMaintCost = fuelLogs.filter(f=>f.type!=='وقود').reduce((s,f)=>s+f.cost,0);
   const uniquePatients = new Set(transports.flatMap(t=>t.patientIds||[])).size;
 
-  document.getElementById('transport-stats').innerHTML = `
+  let transportStatsHTML = `
     <div class="stat-card c-blue"><div class="stat-icon">🚐</div><div class="stat-val">${totalTrips}</div><div class="stat-label">${t('total_trips')}</div></div>
     <div class="stat-card c-orange"><div class="stat-icon">📅</div><div class="stat-val">${scheduled}</div><div class="stat-label">${t('active_trips')}</div></div>
-    <div class="stat-card c-teal"><div class="stat-icon">📍</div><div class="stat-val">${fmtNum(totalKm)}</div><div class="stat-label">${t('total_km')}</div></div>
-    <div class="stat-card c-red"><div class="stat-icon">⛽</div><div class="stat-val">${fmtNum(Math.round(totalFuelCost+totalMaintCost))}</div><div class="stat-label">${t('fuel_maint_cost')} (${settings.currency||'د.م.'})</div></div>`;
+    <div class="stat-card c-teal"><div class="stat-icon">📍</div><div class="stat-val">${fmtNum(totalKm)}</div><div class="stat-label">${t('total_km')}</div></div>`;
+  if (isFinanceAdmin()) {
+    transportStatsHTML += `<div class="stat-card c-red"><div class="stat-icon">⛽</div><div class="stat-val">${fmtNum(Math.round(totalFuelCost+totalMaintCost))}</div><div class="stat-label">${t('fuel_maint_cost')} (${settings.currency||'د.م.'})</div></div>`;
+  }
+  document.getElementById('transport-stats').innerHTML = transportStatsHTML;
 
   const tbody = document.getElementById('transport-table');
   if(!list.length){ tbody.innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">🚐</div><p>${t("no_trips")}</p></div></td></tr>`; return; }
@@ -3937,11 +3963,12 @@ const PERM_MODULES = [
 const ROLE_TEMPLATES_FULL = {
   superadmin: () => Object.fromEntries(PERM_MODULES.map(p => [p.key, true])),
   admin:      () => Object.fromEntries(PERM_MODULES.filter(p=>p.key!=='admins_manage').map(p => [p.key, true])),
-  medical:    () => mkPermsObj(['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','pexp_view','pexp_write','reports_view']),
-  finance:    () => mkPermsObj(['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data']),
-  social:     () => mkPermsObj(['patients_view','patients_write','pexp_view','pexp_write','transport_view','transport_write','reports_view']),
-  driver:     () => mkPermsObj(['transport_view','transport_write','vehicles_view','vehicles_write']),
-  viewer:     () => mkPermsObj(['patients_view','visits_view','transport_view','finance_view','pexp_view','reports_view']),
+  manager:    () => mkPermsObj(['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data']),
+  medical:    () => mkPermsObj(['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view']),
+  finance:    () => mkPermsObj(['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view']),
+  social:     () => mkPermsObj(['patients_view','patients_write','transport_view','transport_write','reports_view']),
+  driver:     () => mkPermsObj(['transport_view','transport_write']),
+  viewer:     () => mkPermsObj(['patients_view','visits_view','transport_view','reports_view']),
 };
 
 function mkPermsObj(keys) {
