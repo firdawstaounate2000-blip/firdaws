@@ -482,6 +482,219 @@ textarea{resize:vertical;min-height:72px}
   font-weight: 800;
   color: #0f172a;
 }
+
+/* ================================================================
+   DARK MODE (الوضع الليلي)
+   ================================================================ */
+body.dark-mode {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+body.dark-mode .sidebar {
+  background: #1e293b;
+  border-color: #334155;
+}
+body.dark-mode .topbar,
+body.dark-mode .card,
+body.dark-mode .modal,
+body.dark-mode .dash-stat-card,
+body.dark-mode .dash-quick-btn {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+body.dark-mode .card-header {
+  background: #0f172a !important;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+body.dark-mode .card-title,
+body.dark-mode .modal-title,
+body.dark-mode label,
+body.dark-mode .stat-label,
+body.dark-mode .stat-val,
+body.dark-mode .dsc-label,
+body.dark-mode .dsc-value,
+body.dark-mode .name-cell {
+  color: #f1f5f9 !important;
+}
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+body.dark-mode th {
+  background: #0f172a;
+  color: #cbd5e1;
+}
+body.dark-mode td {
+  border-color: #334155;
+  color: #cbd5e1;
+}
+body.dark-mode tr:hover td {
+  background: #334155;
+}
+body.dark-mode .nav-item:hover {
+  background: #334155;
+}
+body.dark-mode .nav-item.active {
+  background: #0d9488;
+  color: #fff;
+}
+body.dark-mode .nav-label {
+  color: #94a3b8;
+}
+body.dark-mode .btn-outline {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+body.dark-mode .btn-outline:hover {
+  background: #334155;
+}
+body.dark-mode .modal-overlay {
+  background: rgba(0,0,0,0.7);
+}
+body.dark-mode .empty {
+  color: #64748b;
+}
+body.dark-mode .visit-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+body.dark-mode .status-bar-track {
+  background: #334155;
+}
+body.dark-mode .status-bar-label,
+body.dark-mode .status-bar-count {
+  color: #e2e8f0;
+}
+body.dark-mode .filter-row input,
+body.dark-mode .filter-row select {
+  background: #0f172a;
+}
+
+/* Dark mode toggle button */
+.dark-toggle {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  background: #1e293b;
+  color: #fbbf24;
+  border: 2px solid #334155;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 9998;
+  box-shadow: 0 8px 22px rgba(0,0,0,.15);
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark-toggle:hover {
+  transform: scale(1.1);
+}
+body.dark-mode .dark-toggle {
+  background: #fbbf24;
+  color: #0f172a;
+  border-color: #f59e0b;
+}
+
+/* Global Search */
+.global-search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 16px;
+}
+.global-search-box input {
+  width: 100%;
+  padding: 8px 14px 8px 36px;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  font-size: 13px;
+  font-family: Tajawal, sans-serif;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b' width='16' height='16'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E") no-repeat 12px center;
+}
+body.dark-mode .global-search-box input {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+.global-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  margin-top: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 9997;
+  display: none;
+}
+body.dark-mode .global-search-results {
+  background: #1e293b;
+  border-color: #334155;
+}
+.gs-result-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.gs-result-item:hover {
+  background: #f0fdfa;
+}
+body.dark-mode .gs-result-item:hover {
+  background: #334155;
+}
+.gs-result-item .gs-icon {
+  font-size: 18px;
+  width: 32px;
+  text-align: center;
+}
+.gs-result-item .gs-info {
+  flex: 1;
+  min-width: 0;
+}
+.gs-result-item .gs-name {
+  font-weight: 700;
+  color: #0f172a;
+}
+body.dark-mode .gs-result-item .gs-name {
+  color: #e2e8f0;
+}
+.gs-result-item .gs-meta {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Notification badge */
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+}
 </style>
 
 <!-- ============================================================ -->
@@ -578,6 +791,226 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
 }
 </script>
 
+
+<!-- ================================================================ -->
+<!-- 🔒 SECURITY HELPERS (Hashing + Validation)                       -->
+<!-- ================================================================ -->
+<script>
+const SECURITY = {
+  SALT: 'firdaws-afsmc-2026-taounate-salt',
+  
+  async hashPassword(password) {
+    const text = SECURITY.SALT + ':' + password;
+    const buffer = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', buffer);
+    return Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  },
+  
+  async verifyPassword(password, storedHash) {
+    if (!storedHash || storedHash.length < 64) {
+      return password === storedHash;
+    }
+    const newHash = await SECURITY.hashPassword(password);
+    return newHash === storedHash;
+  },
+  
+  passwordStrength(pwd) {
+    let score = 0;
+    if (!pwd) return { score: 0, label: 'ضعيفة جداً', color: '#dc2626' };
+    if (pwd.length >= 8) score++;
+    if (pwd.length >= 12) score++;
+    if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) score++;
+    const labels = ['ضعيفة جداً','ضعيفة','مقبولة','جيدة','قوية','قوية جداً'];
+    const colors = ['#dc2626','#ef4444','#f59e0b','#3b82f6','#16a34a','#15803d'];
+    return { score, label: labels[score], color: colors[score] };
+  }
+};
+
+const VALIDATE = {
+  cin(value) {
+    if (!value) return { ok: false, msg: 'رقم البطاقة مطلوب' };
+    const v = value.trim().toUpperCase();
+    const pattern = /^[A-Z]{1,2}[0-9]{5,7}$/;
+    if (!pattern.test(v)) {
+      return { ok: false, msg: 'صيغة غير صحيحة (مثال: BE123456)' };
+    }
+    return { ok: true, value: v };
+  },
+  
+  phoneMA(value) {
+    if (!value) return { ok: true, value: '' };
+    const cleaned = value.replace(/[\s\-]/g, '');
+    const patterns = [
+      /^0[567][0-9]{8}$/,
+      /^\+212[567][0-9]{8}$/,
+      /^00212[567][0-9]{8}$/
+    ];
+    if (!patterns.some(p => p.test(cleaned))) {
+      return { ok: false, msg: 'رقم هاتف مغربي غير صحيح (مثال: 0612345678)' };
+    }
+    return { ok: true, value: cleaned };
+  },
+  
+  amount(value) {
+    const num = parseFloat(value);
+    if (isNaN(num)) return { ok: false, msg: 'يرجى إدخال رقم صحيح' };
+    if (num < 0) return { ok: false, msg: 'لا يمكن إدخال مبلغ سالب' };
+    return { ok: true, value: num };
+  },
+  
+  isCinUnique(cin, currentId) {
+    if (!cin || typeof patients === 'undefined') return true;
+    const existing = patients.find(p => 
+      p.pid && p.pid.toUpperCase() === cin.toUpperCase() && p.id !== currentId
+    );
+    return !existing;
+  }
+};
+
+function showFieldError(fieldId, msg) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+  field.style.borderColor = '#dc2626';
+  field.style.backgroundColor = '#fef2f2';
+  
+  let errEl = document.getElementById(fieldId + '-err');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.id = fieldId + '-err';
+    errEl.style.cssText = 'color:#dc2626;font-size:11px;font-weight:600;margin-top:4px;padding:4px 8px;background:#fef2f2;border-radius:4px';
+    field.parentNode.insertBefore(errEl, field.nextSibling);
+  }
+  errEl.textContent = '⚠️ ' + msg;
+  errEl.style.display = 'block';
+}
+
+function clearFieldError(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    field.style.borderColor = '';
+    field.style.backgroundColor = '';
+  }
+  const errEl = document.getElementById(fieldId + '-err');
+  if (errEl) errEl.style.display = 'none';
+}
+
+console.log('%c🔒 Security & Validation Ready', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+</script>
+<!-- ================================================================ -->
+<!-- 📊 CHART.JS for interactive reports                              -->
+<!-- ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- ================================================================ -->
+<!-- 📱 PWA Manifest (inlined as data URL for single-file deployment) -->
+<!-- ================================================================ -->
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20-%20%D8%AC%D9%85%D8%B9%D9%8A%D8%A9%20%D9%81%D8%B1%D8%AF%D9%88%D8%B3%22%2C%22short_name%22%3A%22%D9%81%D8%B1%D8%AF%D9%88%D8%B3%22%2C%22description%22%3A%22%D9%86%D8%B8%D8%A7%D9%85%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D8%AC%D9%85%D8%B9%D9%8A%D8%A9%20%D9%81%D8%B1%D8%AF%D9%88%D8%B3%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f766e%22%2C%22theme_color%22%3A%22%230f766e%22%2C%22dir%22%3A%22rtl%22%2C%22lang%22%3A%22ar%22%2C%22icons%22%3A%5B%5D%7D">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="فردوس">
+
+<script>
+// ================================================================
+// 📱 SERVICE WORKER (inline registration for offline support)
+// ================================================================
+if ('serviceWorker' in navigator) {
+  // Build a Service Worker as a Blob URL (no separate file needed)
+  const swCode = `
+const CACHE_NAME = 'firdaws-v8-' + new Date().toISOString().slice(0,10);
+
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  console.log('[SW] Install');
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(self.clients.claim());
+  console.log('[SW] Activate');
+  // Clean old caches
+  e.waitUntil(
+    caches.keys().then(names => 
+      Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n)))
+    )
+  );
+});
+
+self.addEventListener('fetch', e => {
+  // Network-first strategy for HTML, cache-first for static assets
+  const url = new URL(e.request.url);
+  if (e.request.method !== 'GET') return;
+  
+  e.respondWith(
+    fetch(e.request)
+      .then(response => {
+        // Cache successful responses for static assets
+        if (response && response.status === 200 && 
+            (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || 
+             url.pathname.endsWith('.html') || url.pathname === '/')) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        }
+        return response;
+      })
+      .catch(() => {
+        // Network failed - try cache
+        return caches.match(e.request).then(cached => {
+          if (cached) return cached;
+          // Last resort: return offline page
+          if (e.request.mode === 'navigate') {
+            return new Response(
+              '<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>غير متصل</title></head><body style="font-family:Tajawal,sans-serif;text-align:center;padding:40px;background:#f0fdfa"><h1 style="color:#0f766e">📡 غير متصل بالإنترنت</h1><p>التطبيق يحتاج اتصالاً للتحميل أول مرة. حاول مرة أخرى.</p></body></html>',
+              { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+            );
+          }
+        });
+      })
+  );
+});
+`;
+  
+  const swBlob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(swBlob);
+  
+  navigator.serviceWorker.register(swUrl)
+    .then(reg => console.log('%c📱 Service Worker registered', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px'))
+    .catch(err => console.log('SW registration failed:', err));
+}
+
+// PWA install prompt
+let _deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredInstallPrompt = e;
+  console.log('💡 PWA install available');
+  // Show install button if exists
+  setTimeout(() => {
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'inline-flex';
+  }, 1000);
+});
+
+window.installPWA = function() {
+  if (!_deferredInstallPrompt) {
+    alert('التطبيق مثبَّت بالفعل، أو هذا المتصفح لا يدعم التثبيت');
+    return;
+  }
+  _deferredInstallPrompt.prompt();
+  _deferredInstallPrompt.userChoice.then(choice => {
+    if (choice.outcome === 'accepted') {
+      console.log('✅ PWA installed');
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) btn.style.display = 'none';
+    }
+    _deferredInstallPrompt = null;
+  });
+};
+</script>
+
+
 </head>
 <body class="logged-out">
 
@@ -663,6 +1096,21 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
 
 <main class="main" id="main-content" style="display:none">
   <div class="topbar">
+    
+    <!-- 🔍 Global Search -->
+    <div class="global-search-box">
+      <input type="text" id="global-search" placeholder="🔍 ابحث عن مريض، موظف، رقم هاتف..." 
+             oninput="performGlobalSearch(this.value)" 
+             onfocus="if(this.value)performGlobalSearch(this.value)"
+             onblur="setTimeout(()=>document.getElementById('global-search-results').style.display='none',200)">
+      <div id="global-search-results" class="global-search-results"></div>
+    </div>
+    
+    <!-- 📱 PWA Install Button (hidden by default) -->
+    <button id="pwa-install-btn" onclick="installPWA()" style="display:none;background:#16a34a;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:Tajawal,sans-serif;font-weight:700;cursor:pointer;font-size:12px;align-items:center;gap:4px">
+      📱 تثبيت
+    </button>
+
     <div style="display:flex;align-items:center;gap:10px">
       <button id="sb-menu-btn" onclick="openSidebar()" title="القائمة">☰</button>
       <div><div class="topbar-title" id="page-title">لوحة التحكم</div><div class="topbar-sub" id="page-sub">نظرة عامة</div></div>
@@ -1067,6 +1515,153 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
 </div>
 
 <!-- ======== ADMINS ======== -->
+<!-- ======== INVENTORY PAGE ======== -->
+<div id="page-inventory" class="page">
+  <!-- Stats -->
+  <div class="cards-grid" id="inv-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px"></div>
+  
+  <!-- Filter + Add buttons -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header">
+      <span class="card-title">📦 إدارة المخزون والتبرعات العينية</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="openInventoryItemModal()">➕ إضافة صنف جديد</button>
+        <button class="btn btn-success" onclick="openInventoryMovementModal('in')">📥 تسجيل تبرع وارد</button>
+        <button class="btn btn-warning" onclick="openInventoryMovementModal('out')">📤 صرف لمريض</button>
+      </div>
+    </div>
+    <div class="card-body" style="padding:14px">
+      <div class="filter-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <input id="inv-search" placeholder="🔍 بحث عن صنف..." oninput="renderInventory()" style="flex:1;min-width:200px;padding:10px;border:1px solid #cbd5e1;border-radius:8px">
+        <select id="inv-cat-filter" onchange="renderInventory()" style="padding:10px;border:1px solid #cbd5e1;border-radius:8px">
+          <option value="all">جميع الفئات</option>
+          <option value="معدات طبية">معدات طبية</option>
+          <option value="أدوية">أدوية</option>
+          <option value="مستلزمات طبية">مستلزمات طبية</option>
+          <option value="ملابس">ملابس</option>
+          <option value="مواد غذائية">مواد غذائية</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+      </div>
+      
+      <!-- Items table -->
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>الصنف</th>
+            <th>الفئة</th>
+            <th>الكمية المتوفرة</th>
+            <th>الوحدة</th>
+            <th>الحد الأدنى</th>
+            <th>آخر حركة</th>
+            <th>إجراءات</th>
+          </tr></thead>
+          <tbody id="inv-items-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Movements log -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">📋 سجل الحركات (آخر 50)</span>
+    </div>
+    <div class="card-body" style="padding:14px">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>التاريخ</th>
+            <th>النوع</th>
+            <th>الصنف</th>
+            <th>الكمية</th>
+            <th>المتبرع/المستفيد</th>
+            <th>ملاحظات</th>
+            <th>بواسطة</th>
+            <th class="admin-only">إجراءات</th>
+          </tr></thead>
+          <tbody id="inv-movements-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY ITEM MODAL -->
+<div class="modal-overlay" id="m-inv-item">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-inv-item-title">➕ إضافة صنف جديد</span>
+      <button class="modal-close" onclick="closeModal('m-inv-item')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>اسم الصنف *</label><input type="text" id="inv-name" placeholder="مثال: كرسي متحرك" required></div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label>الفئة</label>
+          <select id="inv-cat">
+            <option value="معدات طبية">معدات طبية</option>
+            <option value="أدوية">أدوية</option>
+            <option value="مستلزمات طبية">مستلزمات طبية</option>
+            <option value="ملابس">ملابس</option>
+            <option value="مواد غذائية">مواد غذائية</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+        <div class="form-group"><label>الوحدة</label>
+          <input type="text" id="inv-unit" placeholder="قطعة / علبة / كغ" value="قطعة">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label>الكمية الابتدائية</label><input type="number" id="inv-qty" min="0" value="0"></div>
+        <div class="form-group"><label>الحد الأدنى للتنبيه</label><input type="number" id="inv-min" min="0" value="5"></div>
+      </div>
+      <div class="form-group"><label>وصف / ملاحظات</label><textarea id="inv-desc" rows="2"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-inv-item')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveInventoryItem()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY MOVEMENT MODAL -->
+<div class="modal-overlay" id="m-inv-mov">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-inv-mov-title">📥 تسجيل حركة</span>
+      <button class="modal-close" onclick="closeModal('m-inv-mov')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="inv-mov-type" value="in">
+      <div class="form-group"><label>الصنف *</label>
+        <select id="inv-mov-item" onchange="updateMovItemInfo()" required>
+          <option value="">— اختر صنفاً —</option>
+        </select>
+      </div>
+      <div id="inv-mov-current" style="background:#f0fdfa;padding:8px 12px;border-radius:8px;font-size:12px;color:#0f766e;margin-bottom:10px;display:none"></div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label>الكمية *</label><input type="number" id="inv-mov-qty" min="1" value="1" required></div>
+        <div class="form-group"><label>التاريخ *</label><input type="date" id="inv-mov-date" required></div>
+      </div>
+      <div class="form-group" id="inv-mov-donor-group">
+        <label>اسم المتبرع / المصدر</label>
+        <input type="text" id="inv-mov-donor" placeholder="اسم المتبرع أو الجهة">
+      </div>
+      <div class="form-group" id="inv-mov-patient-group" style="display:none">
+        <label>المريض المستفيد</label>
+        <select id="inv-mov-patient">
+          <option value="">— اختياري —</option>
+        </select>
+      </div>
+      <div class="form-group"><label>ملاحظات</label><textarea id="inv-mov-notes" rows="2"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-inv-mov')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveInventoryMovement()">💾 حفظ الحركة</button>
+    </div>
+  </div>
+</div>
+
 <div id="page-admins" class="page">
   <div class="card" style="margin-bottom:18px">
     <div class="card-header"><span class="card-title">🔐 إدارة المستخدمين والصلاحيات</span><button class="btn btn-primary" onclick="openAdminModal()">➕ إضافة مدير</button></div>
@@ -1120,6 +1715,16 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
   <!-- TAB 1: MEDICAL REPORTS (accessible to all) -->
   <div id="rep-medical-tab">
     <div class="cards-grid" id="rep-stats"></div>
+    
+    <!-- Interactive Charts (Chart.js) -->
+    <div class="dash-grid-3" style="margin-bottom:16px">
+      <div class="card">
+        <div class="card-body" style="padding:14px;height:300px"><canvas id="chart-patients-status"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="padding:14px;height:300px"><canvas id="chart-cancer-types"></canvas></div>
+      </div>
+    </div>
     <div class="dash-grid-3">
       <div class="card">
         <div class="card-header"><span class="card-title">🏥 أنواع السرطان</span></div>
@@ -1150,6 +1755,11 @@ if (EMAIL_NOTIFICATIONS_ENABLED && emailjsConfig.publicKey !== "YOUR_PUBLIC_KEY_
   <div id="rep-financial-tab" style="display:none">
     <div class="finance-admin-only">
       <div class="cards-grid" id="rep-fin-stats"></div>
+      
+      <!-- Interactive Finance Chart -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-body" style="padding:14px;height:340px"><canvas id="chart-finance-monthly"></canvas></div>
+      </div>
       <div class="dash-grid-3">
         <div class="card">
           <div class="card-header"><span class="card-title">📊 مصاريف لكل مريض</span></div>
@@ -1688,6 +2298,8 @@ let salaries   = LS('salaries')   || [];
 let vehicles   = LS('vehicles')   || [];
 let fuelLogs   = LS('fuelLogs')   || [];
 let utilities  = LS('utilities')  || [];
+let inventory  = LS('inventory')  || [];
+let invMovements = LS('invMovements') || [];
 let admins = (()=>{
   // Always ensure default admin exists with correct password
   const stored = LS('frd_admins');
@@ -1709,25 +2321,67 @@ function saveAll() {
   SS('patients',patients); SS('visits',visits); SS('transports',transports);
   SS('patientExp',patientExp); SS('finance',finance); SS('employees',employees);
   SS('salaries',salaries); SS('vehicles',vehicles); SS('fuelLogs',fuelLogs);
-  SS('utilities',utilities); SS('frd_admins',admins); SS('frd_settings',settings);
+  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('frd_admins',admins); SS('frd_settings',settings);
   SS('gsUrl',gsUrl);
 }
 
 // ===================== AUTH =====================
 let currentUser = null;
 
-function doLogin() {
+// مكافحة هجمات brute force
+function handleLoginFailure() {
+  document.getElementById('login-err').style.display = 'block';
+  document.getElementById('login-err').textContent = '❌ اسم المستخدم أو كلمة المرور خاطئة';
+  let count = parseInt(localStorage.getItem('login_fail_count') || '0') + 1;
+  localStorage.setItem('login_fail_count', String(count));
+  if (count >= 5) {
+    const lockUntil = Date.now() + 60000;
+    localStorage.setItem('login_fail_until', String(lockUntil));
+    document.getElementById('login-err').textContent = '⛔ تم القفل لمدة دقيقة بعد 5 محاولات فاشلة';
+  }
+}
+
+async function doLogin() {
   const u = document.getElementById('l-user').value.trim();
   const p = document.getElementById('l-pass').value;
-  // Debug: log for troubleshooting
-  console.log('Login attempt:', u, '| admins count:', admins.length);
-  console.log('Admins:', admins.map(a => ({u:a.username, p:a.password, s:a.status})));
-  const user = admins.find(a => a.username === u && a.password === p && a.status === 'نشط');
-  if (!user) { 
-    document.getElementById('login-err').style.display='block'; 
-    console.log('Login failed for:', u);
-    return; 
+  
+  // SECURITY: حد من محاولات تسجيل الدخول
+  const lastFail = parseInt(localStorage.getItem('login_fail_until') || '0');
+  if (Date.now() < lastFail) {
+    const secs = Math.ceil((lastFail - Date.now()) / 1000);
+    document.getElementById('login-err').textContent = '⛔ كثير من المحاولات. حاول بعد ' + secs + ' ثانية';
+    document.getElementById('login-err').style.display = 'block';
+    return;
   }
+  
+  // ابحث عن المستخدم بالاسم فقط
+  const candidate = admins.find(a => a.username === u && a.status === 'نشط');
+  if (!candidate) { handleLoginFailure(); return; }
+  
+  // تحقق من كلمة المرور (يدعم hash و plain text للتوافقية)
+  let valid = false;
+  try {
+    valid = await SECURITY.verifyPassword(p, candidate.password);
+  } catch(e) {
+    console.error('Password verify error:', e);
+    valid = (candidate.password === p);
+  }
+  
+  if (!valid) { handleLoginFailure(); return; }
+  
+  // ترقية تلقائية لكلمات المرور القديمة (plain text → hashed)
+  if (candidate.password.length < 64) {
+    try {
+      candidate.password = await SECURITY.hashPassword(p);
+      console.log('🔒 Password upgraded to hash');
+    } catch(e) { console.error('Hash upgrade failed:', e); }
+  }
+  
+  // إعادة تعيين عداد الفشل
+  localStorage.removeItem('login_fail_count');
+  localStorage.removeItem('login_fail_until');
+  
+  const user = candidate;
   currentUser = user;
   user.lastLogin = new Date().toISOString();
   saveAll();
@@ -1791,6 +2445,7 @@ const NAV_CONFIG = [
   { group:'التشغيل',           groupFr:'Opérations',     items:[
     { page:'vehicles',         icon:'🚗', ar:'السيارات والوقود',         fr:'Véhicules',         perm:'vehicles_view' },
     { page:'utilities',        icon:'⚡', ar:'الخدمات',                  fr:'Services',          perm:'utilities_view' },
+    { page:'inventory',        icon:'📦', ar:'المخزون والتبرعات العينية', fr:'Inventaire',        perm:'inventory_view' },
   ]},
   { group:'الإدارة',           groupFr:'Administration', items:[
     { page:'admins',           icon:'🔐', ar:'المستخدمون والصلاحيات',   fr:'Utilisateurs',      perm:'admins_manage' },
@@ -1839,13 +2494,13 @@ function hasPermission(permKey) {
   }
   // Fallback: role-based defaults (in case perms not set)
   const roleDefaults = {
-    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data'],
-    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data'],
-    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view'],
-    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view'],
-    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view'],
+    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write'],
+    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write'],
+    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view','inventory_view','inventory_write'],
+    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view'],
+    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write'],
     driver:   ['transport_view','transport_write'],
-    viewer:   ['patients_view','visits_view','transport_view','reports_view'],
+    viewer:   ['patients_view','visits_view','transport_view','reports_view','inventory_view'],
   };
   const allowed = roleDefaults[currentUser.role] || [];
   return allowed.includes(permKey);
@@ -1986,6 +2641,7 @@ function renderPage(name) {
     transport: renderTransport, finance: renderFinance,
     'patient-expenses': renderPexp, salaries: renderSalaries,
     vehicles: renderVehicles, utilities: renderUtil,
+    inventory: renderInventory,
     admins: renderAdmins, reports: renderReports,
     gsheets: renderGsPage, settings: renderSettings
   };
@@ -2132,6 +2788,42 @@ function openPatientModal(id=null){
 }
 
 function savePatient(){
+  // ====== VALIDATION ======
+  ['p-pid','p-phone','p-gphone','p-name','p-dob'].forEach(clearFieldError);
+  
+  const _nameVal = document.getElementById('p-name').value.trim();
+  if (!_nameVal) { showFieldError('p-name', 'اسم المريض مطلوب'); return; }
+  
+  const _pidVal = document.getElementById('p-pid').value.trim();
+  if (_pidVal) {
+    const _cinR = VALIDATE.cin(_pidVal);
+    if (!_cinR.ok) { showFieldError('p-pid', _cinR.msg); return; }
+    if (!VALIDATE.isCinUnique(_cinR.value, editPatientId)) {
+      showFieldError('p-pid', 'رقم البطاقة موجود لمريض آخر');
+      return;
+    }
+  }
+  
+  const _phoneVal = document.getElementById('p-phone').value.trim();
+  if (_phoneVal) {
+    const _phR = VALIDATE.phoneMA(_phoneVal);
+    if (!_phR.ok) { showFieldError('p-phone', _phR.msg); return; }
+  }
+  
+  const _gphoneVal = document.getElementById('p-gphone').value.trim();
+  if (_gphoneVal) {
+    const _gR = VALIDATE.phoneMA(_gphoneVal);
+    if (!_gR.ok) { showFieldError('p-gphone', _gR.msg); return; }
+  }
+  
+  const _dobVal = document.getElementById('p-dob').value;
+  if (_dobVal && new Date(_dobVal) > new Date()) {
+    showFieldError('p-dob', 'تاريخ الميلاد لا يمكن أن يكون في المستقبل');
+    return;
+  }
+  // ====== END VALIDATION ======
+  
+
   const name=document.getElementById('p-name').value.trim();
   const cancer=document.getElementById('p-cancer').value;
   if(!name){alert('يرجى إدخال اسم المريض');return;}
@@ -2198,6 +2890,12 @@ function savePatient(){
 }
 
 function deletePatient(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+
   if(!confirm('حذف هذا المريض وجميع سجلاته؟')) return;
   patients=patients.filter(p=>p.id!==id);
   visits=visits.filter(v=>v.patientId!==id);
@@ -2342,7 +3040,13 @@ function saveVisit(){
   saveAll(); syncGS('VISIT',v); closeModal('m-visit'); renderVisits();
 }
 
-function deleteVisit(id){ if(!confirm('حذف هذه الزيارة؟')) return; visits=visits.filter(v=>v.id!==id); saveAll(); renderVisits(); }
+function deleteVisit(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+ if(!confirm('حذف هذه الزيارة؟')) return; visits=visits.filter(v=>v.id!==id); saveAll(); renderVisits(); }
 
 function renderVisits(){
   const q=document.getElementById('visit-search')?.value?.toLowerCase()||'';
@@ -2474,6 +3178,12 @@ function saveTransport(){
 }
 
 function deleteTransport(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+
   if(!confirm('حذف هذه الرحلة؟')) return;
   transports = transports.filter(t=>t.id!==id);
   saveAll(); renderTransport();
@@ -2641,6 +3351,12 @@ function saveFuelTr(){
 }
 
 function deleteFuelTr(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+
   if(!confirm('حذف؟')) return;
   fuelLogs = fuelLogs.filter(f=>f.id!==id);
   saveAll(); renderFuel2();
@@ -2750,6 +3466,20 @@ function openFinanceModal(){
 }
 
 function saveFinance(){
+  const _amtEl = document.getElementById('f-amount');
+  if (_amtEl) {
+    const _amtVal = parseFloat(_amtEl.value);
+    if (!isNaN(_amtVal) && _amtVal < 0) {
+      _amtEl.style.borderColor = '#dc2626';
+      _amtEl.style.backgroundColor = '#fef2f2';
+      alert('⚠️ مبلغ القيد المالي يجب أن يكون رقماً موجباً');
+      _amtEl.focus();
+      return;
+    }
+    _amtEl.style.borderColor = '';
+    _amtEl.style.backgroundColor = '';
+  }
+
   const type=document.getElementById('fn-type').value;
   const amount=parseFloat(document.getElementById('fn-amount').value);
   if(!amount||amount<=0){alert('يرجى إدخال مبلغ صحيح');return;}
@@ -2766,7 +3496,13 @@ function saveFinance(){
   finance.unshift(f); saveAll(); syncGS('FINANCE',f); closeModal('m-finance'); renderFinance();
 }
 
-function deleteFinance(id){ if(!confirm('حذف هذا القيد؟')) return; finance=finance.filter(f=>f.id!==id); saveAll(); renderFinance(); }
+function deleteFinance(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+ if(!confirm('حذف هذا القيد؟')) return; finance=finance.filter(f=>f.id!==id); saveAll(); renderFinance(); }
 
 function renderFinance(){
   const q=document.getElementById('finance-search')?.value?.toLowerCase()||'';
@@ -2823,6 +3559,20 @@ function openPexpModal(){
 }
 
 function savePexp(){
+  const _amtEl = document.getElementById('pe-amount');
+  if (_amtEl) {
+    const _amtVal = parseFloat(_amtEl.value);
+    if (!isNaN(_amtVal) && _amtVal < 0) {
+      _amtEl.style.borderColor = '#dc2626';
+      _amtEl.style.backgroundColor = '#fef2f2';
+      alert('⚠️ مبلغ المصروف يجب أن يكون رقماً موجباً');
+      _amtEl.focus();
+      return;
+    }
+    _amtEl.style.borderColor = '';
+    _amtEl.style.backgroundColor = '';
+  }
+
   const patientId=parseInt(document.getElementById('pe-patient').value);
   const amount=parseFloat(document.getElementById('pe-amount').value);
   if(!patientId||!amount||amount<=0){alert('المريض والمبلغ مطلوبان');return;}
@@ -2839,7 +3589,13 @@ function savePexp(){
   patientExp.unshift(e); saveAll(); syncGS('PEXP',e); closeModal('m-pexp'); renderPexp();
 }
 
-function deletePexp(id){ if(!confirm('حذف؟')) return; patientExp=patientExp.filter(e=>e.id!==id); saveAll(); renderPexp(); }
+function deletePexp(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+ if(!confirm('حذف؟')) return; patientExp=patientExp.filter(e=>e.id!==id); saveAll(); renderPexp(); }
 
 function renderPexp(){
   const q=document.getElementById('pexp-search')?.value?.toLowerCase()||'';
@@ -2914,6 +3670,20 @@ function calcNet(){
 }
 
 function saveSalary(){
+  const _amtEl = document.getElementById('s-base');
+  if (_amtEl) {
+    const _amtVal = parseFloat(_amtEl.value);
+    if (!isNaN(_amtVal) && _amtVal < 0) {
+      _amtEl.style.borderColor = '#dc2626';
+      _amtEl.style.backgroundColor = '#fef2f2';
+      alert('⚠️ الراتب الأساسي يجب أن يكون رقماً موجباً');
+      _amtEl.focus();
+      return;
+    }
+    _amtEl.style.borderColor = '';
+    _amtEl.style.backgroundColor = '';
+  }
+
   const empId=parseInt(document.getElementById('sl-employee').value);
   const month=document.getElementById('sl-month').value;
   if(!empId||!month){alert('الموظف والشهر مطلوبان');return;}
@@ -2930,7 +3700,13 @@ function saveSalary(){
   salaries.unshift(s); saveAll(); syncGS('SALARY',s); closeModal('m-salary'); renderSalaries();
 }
 
-function deleteSalary(id){ if(!confirm('حذف؟')) return; salaries=salaries.filter(s=>s.id!==id); saveAll(); renderSalaries(); }
+function deleteSalary(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+ if(!confirm('حذف؟')) return; salaries=salaries.filter(s=>s.id!==id); saveAll(); renderSalaries(); }
 
 function renderSalaries(){
   const q=document.getElementById('salary-search')?.value?.toLowerCase()||'';
@@ -2971,6 +3747,12 @@ function renderSalaries(){
 }
 
 function deleteEmployee(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+
   if(!confirm('حذف هذا الموظف؟')) return;
   employees=employees.filter(e=>e.id!==id); saveAll(); renderSalaries();
 }
@@ -2997,7 +3779,13 @@ function saveVehicle(){
   vehicles.unshift(v); saveAll(); closeModal('m-vehicle'); renderVehicles();
 }
 
-function deleteVehicle(id){ if(!confirm('حذف هذه السيارة؟')) return; vehicles=vehicles.filter(v=>v.id!==id); fuelLogs=fuelLogs.filter(f=>f.vehicleId!==id); saveAll(); renderVehicles(); }
+function deleteVehicle(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+ if(!confirm('حذف هذه السيارة؟')) return; vehicles=vehicles.filter(v=>v.id!==id); fuelLogs=fuelLogs.filter(f=>f.vehicleId!==id); saveAll(); renderVehicles(); }
 
 function openFuelModal(){
   populateVehicleSel('fu-vehicle');
@@ -3008,6 +3796,20 @@ function openFuelModal(){
 }
 
 function saveFuel(){
+  const _amtEl = document.getElementById('fl-cost');
+  if (_amtEl) {
+    const _amtVal = parseFloat(_amtEl.value);
+    if (!isNaN(_amtVal) && _amtVal < 0) {
+      _amtEl.style.borderColor = '#dc2626';
+      _amtEl.style.backgroundColor = '#fef2f2';
+      alert('⚠️ تكلفة الوقود يجب أن يكون رقماً موجباً');
+      _amtEl.focus();
+      return;
+    }
+    _amtEl.style.borderColor = '';
+    _amtEl.style.backgroundColor = '';
+  }
+
   const vehicleId=parseInt(document.getElementById('fu-vehicle').value);
   const cost=parseFloat(document.getElementById('fu-cost').value);
   if(!vehicleId||!cost){alert('السيارة والتكلفة مطلوبان');return;}
@@ -3027,7 +3829,13 @@ function saveFuel(){
   saveAll(); syncGS('FUEL',f); closeModal('m-fuel'); renderVehicles();
 }
 
-function deleteFuel(id){ if(!confirm('حذف؟')) return; fuelLogs=fuelLogs.filter(f=>f.id!==id); saveAll(); renderVehicles(); }
+function deleteFuel(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+ if(!confirm('حذف؟')) return; fuelLogs=fuelLogs.filter(f=>f.id!==id); saveAll(); renderVehicles(); }
 
 function populateVehicleSel(selId){
   const sel=document.getElementById(selId); if(!sel) return;
@@ -3084,6 +3892,20 @@ function openUtilModal(){
 }
 
 function saveUtil(){
+  const _amtEl = document.getElementById('u-amount');
+  if (_amtEl) {
+    const _amtVal = parseFloat(_amtEl.value);
+    if (!isNaN(_amtVal) && _amtVal < 0) {
+      _amtEl.style.borderColor = '#dc2626';
+      _amtEl.style.backgroundColor = '#fef2f2';
+      alert('⚠️ مبلغ الفاتورة يجب أن يكون رقماً موجباً');
+      _amtEl.focus();
+      return;
+    }
+    _amtEl.style.borderColor = '';
+    _amtEl.style.backgroundColor = '';
+  }
+
   const amount=parseFloat(document.getElementById('ut-amount').value);
   if(!amount||amount<=0){alert('المبلغ مطلوب');return;}
   const u={
@@ -3099,7 +3921,13 @@ function saveUtil(){
   utilities.unshift(u); saveAll(); syncGS('UTILITY',u); closeModal('m-util'); renderUtil();
 }
 
-function deleteUtil(id){ if(!confirm('حذف؟')) return; utilities=utilities.filter(u=>u.id!==id); saveAll(); renderUtil(); }
+function deleteUtil(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+ if(!confirm('حذف؟')) return; utilities=utilities.filter(u=>u.id!==id); saveAll(); renderUtil(); }
 
 function renderUtil(){
   const q=document.getElementById('util-search')?.value?.toLowerCase()||'';
@@ -3158,6 +3986,12 @@ function saveAdmin(){
 }
 
 function deleteAdmin(id){
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
+    return;
+  }
+
   if(id===currentUser?.id||id===1){alert('لا يمكن حذف المستخدم الحالي أو المدير الرئيسي');return;}
   if(!confirm('حذف هذا المستخدم؟')) return;
   admins=admins.filter(a=>a.id!==id); saveAll(); renderAdmins();
@@ -4096,7 +4930,7 @@ function getCheckedPermsV2() {
   return perms;
 }
 
-function saveAdminV2() {
+async function saveAdminV2() {
   const username = (document.getElementById('ad-username')?.value||'').trim();
   const pass = document.getElementById('ad-pass')?.value||'';
   const name = document.getElementById('ad-name')?.value||username;
@@ -4109,9 +4943,30 @@ function saveAdminV2() {
   if(!editId && !pass) { alert('كلمة المرور مطلوبة'); return; }
   if(!editId && admins.find(a=>a.username===username)) { alert('اسم المستخدم موجود مسبقاً'); return; }
   
+  // SECURITY: قوة كلمة المرور
+  if (pass) {
+    if (pass.length < 8) {
+      alert('⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      return;
+    }
+    const strength = SECURITY.passwordStrength(pass);
+    if (strength.score < 2) {
+      if (!confirm('⚠️ كلمة المرور ' + strength.label + '\nيُنصح بمزج أحرف كبيرة وصغيرة وأرقام ورموز.\n\nمتابعة؟')) return;
+    }
+  }
+  
   const perms = getCheckedPermsV2();
   const data = { id: editId||uid(), username, name, email, role, status, perms, created: today() };
-  if(pass) data.password = pass;
+  
+  // SECURITY: تشفير كلمة المرور
+  if (pass) {
+    try {
+      data.password = await SECURITY.hashPassword(pass);
+    } catch(e) {
+      console.error('Hash failed:', e);
+      data.password = pass;
+    }
+  }
   
   if(editId) {
     const i = admins.findIndex(a=>a.id===editId);
@@ -5697,6 +6552,12 @@ function saveEmpExpense() {
 }
 
 function deleteEexp(id) {
+  // 🔒 SECURITY: حذف للإدارة فقط
+  if (!isFinanceAdmin()) {
+    alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة المالية.');
+    return;
+  }
+
   if(!confirm('حذف هذا المصروف؟')) return;
   empExpenses = empExpenses.filter(e=>e.id!==id);
   saveEexp(); renderEmpExpenses();
@@ -6500,6 +7361,8 @@ function tStatus(s) {
     { key: 'vehicles',    doc: 'vehicles' },
     { key: 'fuelLogs',    doc: 'fuelLogs' },
     { key: 'utilities',   doc: 'utilities' },
+    { key: 'inventory',   doc: 'inventory' },
+    { key: 'invMovements',doc: 'invMovements' },
     { key: 'frd_admins',  doc: 'admins' },
     { key: 'frd_settings',doc: 'settings' }
   ];
@@ -6888,6 +7751,696 @@ function tStatus(s) {
   console.log('%c📧 Email notification hooks active', 'background:#1e40af;color:#fff;padding:4px 10px;border-radius:4px');
 })();
 
+
+
+// ================================================================
+// 📦 INVENTORY MANAGEMENT SYSTEM
+// ================================================================
+
+function renderInventory() {
+  // Stats
+  const totalItems = inventory.length;
+  const totalQty = inventory.reduce((s,i) => s + (i.qty || 0), 0);
+  const lowStock = inventory.filter(i => (i.qty || 0) <= (i.min || 0) && (i.qty || 0) > 0).length;
+  const outOfStock = inventory.filter(i => (i.qty || 0) === 0).length;
+  const totalMovements = invMovements.length;
+  const movementsThisMonth = invMovements.filter(m => 
+    (m.date || '').startsWith(new Date().toISOString().slice(0, 7))
+  ).length;
+  
+  const statsEl = document.getElementById('inv-stats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="dash-stat-card c-teal"><div class="dsc-icon">📦</div><div class="dsc-label">إجمالي الأصناف</div><div class="dsc-value">${totalItems}</div></div>
+    <div class="dash-stat-card c-blue"><div class="dsc-icon">📊</div><div class="dsc-label">إجمالي الكمية</div><div class="dsc-value">${totalQty}</div></div>
+    <div class="dash-stat-card c-orange"><div class="dsc-icon">⚠️</div><div class="dsc-label">مخزون منخفض</div><div class="dsc-value">${lowStock}</div></div>
+    <div class="dash-stat-card c-red"><div class="dsc-icon">❌</div><div class="dsc-label">نفذ من المخزون</div><div class="dsc-value">${outOfStock}</div></div>
+    <div class="dash-stat-card c-purple"><div class="dsc-icon">🔄</div><div class="dsc-label">حركات الشهر</div><div class="dsc-value">${movementsThisMonth}</div></div>
+    <div class="dash-stat-card c-green"><div class="dsc-icon">📋</div><div class="dsc-label">إجمالي الحركات</div><div class="dsc-value">${totalMovements}</div></div>`;
+  
+  // Filter
+  const search = (document.getElementById('inv-search')?.value || '').toLowerCase();
+  const cat = document.getElementById('inv-cat-filter')?.value || 'all';
+  let items = inventory;
+  if (search) items = items.filter(i => (i.name||'').toLowerCase().includes(search));
+  if (cat !== 'all') items = items.filter(i => i.cat === cat);
+  
+  // Items table
+  const tbody = document.getElementById('inv-items-table');
+  if (tbody) tbody.innerHTML = items.length ? items.map(i => {
+    const lastMov = invMovements.filter(m => m.itemId === i.id).sort((a,b) => (b.date||'').localeCompare(a.date||''))[0];
+    const qty = i.qty || 0;
+    const min = i.min || 0;
+    const status = qty === 0 ? 'نفذ' : qty <= min ? 'منخفض' : 'متوفر';
+    const color = qty === 0 ? '#dc2626' : qty <= min ? '#f59e0b' : '#16a34a';
+    return `<tr>
+      <td><div style="font-weight:700">${i.name}</div>${i.desc ? `<div style="font-size:11px;color:#64748b">${i.desc}</div>` : ''}</td>
+      <td><span style="background:#f1f5f9;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:600">${i.cat || '—'}</span></td>
+      <td><span style="font-weight:800;font-size:15px;color:${color}">${qty}</span></td>
+      <td>${i.unit || '—'}</td>
+      <td>${min}</td>
+      <td style="font-size:11px;color:#64748b">${lastMov ? fmtDate(lastMov.date) + ' (' + (lastMov.type === 'in' ? '📥' : '📤') + ')' : '—'}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-success btn-xs" onclick="openInventoryMovementModal('in', ${i.id})" title="إضافة وارد">📥</button>
+          <button class="btn btn-warning btn-xs" onclick="openInventoryMovementModal('out', ${i.id})" title="صرف">📤</button>
+          <button class="btn btn-outline btn-xs admin-only" onclick="openInventoryItemModal(${i.id})">✏️</button>
+          <button class="btn btn-danger btn-xs admin-only" onclick="deleteInventoryItem(${i.id})">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا توجد أصناف. اضغط "إضافة صنف جديد" للبدء.</td></tr>';
+  
+  // Movements log
+  const movTbody = document.getElementById('inv-movements-table');
+  const recentMovs = invMovements.slice().sort((a,b) => (b.date||'').localeCompare(a.date||'') || (b.id - a.id)).slice(0, 50);
+  if (movTbody) movTbody.innerHTML = recentMovs.length ? recentMovs.map(m => {
+    const item = inventory.find(i => i.id === m.itemId);
+    const itemName = item?.name || '— محذوف —';
+    const patient = m.patientId ? patients.find(p => p.id === m.patientId) : null;
+    const beneficiary = m.type === 'in' ? (m.donor || '—') : (patient?.name || m.donor || '—');
+    const typeIcon = m.type === 'in' ? '📥 وارد' : '📤 صرف';
+    const typeColor = m.type === 'in' ? '#16a34a' : '#dc2626';
+    const sign = m.type === 'in' ? '+' : '-';
+    return `<tr>
+      <td style="font-size:11.5px">${fmtDate(m.date)}</td>
+      <td><span style="color:${typeColor};font-weight:700">${typeIcon}</span></td>
+      <td style="font-weight:600">${itemName}</td>
+      <td style="font-weight:800;color:${typeColor}">${sign}${m.qty} ${item?.unit || ''}</td>
+      <td>${beneficiary}</td>
+      <td style="font-size:11px;color:#64748b">${m.notes || '—'}</td>
+      <td style="font-size:10.5px;color:#64748b">${m.by || '—'}</td>
+      <td class="admin-only"><button class="btn btn-danger btn-xs" onclick="deleteInventoryMovement(${m.id})">🗑️</button></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">لا توجد حركات بعد</td></tr>';
+  
+  setTimeout(applyAdminOnlyVisibility, 50);
+}
+
+let _editInvItemId = null;
+
+function openInventoryItemModal(id) {
+  _editInvItemId = id || null;
+  const titleEl = document.getElementById('m-inv-item-title');
+  if (id) {
+    const item = inventory.find(i => i.id === id);
+    if (!item) return;
+    if (titleEl) titleEl.textContent = '✏️ تعديل صنف';
+    document.getElementById('inv-name').value = item.name || '';
+    document.getElementById('inv-cat').value = item.cat || 'معدات طبية';
+    document.getElementById('inv-unit').value = item.unit || 'قطعة';
+    document.getElementById('inv-qty').value = item.qty || 0;
+    document.getElementById('inv-min').value = item.min || 5;
+    document.getElementById('inv-desc').value = item.desc || '';
+  } else {
+    if (titleEl) titleEl.textContent = '➕ إضافة صنف جديد';
+    document.getElementById('inv-name').value = '';
+    document.getElementById('inv-cat').value = 'معدات طبية';
+    document.getElementById('inv-unit').value = 'قطعة';
+    document.getElementById('inv-qty').value = 0;
+    document.getElementById('inv-min').value = 5;
+    document.getElementById('inv-desc').value = '';
+  }
+  openModal('m-inv-item');
+}
+
+function saveInventoryItem() {
+  const name = document.getElementById('inv-name').value.trim();
+  if (!name) { alert('⚠️ اسم الصنف مطلوب'); return; }
+  
+  const qty = parseInt(document.getElementById('inv-qty').value) || 0;
+  const min = parseInt(document.getElementById('inv-min').value) || 0;
+  if (qty < 0) { alert('⚠️ الكمية لا يمكن أن تكون سالبة'); return; }
+  if (min < 0) { alert('⚠️ الحد الأدنى لا يمكن أن يكون سالباً'); return; }
+  
+  const data = {
+    name,
+    cat: document.getElementById('inv-cat').value,
+    unit: document.getElementById('inv-unit').value || 'قطعة',
+    qty: qty,
+    min: min,
+    desc: document.getElementById('inv-desc').value
+  };
+  
+  if (_editInvItemId) {
+    const i = inventory.findIndex(x => x.id === _editInvItemId);
+    if (i >= 0) inventory[i] = { ...inventory[i], ...data };
+  } else {
+    data.id = uid();
+    data.created = today();
+    inventory.unshift(data);
+  }
+  
+  saveAll();
+  closeModal('m-inv-item');
+  renderInventory();
+  _editInvItemId = null;
+}
+
+function deleteInventoryItem(id) {
+  if (!isAdmin()) { alert('⛔ لا تملك صلاحية الحذف'); return; }
+  const item = inventory.find(i => i.id === id);
+  if (!item) return;
+  const movCount = invMovements.filter(m => m.itemId === id).length;
+  let msg = '⚠️ حذف الصنف "' + item.name + '"؟';
+  if (movCount > 0) msg += '\n\nسيتم حذف ' + movCount + ' حركة مرتبطة أيضاً.';
+  if (!confirm(msg)) return;
+  
+  inventory = inventory.filter(i => i.id !== id);
+  invMovements = invMovements.filter(m => m.itemId !== id);
+  saveAll();
+  renderInventory();
+}
+
+function openInventoryMovementModal(type, itemId) {
+  document.getElementById('inv-mov-type').value = type;
+  const titleEl = document.getElementById('m-inv-mov-title');
+  if (titleEl) titleEl.textContent = type === 'in' ? '📥 تسجيل تبرع وارد' : '📤 صرف للمستفيد';
+  
+  // Populate items dropdown
+  const itemSel = document.getElementById('inv-mov-item');
+  itemSel.innerHTML = '<option value="">— اختر صنفاً —</option>';
+  inventory.forEach(i => {
+    const opt = document.createElement('option');
+    opt.value = i.id;
+    opt.textContent = i.name + ' (متوفر: ' + (i.qty || 0) + ' ' + (i.unit || '') + ')';
+    if (itemId && i.id === itemId) opt.selected = true;
+    itemSel.appendChild(opt);
+  });
+  
+  // Populate patients dropdown for "out" movements
+  const patientGroup = document.getElementById('inv-mov-patient-group');
+  const donorGroup = document.getElementById('inv-mov-donor-group');
+  if (type === 'out') {
+    if (patientGroup) patientGroup.style.display = 'block';
+    if (donorGroup) {
+      const lbl = donorGroup.querySelector('label');
+      if (lbl) lbl.textContent = 'اسم المستفيد (إذا لم يكن مريضاً مسجلاً)';
+    }
+    const patientSel = document.getElementById('inv-mov-patient');
+    patientSel.innerHTML = '<option value="">— اختياري —</option>';
+    patients.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name + (p.cancer ? ' · ' + p.cancer : '');
+      patientSel.appendChild(opt);
+    });
+  } else {
+    if (patientGroup) patientGroup.style.display = 'none';
+    if (donorGroup) {
+      const lbl = donorGroup.querySelector('label');
+      if (lbl) lbl.textContent = 'اسم المتبرع / المصدر';
+    }
+  }
+  
+  // Reset
+  document.getElementById('inv-mov-qty').value = 1;
+  document.getElementById('inv-mov-date').value = today();
+  document.getElementById('inv-mov-donor').value = '';
+  document.getElementById('inv-mov-notes').value = '';
+  document.getElementById('inv-mov-current').style.display = 'none';
+  
+  if (itemId) updateMovItemInfo();
+  openModal('m-inv-mov');
+}
+
+function updateMovItemInfo() {
+  const itemId = parseInt(document.getElementById('inv-mov-item').value);
+  const infoEl = document.getElementById('inv-mov-current');
+  if (!itemId) { infoEl.style.display = 'none'; return; }
+  const item = inventory.find(i => i.id === itemId);
+  if (!item) return;
+  infoEl.style.display = 'block';
+  infoEl.innerHTML = '📦 الكمية الحالية: <strong>' + (item.qty || 0) + ' ' + (item.unit || '') + '</strong>' +
+    (item.qty <= (item.min || 0) ? ' <span style="color:#dc2626">⚠️ مخزون منخفض</span>' : '');
+}
+
+function saveInventoryMovement() {
+  const itemId = parseInt(document.getElementById('inv-mov-item').value);
+  if (!itemId) { alert('⚠️ يرجى اختيار صنف'); return; }
+  
+  const item = inventory.find(i => i.id === itemId);
+  if (!item) { alert('⚠️ الصنف غير موجود'); return; }
+  
+  const qty = parseInt(document.getElementById('inv-mov-qty').value);
+  if (!qty || qty <= 0) { alert('⚠️ الكمية يجب أن تكون رقماً موجباً'); return; }
+  
+  const type = document.getElementById('inv-mov-type').value;
+  const currentQty = item.qty || 0;
+  
+  // Validate "out" doesn't exceed current stock
+  if (type === 'out' && qty > currentQty) {
+    alert('⛔ لا يمكن صرف ' + qty + ' من المخزون.\nالكمية المتوفرة فقط: ' + currentQty + ' ' + (item.unit || ''));
+    return;
+  }
+  
+  const date = document.getElementById('inv-mov-date').value || today();
+  const patientId = type === 'out' ? parseInt(document.getElementById('inv-mov-patient').value) || null : null;
+  const donor = document.getElementById('inv-mov-donor').value.trim();
+  const notes = document.getElementById('inv-mov-notes').value;
+  
+  const movement = {
+    id: uid(),
+    itemId,
+    type,
+    qty,
+    date,
+    patientId,
+    donor,
+    notes,
+    by: currentUser?.username || 'unknown',
+    timestamp: new Date().toISOString()
+  };
+  
+  invMovements.unshift(movement);
+  
+  // Update item quantity
+  if (type === 'in') {
+    item.qty = currentQty + qty;
+  } else {
+    item.qty = currentQty - qty;
+  }
+  
+  saveAll();
+  closeModal('m-inv-mov');
+  renderInventory();
+  
+  // Notification
+  if (typeof addNotification === 'function') {
+    const action = type === 'in' ? 'تبرع وارد' : 'صرف';
+    addNotification('📦 ' + action + ': ' + qty + ' ' + (item.unit || '') + ' من ' + item.name, type === 'in' ? 'b-green' : 'b-orange');
+  }
+  
+  // Low stock warning
+  if (item.qty <= (item.min || 0) && item.qty > 0) {
+    setTimeout(() => alert('⚠️ تنبيه: مخزون "' + item.name + '" أصبح منخفضاً (' + item.qty + ' ' + (item.unit || '') + ')'), 100);
+  } else if (item.qty === 0) {
+    setTimeout(() => alert('❌ تنبيه: نفذ مخزون "' + item.name + '"'), 100);
+  }
+}
+
+function deleteInventoryMovement(id) {
+  if (!isAdmin()) { alert('⛔ لا تملك صلاحية الحذف'); return; }
+  if (!confirm('⚠️ حذف هذه الحركة؟ سيتم تعديل الكمية المتوفرة.')) return;
+  
+  const mov = invMovements.find(m => m.id === id);
+  if (!mov) return;
+  
+  // Reverse the quantity change
+  const item = inventory.find(i => i.id === mov.itemId);
+  if (item) {
+    if (mov.type === 'in') {
+      item.qty = Math.max(0, (item.qty || 0) - mov.qty);
+    } else {
+      item.qty = (item.qty || 0) + mov.qty;
+    }
+  }
+  
+  invMovements = invMovements.filter(m => m.id !== id);
+  saveAll();
+  renderInventory();
+}
+
+console.log('%c📦 Inventory System Ready', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// ================================================================
+// 🌙 DARK MODE
+// ================================================================
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('dark_mode', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+  // Update Chart.js charts if they exist
+  if (typeof updateAllCharts === 'function') updateAllCharts();
+}
+
+// Apply dark mode on page load
+(function initDarkMode() {
+  if (localStorage.getItem('dark_mode') === '1') {
+    document.body.classList.add('dark-mode');
+    setTimeout(() => {
+      const btn = document.getElementById('dark-toggle');
+      if (btn) btn.textContent = '☀️';
+    }, 100);
+  }
+})();
+
+// ================================================================
+// 🔍 GLOBAL SEARCH
+// ================================================================
+function performGlobalSearch(query) {
+  const resultsEl = document.getElementById('global-search-results');
+  if (!resultsEl) return;
+  
+  const q = (query || '').trim().toLowerCase();
+  if (q.length < 2) { resultsEl.style.display = 'none'; return; }
+  
+  const results = [];
+  
+  // Search patients
+  patients.forEach(p => {
+    const matchName = (p.name || '').toLowerCase().includes(q);
+    const matchPhone = (p.phone || '').includes(q) || (p.gphone || '').includes(q);
+    const matchPid = (p.pid || '').toLowerCase().includes(q);
+    const matchCancer = (p.cancer || '').toLowerCase().includes(q);
+    if (matchName || matchPhone || matchPid || matchCancer) {
+      results.push({
+        type: 'patient',
+        icon: '👤',
+        name: p.name,
+        meta: (p.cancer ? p.cancer + ' · ' : '') + (p.phone || '') + (p.pid ? ' · ' + p.pid : ''),
+        action: () => { goPageByName('patients'); setTimeout(() => showPatientDetail(p.id), 300); }
+      });
+    }
+  });
+  
+  // Search employees
+  if (typeof employees !== 'undefined') {
+    employees.forEach(e => {
+      const matchName = (e.name || '').toLowerCase().includes(q);
+      const matchPhone = (e.phone || '').includes(q);
+      const matchTitle = (e.title || '').toLowerCase().includes(q);
+      if (matchName || matchPhone || matchTitle) {
+        results.push({
+          type: 'employee',
+          icon: '👔',
+          name: e.name,
+          meta: (e.title || '') + (e.phone ? ' · ' + e.phone : ''),
+          action: () => goPageByName('salaries')
+        });
+      }
+    });
+  }
+  
+  // Search admins
+  if (typeof admins !== 'undefined') {
+    admins.forEach(a => {
+      if ((a.name || '').toLowerCase().includes(q) || (a.username || '').toLowerCase().includes(q)) {
+        if (isAdmin()) {
+          results.push({
+            type: 'admin',
+            icon: '🔐',
+            name: a.name + ' (' + a.username + ')',
+            meta: roleLabel(a.role),
+            action: () => goPageByName('admins')
+          });
+        }
+      }
+    });
+  }
+  
+  // Search inventory
+  if (typeof inventory !== 'undefined') {
+    inventory.forEach(i => {
+      if ((i.name || '').toLowerCase().includes(q) || (i.cat || '').toLowerCase().includes(q)) {
+        results.push({
+          type: 'inventory',
+          icon: '📦',
+          name: i.name,
+          meta: i.cat + ' · ' + (i.qty || 0) + ' ' + (i.unit || ''),
+          action: () => goPageByName('inventory')
+        });
+      }
+    });
+  }
+  
+  // Render
+  if (!results.length) {
+    resultsEl.innerHTML = '<div class="gs-result-item" style="cursor:default;color:#94a3b8">لا توجد نتائج لـ "' + query + '"</div>';
+  } else {
+    resultsEl.innerHTML = results.slice(0, 15).map((r, idx) => 
+      '<div class="gs-result-item" onclick="window._gsResults[' + idx + '].action(); document.getElementById(\'global-search\').value=\'\'; document.getElementById(\'global-search-results\').style.display=\'none\';"><div class="gs-icon">' + r.icon + '</div><div class="gs-info"><div class="gs-name">' + r.name + '</div><div class="gs-meta">' + r.meta + '</div></div></div>'
+    ).join('');
+    if (results.length > 15) {
+      resultsEl.innerHTML += '<div class="gs-result-item" style="cursor:default;color:#94a3b8;justify-content:center">... و ' + (results.length - 15) + ' نتيجة أخرى</div>';
+    }
+    window._gsResults = results;
+  }
+  resultsEl.style.display = 'block';
+}
+
+// Close search on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const r = document.getElementById('global-search-results');
+    if (r) r.style.display = 'none';
+  }
+});
+
+// ================================================================
+// 🔔 APPOINTMENT NOTIFICATIONS
+// Check upcoming visits and show in-app notifications
+// ================================================================
+function checkUpcomingAppointments() {
+  if (!currentUser) return;
+  
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const tomorrow = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
+  
+  let notifCount = 0;
+  
+  // Today's visits
+  if (typeof visits !== 'undefined') {
+    visits.filter(v => v.date === today && v.vstatus === 'مجدولة').forEach(v => {
+      const p = patients.find(x => x.id === v.patientId);
+      const notifKey = 'visit_' + v.id + '_' + today;
+      if (!localStorage.getItem('notif_seen_' + notifKey)) {
+        if (typeof addNotification === 'function') {
+          addNotification('📋 زيارة اليوم: ' + (p?.name || 'مريض') + ' (' + (v.time || '—') + ')', 'b-blue');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+        notifCount++;
+      }
+    });
+    
+    // Tomorrow's visits
+    visits.filter(v => v.date === tomorrow && v.vstatus === 'مجدولة').forEach(v => {
+      const p = patients.find(x => x.id === v.patientId);
+      const notifKey = 'visit_tomorrow_' + v.id;
+      if (!localStorage.getItem('notif_seen_' + notifKey)) {
+        if (typeof addNotification === 'function') {
+          addNotification('⏰ زيارة غداً: ' + (p?.name || 'مريض') + ' (' + (v.time || '—') + ')', 'b-orange');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+        notifCount++;
+      }
+    });
+  }
+  
+  // Today's transports
+  if (typeof transports !== 'undefined') {
+    transports.filter(t => t.date === today && t.status === 'مجدولة').forEach(t => {
+      const notifKey = 'transport_' + t.id + '_' + today;
+      if (!localStorage.getItem('notif_seen_' + notifKey)) {
+        if (typeof addNotification === 'function') {
+          addNotification('🚐 رحلة اليوم: ' + (t.to || 'وجهة') + ' (' + (t.time || '—') + ')', 'b-orange');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+        notifCount++;
+      }
+    });
+  }
+  
+  // Low stock alerts
+  if (typeof inventory !== 'undefined') {
+    inventory.filter(i => (i.qty || 0) <= (i.min || 0) && (i.qty || 0) > 0).forEach(i => {
+      const notifKey = 'low_stock_' + i.id + '_' + today;
+      if (!localStorage.getItem('notif_seen_' + notifKey)) {
+        if (typeof addNotification === 'function') {
+          addNotification('📦 مخزون منخفض: ' + i.name + ' (' + i.qty + ' ' + (i.unit || '') + ')', 'b-red');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+        notifCount++;
+      }
+    });
+  }
+  
+  if (notifCount > 0) console.log('🔔 ' + notifCount + ' تنبيه جديد');
+}
+
+// Run check every 5 minutes (and once after login)
+setInterval(checkUpcomingAppointments, 5 * 60 * 1000);
+setTimeout(checkUpcomingAppointments, 3000);
+
+// Browser notification (if user grants permission)
+if ('Notification' in window) {
+  if (Notification.permission === 'default') {
+    setTimeout(() => {
+      // Ask permission only after first interaction
+      const askPerm = () => {
+        Notification.requestPermission();
+        document.removeEventListener('click', askPerm);
+      };
+      document.addEventListener('click', askPerm);
+    }, 5000);
+  }
+}
+
+function showBrowserNotification(title, body) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { 
+      body: body,
+      icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="12" y="20" text-anchor="middle" font-size="20">🏥</text></svg>'
+    });
+  }
+}
+
+// ================================================================
+// 📊 CHART.JS INTEGRATION
+// ================================================================
+let _charts = {};
+
+function destroyChart(id) {
+  if (_charts[id]) {
+    _charts[id].destroy();
+    delete _charts[id];
+  }
+}
+
+function getChartColors(dark) {
+  return {
+    text: dark ? '#e2e8f0' : '#0f172a',
+    grid: dark ? '#334155' : '#e2e8f0',
+    bg: dark ? '#1e293b' : '#fff'
+  };
+}
+
+function renderInteractiveCharts() {
+  if (typeof Chart === 'undefined') return;
+  
+  const dark = document.body.classList.contains('dark-mode');
+  const colors = getChartColors(dark);
+  Chart.defaults.color = colors.text;
+  Chart.defaults.borderColor = colors.grid;
+  Chart.defaults.font.family = 'Tajawal, sans-serif';
+  
+  // Patient status pie chart
+  const statusEl = document.getElementById('chart-patients-status');
+  if (statusEl) {
+    destroyChart('patientsStatus');
+    const statusCount = {};
+    patients.forEach(p => { 
+      const s = p.status || 'غير محدد';
+      statusCount[s] = (statusCount[s] || 0) + 1;
+    });
+    const labels = Object.keys(statusCount);
+    const data = Object.values(statusCount);
+    const colorMap = {
+      'نشط': '#16a34a', 'متابعة': '#0ea5e9', 'حرج': '#dc2626',
+      'تعافى': '#0f766e', 'أوقف العلاج': '#f59e0b', 'منقطع': '#64748b', 
+      'متوفى': '#991b1b', 'غير محدد': '#94a3b8'
+    };
+    const bgColors = labels.map(l => colorMap[l] || '#7c3aed');
+    
+    _charts.patientsStatus = new Chart(statusEl, {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data, backgroundColor: bgColors, borderWidth: 2, borderColor: colors.bg }] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { padding: 12, font: { size: 12, weight: 'bold' } } },
+          title: { display: true, text: '👥 توزيع المرضى حسب الحالة', font: { size: 14, weight: 'bold' } }
+        }
+      }
+    });
+  }
+  
+  // Income vs expenses bar chart (admin/finance only)
+  const finEl = document.getElementById('chart-finance-monthly');
+  if (finEl && isFinanceAdmin()) {
+    destroyChart('financeMonthly');
+    const last6 = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+      const monthName = d.toLocaleDateString('ar', { month: 'short', year: 'numeric' });
+      const income = finance.filter(f => f.type === 'دخل' && (f.date||'').startsWith(key)).reduce((s,f)=>s+(f.amount||0), 0);
+      const exp = finance.filter(f => f.type === 'مصروف' && (f.date||'').startsWith(key)).reduce((s,f)=>s+(f.amount||0), 0);
+      const pexp = patientExp.filter(e => (e.date||'').startsWith(key)).reduce((s,e)=>s+(e.amount||0), 0);
+      last6.push({ month: monthName, income, expense: exp + pexp });
+    }
+    
+    _charts.financeMonthly = new Chart(finEl, {
+      type: 'bar',
+      data: {
+        labels: last6.map(m => m.month),
+        datasets: [
+          { label: '📥 المداخيل', data: last6.map(m => m.income), backgroundColor: '#16a34a', borderRadius: 6 },
+          { label: '📤 المصاريف', data: last6.map(m => m.expense), backgroundColor: '#dc2626', borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { weight: 'bold' } } },
+          title: { display: true, text: '💹 المقارنة الشهرية: المداخيل vs المصاريف (آخر 6 أشهر)', font: { size: 14, weight: 'bold' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: colors.grid } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+  
+  // Cancer types
+  const cancerEl = document.getElementById('chart-cancer-types');
+  if (cancerEl) {
+    destroyChart('cancerTypes');
+    const cancerMap = {};
+    patients.forEach(p => { if (p.cancer) cancerMap[p.cancer] = (cancerMap[p.cancer] || 0) + 1; });
+    const sorted = Object.entries(cancerMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
+    
+    _charts.cancerTypes = new Chart(cancerEl, {
+      type: 'bar',
+      data: {
+        labels: sorted.map(([k]) => k),
+        datasets: [{
+          label: 'عدد المرضى',
+          data: sorted.map(([,v]) => v),
+          backgroundColor: ['#0f766e','#1d4ed8','#dc2626','#f59e0b','#7c3aed','#db2777','#16a34a','#0ea5e9','#9a3412','#64748b'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '🏥 توزيع أنواع السرطان', font: { size: 14, weight: 'bold' } }
+        },
+        scales: {
+          x: { beginAtZero: true, grid: { color: colors.grid } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+  }
+}
+
+function updateAllCharts() {
+  // Re-render all currently visible charts
+  renderInteractiveCharts();
+}
+
+// Hook: re-render charts when visiting reports page
+const _origRenderReports = typeof renderReports === 'function' ? renderReports : null;
+if (_origRenderReports) {
+  renderReports = function() {
+    _origRenderReports.apply(this, arguments);
+    setTimeout(renderInteractiveCharts, 100);
+  };
+}
+
+console.log('%c🌙 Dark Mode + 🔍 Search + 🔔 Notifications + 📊 Charts Ready', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
 </script>
 
 <!-- DONATION RECEIPT MODAL -->
@@ -6952,6 +8505,12 @@ function tStatus(s) {
   </div>
 </div>
 </div>
+
+
+<!-- 🌙 Dark Mode Toggle -->
+<button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" title="تبديل الوضع الليلي">
+  🌙
+</button>
 
 </body>
 </html>
