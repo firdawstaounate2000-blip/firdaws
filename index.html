@@ -1724,6 +1724,23 @@ window.installPWA = function() {
       <div class="card">
         <div class="card-body" style="padding:14px;height:300px"><canvas id="chart-cancer-types"></canvas></div>
       </div>
+      <div class="card">
+        <div class="card-body" style="padding:14px;height:300px"><canvas id="chart-age-distribution"></canvas></div>
+      </div>
+    </div>
+    
+    <!-- Cancer Prevalence Detail Card (for donors/partners) -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header" style="background:linear-gradient(90deg,#fce7f3,#f3e8ff)">
+        <span class="card-title">🎗️ إحصائيات أنواع السرطان (للممولين والشركاء)</span>
+        <button class="btn btn-outline btn-sm" onclick="printCancerStats()">🖨️ طباعة</button>
+      </div>
+      <div class="card-body" style="padding:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+          <div style="height:340px"><canvas id="chart-cancer-prevalence"></canvas></div>
+          <div id="cancer-prevalence-table"></div>
+        </div>
+      </div>
     </div>
     <div class="dash-grid-3">
       <div class="card">
@@ -1876,6 +1893,137 @@ window.installPWA = function() {
   </div>
 </div>
 
+</div>
+
+
+<!-- ======== PHARMACY PAGE ======== -->
+<div id="page-pharmacy" class="page">
+  <!-- Stats -->
+  <div class="cards-grid" id="pharm-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px"></div>
+  
+  <!-- Expiring soon warning -->
+  <div id="pharm-alerts" style="margin-bottom:16px"></div>
+  
+  <!-- Filter + Add -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">💊 قائمة الأدوية</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="openMedicineModal()">➕ إضافة دواء</button>
+        <button class="btn btn-outline" onclick="renderPharmacy()">🔄 تحديث</button>
+      </div>
+    </div>
+    <div class="card-body" style="padding:14px">
+      <div class="filter-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <input id="pharm-search" placeholder="🔍 بحث عن دواء..." oninput="renderPharmacy()" style="flex:1;min-width:200px;padding:10px;border:1px solid #cbd5e1;border-radius:8px">
+        <select id="pharm-filter" onchange="renderPharmacy()" style="padding:10px;border:1px solid #cbd5e1;border-radius:8px">
+          <option value="all">جميع الأدوية</option>
+          <option value="valid">صالحة</option>
+          <option value="warning">تنتهي قريباً (&lt; 60 يوم)</option>
+          <option value="expired">منتهية الصلاحية</option>
+          <option value="low">مخزون منخفض</option>
+        </select>
+      </div>
+      
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>اسم الدواء</th>
+            <th>الفئة</th>
+            <th>الكمية</th>
+            <th>تاريخ الصلاحية</th>
+            <th>الحالة</th>
+            <th>ملاحظات</th>
+            <th>إجراءات</th>
+          </tr></thead>
+          <tbody id="pharm-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEDICINE MODAL -->
+<div class="modal-overlay" id="m-medicine">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-medicine-title">➕ إضافة دواء</span>
+      <button class="modal-close" onclick="closeModal('m-medicine')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>اسم الدواء (تجاري أو علمي) *</label>
+        <input type="text" id="med-name" placeholder="مثال: Paracetamol 500mg" required>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الفئة العلاجية</label>
+          <select id="med-cat">
+            <option value="مسكن">مسكن / خافض حرارة</option>
+            <option value="مضاد حيوي">مضاد حيوي</option>
+            <option value="علاج كيماوي">علاج كيماوي</option>
+            <option value="مضاد للقيء">مضاد للقيء</option>
+            <option value="فيتامينات">فيتامينات ومكملات</option>
+            <option value="قلب وضغط">قلب وضغط</option>
+            <option value="سكري">سكري</option>
+            <option value="جهاز هضمي">جهاز هضمي</option>
+            <option value="نفسي وأعصاب">نفسي وأعصاب</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الشكل الصيدلي</label>
+          <select id="med-form">
+            <option value="أقراص">أقراص</option>
+            <option value="كبسولات">كبسولات</option>
+            <option value="شراب">شراب</option>
+            <option value="حقن">حقن</option>
+            <option value="مرهم">مرهم / كريم</option>
+            <option value="قطرات">قطرات</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الكمية الحالية *</label>
+          <input type="number" id="med-qty" min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label>الوحدة</label>
+          <input type="text" id="med-unit" placeholder="علبة / شريط / أمبولة" value="علبة">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>تاريخ الصلاحية *</label>
+          <input type="date" id="med-expiry" required>
+        </div>
+        <div class="form-group">
+          <label>رقم اللوط (Batch)</label>
+          <input type="text" id="med-batch" placeholder="اختياري">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>مكان التخزين</label>
+          <input type="text" id="med-location" placeholder="مثال: خزانة A - رف 2">
+        </div>
+        <div class="form-group">
+          <label>الحد الأدنى للتنبيه</label>
+          <input type="number" id="med-min" min="0" value="3">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ملاحظات</label>
+        <textarea id="med-notes" rows="2" placeholder="تعليمات الحفظ، الجرعة، إلخ"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-medicine')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveMedicine()">💾 حفظ</button>
+    </div>
+  </div>
 </div>
 
 <!-- ======== SETTINGS ======== -->
@@ -2300,6 +2448,8 @@ let fuelLogs   = LS('fuelLogs')   || [];
 let utilities  = LS('utilities')  || [];
 let inventory  = LS('inventory')  || [];
 let invMovements = LS('invMovements') || [];
+let medicalEvents = LS('medicalEvents') || [];
+let medicines = LS('medicines') || [];
 let admins = (()=>{
   // Always ensure default admin exists with correct password
   const stored = LS('frd_admins');
@@ -2321,7 +2471,7 @@ function saveAll() {
   SS('patients',patients); SS('visits',visits); SS('transports',transports);
   SS('patientExp',patientExp); SS('finance',finance); SS('employees',employees);
   SS('salaries',salaries); SS('vehicles',vehicles); SS('fuelLogs',fuelLogs);
-  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('frd_admins',admins); SS('frd_settings',settings);
+  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('medicalEvents',medicalEvents); SS('medicines',medicines); SS('frd_admins',admins); SS('frd_settings',settings);
   SS('gsUrl',gsUrl);
 }
 
@@ -2446,6 +2596,7 @@ const NAV_CONFIG = [
     { page:'vehicles',         icon:'🚗', ar:'السيارات والوقود',         fr:'Véhicules',         perm:'vehicles_view' },
     { page:'utilities',        icon:'⚡', ar:'الخدمات',                  fr:'Services',          perm:'utilities_view' },
     { page:'inventory',        icon:'📦', ar:'المخزون والتبرعات العينية', fr:'Inventaire',        perm:'inventory_view' },
+    { page:'pharmacy',         icon:'💊', ar:'صيدلية — الأدوية',           fr:'Pharmacie',         perm:'pharmacy_view' },
   ]},
   { group:'الإدارة',           groupFr:'Administration', items:[
     { page:'admins',           icon:'🔐', ar:'المستخدمون والصلاحيات',   fr:'Utilisateurs',      perm:'admins_manage' },
@@ -2494,13 +2645,13 @@ function hasPermission(permKey) {
   }
   // Fallback: role-based defaults (in case perms not set)
   const roleDefaults = {
-    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write'],
-    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write'],
-    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view','inventory_view','inventory_write'],
-    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view'],
-    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write'],
+    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
+    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
+    medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
+    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view','pharmacy_view'],
+    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view'],
     driver:   ['transport_view','transport_write'],
-    viewer:   ['patients_view','visits_view','transport_view','reports_view','inventory_view'],
+    viewer:   ['patients_view','visits_view','transport_view','reports_view','inventory_view','pharmacy_view'],
   };
   const allowed = roleDefaults[currentUser.role] || [];
   return allowed.includes(permKey);
@@ -2642,6 +2793,7 @@ function renderPage(name) {
     'patient-expenses': renderPexp, salaries: renderSalaries,
     vehicles: renderVehicles, utilities: renderUtil,
     inventory: renderInventory,
+    pharmacy: renderPharmacy,
     admins: renderAdmins, reports: renderReports,
     gsheets: renderGsPage, settings: renderSettings
   };
@@ -2976,6 +3128,46 @@ function showPatientDetail(id){
     <div style="margin-top:14px">
       <div style="font-size:11.5px;font-weight:800;color:var(--teal);border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">🚐 آخر رحلات النقل (${pts.length})</div>
       ${pts.slice(0,3).map(t=>`<div class="visit-card" style="border-color:var(--orange)"><div><div class="visit-date">${fmtDate(t.date)} ${t.time||''}</div><div class="visit-notes">${t.from||''} → ${t.to||''}</div></div><div style="font-size:12px;font-weight:700;color:var(--orange)">${statusBadge(t.status)}</div></div>`).join('')||'<p style="color:var(--slate-l);font-size:12px">لا توجد رحلات</p>'}
+    </div>
+    
+    <!-- MEDICAL TIMELINE -->
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--teal-l);padding-bottom:4px;margin-bottom:10px">
+        <div style="font-size:11.5px;font-weight:800;color:#0f766e">🏥 الخط الزمني الطبي</div>
+        ${isAdmin() || hasPermission('patients_write') ? `<button class="btn btn-primary btn-xs" onclick="openMedicalEventModal(${p.id})">➕ إضافة حدث طبي</button>` : ''}
+      </div>
+      ${(function(){
+        const events = (typeof medicalEvents !== 'undefined' ? medicalEvents : []).filter(e => e.patientId === p.id);
+        events.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+        if (!events.length) return '<p style="color:var(--slate-l);font-size:12px;padding:8px">لا توجد أحداث طبية مسجلة. أضف العلاجات، العمليات، والفحوصات.</p>';
+        return '<div style="background:#f0fdfa;border-radius:10px;padding:12px;max-height:320px;overflow-y:auto">' + events.map(function(ev, idx) {
+          const typeColors = {
+            'كيماوي': '#7c3aed', 'إشعاعي': '#db2777', 'عملية جراحية': '#dc2626',
+            'فحص': '#0ea5e9', 'استشارة': '#16a34a', 'علاج هرموني': '#f59e0b',
+            'تحليل': '#0f766e', 'صور طبية': '#1d4ed8', 'مساعدة': '#059669', 'أخرى': '#64748b'
+          };
+          const color = typeColors[ev.type] || '#0f766e';
+          const icons = {
+            'كيماوي': '💉', 'إشعاعي': '☢️', 'عملية جراحية': '🔪',
+            'فحص': '🔬', 'استشارة': '👨‍⚕️', 'علاج هرموني': '💊',
+            'تحليل': '🧪', 'صور طبية': '🩻', 'مساعدة': '🎁', 'أخرى': '📋'
+          };
+          const icon = icons[ev.type] || '📋';
+          return '<div style="display:flex;gap:12px;padding:10px 4px;' + (idx < events.length-1 ? 'border-bottom:1px dashed #a7f3d0;' : '') + '">' +
+            '<div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 0 3px ' + color + '22">' + icon + '</div>' +
+            '<div style="flex:1">' +
+              '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">' +
+                '<div style="font-weight:700;color:#0f172a;font-size:13px">' + (ev.title || ev.type) + '</div>' +
+                '<span style="background:' + color + ';color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;white-space:nowrap">' + (ev.type || '—') + '</span>' +
+              '</div>' +
+              '<div style="font-size:11px;color:#64748b;margin-top:2px">📅 ' + fmtDate(ev.date) + (ev.doctor ? ' · 👨‍⚕️ ' + ev.doctor : '') + (ev.hospital ? ' · 🏥 ' + ev.hospital : '') + '</div>' +
+              (ev.desc ? '<div style="font-size:12px;color:#334155;margin-top:4px;background:#fff;padding:6px 8px;border-radius:6px">' + ev.desc + '</div>' : '') +
+              (ev.cost && isFinanceAdmin() ? '<div style="font-size:11px;color:#991b1b;margin-top:3px;font-weight:700">💰 التكلفة: ' + fmtNum(ev.cost) + ' ' + (settings.currency||'د.م.') + '</div>' : '') +
+              (isAdmin() ? '<div style="margin-top:4px"><button onclick="deleteMedicalEvent(' + ev.id + ', ' + p.id + ')" style="background:none;border:none;color:#dc2626;font-size:10px;cursor:pointer;font-weight:600">🗑️ حذف</button></div>' : '') +
+            '</div>' +
+          '</div>';
+        }).join('') + '</div>';
+      })()}
     </div>
     
     <!-- STATUS HISTORY ARCHIVE -->
@@ -4704,6 +4896,8 @@ function switchLang(lang, btn) {
     salaries:         { ar: '👔 الرواتب',             fr: '👔 Salaires' },
     vehicles:         { ar: '🚗 السيارات',            fr: '🚗 Véhicules' },
     utilities:        { ar: '⚡ الخدمات',             fr: '⚡ Services' },
+    inventory:        { ar: '📦 المخزون',             fr: '📦 Inventaire' },
+    pharmacy:         { ar: '💊 الصيدلية',            fr: '💊 Pharmacie' },
     admins:           { ar: '🔐 المستخدمون',          fr: '🔐 Utilisateurs' },
     reports:          { ar: '📈 التقارير',            fr: '📈 Rapports' },
     gsheets:          { ar: '📗 Google Sheets',       fr: '📗 Google Sheets' },
@@ -7318,6 +7512,19 @@ const TRANS = {
     'cancelled': 'Annulé', 'done': 'Effectué',
     'postponed': 'Reporté', 'recovered': 'Guéri',
     'critical': 'Critique', 'followup': 'Suivi',
+  
+    // === New features keys ===
+    'inventory': 'Inventaire', 'pharmacy': 'Pharmacie', 'medicine': 'Médicament', 'expiry': 'Date expiration',
+    'category': 'Catégorie', 'quantity': 'Quantité', 'add_item': 'Ajouter article', 'add_medicine': 'Ajouter médicament',
+    'medical_timeline': 'Chronologie médicale', 'add_event': 'Ajouter événement',
+    'chemotherapy': 'Chimiothérapie', 'radiotherapy': 'Radiothérapie', 'surgery': 'Chirurgie',
+    'examination': 'Examen', 'consultation': 'Consultation', 'analysis': 'Analyse', 'imaging': 'Imagerie',
+    'low_stock': 'Stock bas', 'out_of_stock': 'Épuisé', 'expired': 'Expiré',
+    'valid': 'Valide', 'expires_soon': 'Expire bientôt',
+    'donor': 'Donateur', 'beneficiary': 'Bénéficiaire', 'movement': 'Mouvement',
+    'incoming_donation': 'Don entrant', 'outgoing': 'Sortie',
+    'dark_mode': 'Mode sombre', 'global_search': 'Recherche globale',
+    'install_app': "Installer l'app", 'notifications': 'Notifications',
   }
 };
 
@@ -7363,6 +7570,8 @@ function tStatus(s) {
     { key: 'utilities',   doc: 'utilities' },
     { key: 'inventory',   doc: 'inventory' },
     { key: 'invMovements',doc: 'invMovements' },
+    { key: 'medicalEvents',doc: 'medicalEvents' },
+    { key: 'medicines',   doc: 'medicines' },
     { key: 'frd_admins',  doc: 'admins' },
     { key: 'frd_settings',doc: 'settings' }
   ];
@@ -8423,6 +8632,104 @@ function renderInteractiveCharts() {
       }
     });
   }
+
+
+  // Age distribution chart
+  const ageEl = document.getElementById('chart-age-distribution');
+  if (ageEl) {
+    destroyChart('ageDistribution');
+    const ageGroups = { '<30': 0, '30-44': 0, '45-59': 0, '60-74': 0, '75+': 0, 'غير محدد': 0 };
+    patients.forEach(p => {
+      if (!p.dob) { ageGroups['غير محدد']++; return; }
+      const age = (new Date().getFullYear()) - (new Date(p.dob).getFullYear());
+      if (age < 30) ageGroups['<30']++;
+      else if (age < 45) ageGroups['30-44']++;
+      else if (age < 60) ageGroups['45-59']++;
+      else if (age < 75) ageGroups['60-74']++;
+      else ageGroups['75+']++;
+    });
+    _charts.ageDistribution = new Chart(ageEl, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(ageGroups),
+        datasets: [{
+          label: 'عدد المرضى',
+          data: Object.values(ageGroups),
+          backgroundColor: ['#06b6d4','#0ea5e9','#3b82f6','#6366f1','#8b5cf6','#94a3b8'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '📊 الفئات العمرية للمرضى', font: { size: 14, weight: 'bold' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: colors.grid } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+  
+  // Cancer prevalence — detailed pie chart for donors/partners
+  const prevEl = document.getElementById('chart-cancer-prevalence');
+  if (prevEl) {
+    destroyChart('cancerPrevalence');
+    const cMap = {};
+    patients.forEach(p => { if (p.cancer) cMap[p.cancer] = (cMap[p.cancer] || 0) + 1; });
+    const sorted = Object.entries(cMap).sort((a,b) => b[1] - a[1]);
+    const totalCancer = sorted.reduce((s, [,v]) => s + v, 0);
+    const palette = ['#db2777','#dc2626','#ea580c','#f59e0b','#ca8a04','#65a30d','#16a34a','#0891b2','#0d9488','#4f46e5','#7c3aed','#a21caf','#be185d','#9f1239'];
+    
+    _charts.cancerPrevalence = new Chart(prevEl, {
+      type: 'pie',
+      data: {
+        labels: sorted.map(([k]) => k),
+        datasets: [{
+          data: sorted.map(([,v]) => v),
+          backgroundColor: sorted.map((_, i) => palette[i % palette.length]),
+          borderWidth: 2,
+          borderColor: colors.bg
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { font: { size: 11 }, padding: 8, boxWidth: 14 } },
+          title: { display: true, text: '🎗️ أنواع السرطان المنتشرة', font: { size: 14, weight: 'bold' } },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                const pct = ((ctx.parsed / totalCancer) * 100).toFixed(1);
+                return ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    // Render table alongside
+    const tableEl = document.getElementById('cancer-prevalence-table');
+    if (tableEl && sorted.length) {
+      tableEl.innerHTML = '<div style="font-size:12.5px"><table style="width:100%;border-collapse:collapse;font-size:12px">' +
+        '<thead><tr style="background:#fce7f3"><th style="padding:8px;text-align:right;border:1px solid #fbcfe8">نوع السرطان</th><th style="padding:8px;border:1px solid #fbcfe8;text-align:center">العدد</th><th style="padding:8px;border:1px solid #fbcfe8;text-align:center">النسبة</th></tr></thead>' +
+        '<tbody>' + sorted.map(([k,v], idx) => {
+          const pct = ((v/totalCancer)*100).toFixed(1);
+          const color = palette[idx % palette.length];
+          return '<tr style="' + (idx%2 ? 'background:#fdf2f8' : '') + '">' +
+            '<td style="padding:7px 9px;border:1px solid #fbcfe8;font-weight:600"><span style="display:inline-block;width:10px;height:10px;background:' + color + ';border-radius:50%;margin-left:6px"></span>' + k + '</td>' +
+            '<td style="padding:7px 9px;border:1px solid #fbcfe8;text-align:center;font-weight:700">' + v + '</td>' +
+            '<td style="padding:7px 9px;border:1px solid #fbcfe8;text-align:center;color:#be185d;font-weight:700">' + pct + '%</td>' +
+          '</tr>';
+        }).join('') +
+        '<tr style="background:#fbcfe8;font-weight:800"><td style="padding:8px;border:1px solid #f9a8d4">الإجمالي</td><td style="padding:8px;border:1px solid #f9a8d4;text-align:center">' + totalCancer + '</td><td style="padding:8px;border:1px solid #f9a8d4;text-align:center">100%</td></tr>' +
+        '</tbody></table></div>';
+    }
+  }
+
 }
 
 function updateAllCharts() {
@@ -8440,6 +8747,375 @@ if (_origRenderReports) {
 }
 
 console.log('%c🌙 Dark Mode + 🔍 Search + 🔔 Notifications + 📊 Charts Ready', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// ================================================================
+// 🏥 MEDICAL TIMELINE FUNCTIONS
+// ================================================================
+
+function openMedicalEventModal(patientId) {
+  document.getElementById('med-event-patient-id').value = patientId;
+  document.getElementById('med-event-type').value = 'كيماوي';
+  document.getElementById('med-event-date').value = today();
+  document.getElementById('med-event-title-input').value = '';
+  document.getElementById('med-event-doctor').value = '';
+  document.getElementById('med-event-hospital').value = '';
+  document.getElementById('med-event-desc').value = '';
+  const costEl = document.getElementById('med-event-cost');
+  if (costEl) costEl.value = '';
+  openModal('m-med-event');
+  setTimeout(applyAdminOnlyVisibility, 50);
+}
+
+function saveMedicalEvent() {
+  const patientId = parseInt(document.getElementById('med-event-patient-id').value);
+  if (!patientId) { alert('⚠️ خطأ في تحديد المريض'); return; }
+  
+  const type = document.getElementById('med-event-type').value;
+  const date = document.getElementById('med-event-date').value;
+  if (!date) { alert('⚠️ التاريخ مطلوب'); return; }
+  
+  const costEl = document.getElementById('med-event-cost');
+  const costVal = costEl ? parseFloat(costEl.value) : NaN;
+  if (!isNaN(costVal) && costVal < 0) {
+    alert('⚠️ التكلفة لا يمكن أن تكون سالبة');
+    return;
+  }
+  
+  const event = {
+    id: uid(),
+    patientId,
+    type,
+    date,
+    title: document.getElementById('med-event-title-input').value.trim(),
+    doctor: document.getElementById('med-event-doctor').value.trim(),
+    hospital: document.getElementById('med-event-hospital').value.trim(),
+    desc: document.getElementById('med-event-desc').value.trim(),
+    cost: !isNaN(costVal) && costVal >= 0 ? costVal : null,
+    by: currentUser?.username || 'unknown',
+    timestamp: new Date().toISOString()
+  };
+  
+  medicalEvents.unshift(event);
+  saveAll();
+  closeModal('m-med-event');
+  
+  // Re-open patient detail to show updated timeline
+  if (typeof showPatientDetail === 'function') {
+    showPatientDetail(patientId);
+  }
+  
+  if (typeof addNotification === 'function') {
+    const p = patients.find(x => x.id === patientId);
+    addNotification('🏥 ' + type + ' مسجل لـ ' + (p?.name || 'مريض'), 'b-teal');
+  }
+}
+
+function deleteMedicalEvent(eventId, patientId) {
+  if (!isAdmin()) { alert('⛔ لا تملك صلاحية الحذف'); return; }
+  if (!confirm('⚠️ حذف هذا الحدث الطبي نهائياً؟')) return;
+  
+  medicalEvents = medicalEvents.filter(e => e.id !== eventId);
+  saveAll();
+  
+  if (typeof showPatientDetail === 'function') {
+    showPatientDetail(patientId);
+  }
+}
+
+console.log('%c🏥 Medical Timeline Ready', 'background:#0f766e;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// ================================================================
+// 💊 PHARMACY LITE SYSTEM
+// ================================================================
+
+function daysUntilExpiry(expiryDate) {
+  if (!expiryDate) return null;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const exp = new Date(expiryDate);
+  exp.setHours(0,0,0,0);
+  return Math.round((exp - today) / (1000 * 60 * 60 * 24));
+}
+
+function getMedicineStatus(med) {
+  const days = daysUntilExpiry(med.expiry);
+  if (days === null) return { label: 'بدون تاريخ', color: '#64748b', bg: '#f1f5f9', icon: '❓' };
+  if (days < 0) return { label: 'منتهي (' + Math.abs(days) + ' يوم)', color: '#991b1b', bg: '#fee2e2', icon: '❌' };
+  if (days <= 30) return { label: 'خطير (' + days + ' يوم)', color: '#dc2626', bg: '#fee2e2', icon: '🔴' };
+  if (days <= 60) return { label: 'قريب (' + days + ' يوم)', color: '#f59e0b', bg: '#fef3c7', icon: '🟡' };
+  if (days <= 180) return { label: days + ' يوم', color: '#0ea5e9', bg: '#dbeafe', icon: '🔵' };
+  return { label: 'صالح (' + days + ' يوم)', color: '#16a34a', bg: '#dcfce7', icon: '🟢' };
+}
+
+function renderPharmacy() {
+  // Stats
+  const total = medicines.length;
+  const expired = medicines.filter(m => daysUntilExpiry(m.expiry) < 0).length;
+  const expiringSoon = medicines.filter(m => { const d = daysUntilExpiry(m.expiry); return d !== null && d >= 0 && d <= 60; }).length;
+  const lowStock = medicines.filter(m => (m.qty || 0) <= (m.min || 0) && (m.qty || 0) > 0).length;
+  const outOfStock = medicines.filter(m => (m.qty || 0) === 0).length;
+  const totalQty = medicines.reduce((s,m) => s + (m.qty || 0), 0);
+  
+  const statsEl = document.getElementById('pharm-stats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="dash-stat-card c-teal"><div class="dsc-icon">💊</div><div class="dsc-label">إجمالي الأدوية</div><div class="dsc-value">${total}</div></div>
+    <div class="dash-stat-card c-blue"><div class="dsc-icon">📦</div><div class="dsc-label">إجمالي الكمية</div><div class="dsc-value">${totalQty}</div></div>
+    <div class="dash-stat-card c-red"><div class="dsc-icon">❌</div><div class="dsc-label">منتهية الصلاحية</div><div class="dsc-value">${expired}</div></div>
+    <div class="dash-stat-card c-orange"><div class="dsc-icon">⏰</div><div class="dsc-label">تنتهي قريباً</div><div class="dsc-value">${expiringSoon}</div></div>
+    <div class="dash-stat-card c-purple"><div class="dsc-icon">⚠️</div><div class="dsc-label">مخزون منخفض</div><div class="dsc-value">${lowStock}</div></div>
+    <div class="dash-stat-card c-pink"><div class="dsc-icon">🚫</div><div class="dsc-label">نافذ</div><div class="dsc-value">${outOfStock}</div></div>`;
+  
+  // Alerts
+  const alertsEl = document.getElementById('pharm-alerts');
+  if (alertsEl) {
+    let html = '';
+    if (expired > 0) {
+      const exList = medicines.filter(m => daysUntilExpiry(m.expiry) < 0);
+      html += '<div style="background:#fee2e2;border:2px solid #dc2626;border-radius:10px;padding:12px;margin-bottom:10px">' +
+        '<div style="font-weight:800;color:#991b1b;margin-bottom:6px">❌ تحذير: ' + expired + ' دواء منتهي الصلاحية</div>' +
+        '<div style="font-size:12px;color:#7f1d1d">' + exList.slice(0,5).map(m => m.name).join(' · ') + (exList.length > 5 ? ' + ' + (exList.length-5) + ' آخر' : '') + '</div>' +
+        '</div>';
+    }
+    if (expiringSoon > 0) {
+      const soonList = medicines.filter(m => { const d = daysUntilExpiry(m.expiry); return d !== null && d >= 0 && d <= 60; }).sort((a,b) => daysUntilExpiry(a.expiry) - daysUntilExpiry(b.expiry));
+      html += '<div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:12px;margin-bottom:10px">' +
+        '<div style="font-weight:800;color:#92400e;margin-bottom:6px">⏰ ' + expiringSoon + ' دواء ينتهي خلال شهرين</div>' +
+        '<div style="font-size:12px;color:#78350f">' + soonList.slice(0,5).map(m => m.name + ' (' + daysUntilExpiry(m.expiry) + ' يوم)').join(' · ') + '</div>' +
+        '</div>';
+    }
+    alertsEl.innerHTML = html;
+  }
+  
+  // Filter
+  const search = (document.getElementById('pharm-search')?.value || '').toLowerCase();
+  const filter = document.getElementById('pharm-filter')?.value || 'all';
+  let list = medicines;
+  if (search) list = list.filter(m => (m.name||'').toLowerCase().includes(search) || (m.cat||'').toLowerCase().includes(search));
+  if (filter === 'expired') list = list.filter(m => daysUntilExpiry(m.expiry) < 0);
+  else if (filter === 'warning') list = list.filter(m => { const d = daysUntilExpiry(m.expiry); return d !== null && d >= 0 && d <= 60; });
+  else if (filter === 'valid') list = list.filter(m => daysUntilExpiry(m.expiry) > 60);
+  else if (filter === 'low') list = list.filter(m => (m.qty || 0) <= (m.min || 0));
+  
+  // Sort: expired first, then by expiry
+  list.sort((a,b) => {
+    const da = daysUntilExpiry(a.expiry);
+    const db = daysUntilExpiry(b.expiry);
+    if (da === null && db === null) return 0;
+    if (da === null) return 1;
+    if (db === null) return -1;
+    return da - db;
+  });
+  
+  // Table
+  const tbody = document.getElementById('pharm-table');
+  if (tbody) tbody.innerHTML = list.length ? list.map(m => {
+    const status = getMedicineStatus(m);
+    const qty = m.qty || 0;
+    const qtyColor = qty === 0 ? '#dc2626' : qty <= (m.min || 0) ? '#f59e0b' : '#16a34a';
+    return `<tr>
+      <td>
+        <div style="font-weight:700">${m.name}</div>
+        <div style="font-size:11px;color:#64748b">${m.form || '—'} ${m.batch ? '· Lot: ' + m.batch : ''}</div>
+      </td>
+      <td><span style="background:#f1f5f9;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:600">${m.cat || '—'}</span></td>
+      <td><span style="font-weight:800;color:${qtyColor}">${qty}</span> <span style="font-size:11px;color:#64748b">${m.unit || ''}</span></td>
+      <td>${m.expiry ? fmtDate(m.expiry) : '—'}</td>
+      <td><span style="background:${status.bg};color:${status.color};padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700">${status.icon} ${status.label}</span></td>
+      <td style="font-size:11px;color:#64748b">${m.location ? '📍 ' + m.location : ''} ${m.notes ? '· ' + m.notes.substring(0,40) + (m.notes.length > 40 ? '...' : '') : ''}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-outline btn-xs" onclick="openMedicineModal(${m.id})">✏️</button>
+          <button class="btn btn-danger btn-xs admin-only" onclick="deleteMedicine(${m.id})">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا توجد أدوية بعد. اضغط "إضافة دواء" للبدء.</td></tr>';
+  
+  setTimeout(applyAdminOnlyVisibility, 50);
+}
+
+let _editMedicineId = null;
+
+function openMedicineModal(id) {
+  _editMedicineId = id || null;
+  const title = document.getElementById('m-medicine-title');
+  if (id) {
+    const med = medicines.find(m => m.id === id);
+    if (!med) return;
+    if (title) title.textContent = '✏️ تعديل دواء';
+    document.getElementById('med-name').value = med.name || '';
+    document.getElementById('med-cat').value = med.cat || 'مسكن';
+    document.getElementById('med-form').value = med.form || 'أقراص';
+    document.getElementById('med-qty').value = med.qty || 0;
+    document.getElementById('med-unit').value = med.unit || 'علبة';
+    document.getElementById('med-expiry').value = med.expiry || '';
+    document.getElementById('med-batch').value = med.batch || '';
+    document.getElementById('med-location').value = med.location || '';
+    document.getElementById('med-min').value = med.min || 3;
+    document.getElementById('med-notes').value = med.notes || '';
+  } else {
+    if (title) title.textContent = '➕ إضافة دواء';
+    document.getElementById('med-name').value = '';
+    document.getElementById('med-cat').value = 'مسكن';
+    document.getElementById('med-form').value = 'أقراص';
+    document.getElementById('med-qty').value = 0;
+    document.getElementById('med-unit').value = 'علبة';
+    document.getElementById('med-expiry').value = '';
+    document.getElementById('med-batch').value = '';
+    document.getElementById('med-location').value = '';
+    document.getElementById('med-min').value = 3;
+    document.getElementById('med-notes').value = '';
+  }
+  openModal('m-medicine');
+}
+
+function saveMedicine() {
+  const name = document.getElementById('med-name').value.trim();
+  if (!name) { alert('⚠️ اسم الدواء مطلوب'); return; }
+  
+  const expiry = document.getElementById('med-expiry').value;
+  if (!expiry) { alert('⚠️ تاريخ الصلاحية مطلوب'); return; }
+  
+  const qty = parseInt(document.getElementById('med-qty').value) || 0;
+  const min = parseInt(document.getElementById('med-min').value) || 0;
+  if (qty < 0) { alert('⚠️ الكمية لا يمكن أن تكون سالبة'); return; }
+  if (min < 0) { alert('⚠️ الحد الأدنى لا يمكن أن يكون سالباً'); return; }
+  
+  const data = {
+    name,
+    cat: document.getElementById('med-cat').value,
+    form: document.getElementById('med-form').value,
+    qty,
+    unit: document.getElementById('med-unit').value || 'علبة',
+    expiry,
+    batch: document.getElementById('med-batch').value.trim(),
+    location: document.getElementById('med-location').value.trim(),
+    min,
+    notes: document.getElementById('med-notes').value.trim()
+  };
+  
+  if (_editMedicineId) {
+    const i = medicines.findIndex(m => m.id === _editMedicineId);
+    if (i >= 0) medicines[i] = { ...medicines[i], ...data };
+  } else {
+    data.id = uid();
+    data.created = today();
+    medicines.unshift(data);
+  }
+  
+  saveAll();
+  closeModal('m-medicine');
+  renderPharmacy();
+  _editMedicineId = null;
+}
+
+function deleteMedicine(id) {
+  if (!isAdmin()) { alert('⛔ لا تملك صلاحية الحذف'); return; }
+  const med = medicines.find(m => m.id === id);
+  if (!med) return;
+  if (!confirm('⚠️ حذف الدواء "' + med.name + '"؟')) return;
+  
+  medicines = medicines.filter(m => m.id !== id);
+  saveAll();
+  renderPharmacy();
+}
+
+// Extend appointment notifications to include medicine expiry
+const _origCheckUpcoming = typeof checkUpcomingAppointments === 'function' ? checkUpcomingAppointments : null;
+if (_origCheckUpcoming) {
+  window.checkUpcomingAppointments = function() {
+    _origCheckUpcoming();
+    
+    // Check medicine expiry
+    if (typeof medicines === 'undefined') return;
+    const today = new Date().toISOString().slice(0,10);
+    
+    medicines.forEach(m => {
+      const days = daysUntilExpiry(m.expiry);
+      if (days === null) return;
+      
+      const notifKey = 'med_expiry_' + m.id + '_' + today;
+      if (localStorage.getItem('notif_seen_' + notifKey)) return;
+      
+      if (days < 0) {
+        if (typeof addNotification === 'function') {
+          addNotification('❌ دواء منتهي: ' + m.name, 'b-red');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+      } else if (days <= 30) {
+        if (typeof addNotification === 'function') {
+          addNotification('⏰ ينتهي قريباً: ' + m.name + ' (' + days + ' يوم)', 'b-orange');
+        }
+        localStorage.setItem('notif_seen_' + notifKey, '1');
+      }
+    });
+  };
+}
+
+console.log('%c💊 Pharmacy System Ready', 'background:#db2777;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// Print cancer prevalence stats (for donors/partners)
+function printCancerStats() {
+  const cMap = {};
+  patients.forEach(p => { if (p.cancer) cMap[p.cancer] = (cMap[p.cancer] || 0) + 1; });
+  const sorted = Object.entries(cMap).sort((a,b) => b[1] - a[1]);
+  const total = sorted.reduce((s, [,v]) => s + v, 0);
+  
+  const html = `
+    <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;font-family:Tajawal,sans-serif">
+      ${getReportHeader('🎗️ إحصائيات أنواع السرطان — تقرير للممولين والشركاء')}
+      <div style="padding:22px 24px">
+        <div style="background:#fce7f3;padding:14px;border-radius:10px;margin-bottom:16px;text-align:center">
+          <div style="font-size:11.5px;color:#be185d;font-weight:600">إجمالي الحالات المسجّلة</div>
+          <div style="font-size:36px;font-weight:800;color:#9f1239;margin-top:4px">${total}</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="background:#be185d;color:#fff">
+            <th style="padding:10px;border:1px solid #be185d">#</th>
+            <th style="padding:10px;border:1px solid #be185d">نوع السرطان</th>
+            <th style="padding:10px;border:1px solid #be185d;text-align:center">عدد الحالات</th>
+            <th style="padding:10px;border:1px solid #be185d;text-align:center">النسبة المئوية</th>
+            <th style="padding:10px;border:1px solid #be185d;text-align:center">التمثيل البياني</th>
+          </tr></thead>
+          <tbody>${sorted.map(([k,v], idx) => {
+            const pct = ((v/total)*100);
+            return `<tr style="${idx%2 ? 'background:#fdf2f8' : ''}">
+              <td style="padding:8px 10px;border:1px solid #fbcfe8;text-align:center;color:#64748b;font-weight:700">${idx+1}</td>
+              <td style="padding:8px 10px;border:1px solid #fbcfe8;font-weight:700">${k}</td>
+              <td style="padding:8px 10px;border:1px solid #fbcfe8;text-align:center;font-weight:800;color:#9f1239">${v}</td>
+              <td style="padding:8px 10px;border:1px solid #fbcfe8;text-align:center;font-weight:700">${pct.toFixed(1)}%</td>
+              <td style="padding:6px 10px;border:1px solid #fbcfe8">
+                <div style="background:#fce7f3;border-radius:6px;height:18px;overflow:hidden">
+                  <div style="background:linear-gradient(90deg,#be185d,#db2777);height:100%;width:${pct.toFixed(1)}%"></div>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+          <tr style="background:#be185d;color:#fff;font-weight:800">
+            <td colspan="2" style="padding:10px;border:1px solid #be185d">الإجمالي</td>
+            <td style="padding:10px;border:1px solid #be185d;text-align:center">${total}</td>
+            <td style="padding:10px;border:1px solid #be185d;text-align:center">100%</td>
+            <td style="padding:10px;border:1px solid #be185d"></td>
+          </tr>
+          </tbody>
+        </table>
+        
+        <div style="margin-top:20px;padding:14px;background:#f0fdfa;border-radius:10px;border-right:4px solid #0f766e">
+          <div style="font-weight:800;color:#0f766e;margin-bottom:6px">📌 ملاحظة</div>
+          <div style="font-size:12px;color:#134e4a;line-height:1.8">هذه الإحصائيات محدَّثة لتاريخ هذا التقرير وتعكس التوزيع الفعلي للحالات المسجَّلة بالجمعية. تُستخدم هذه البيانات لتوجيه الدعم الطبي والمالي للفئات الأكثر احتياجاً، ولتوعية الشركاء والممولين بطبيعة عمل الجمعية.</div>
+        </div>
+      </div>
+      ${getReportFooter()}
+    </div>`;
+  
+  openPrintWin(html, 'إحصائيات أنواع السرطان');
+}
 
 </script>
 
@@ -8511,6 +9187,66 @@ console.log('%c🌙 Dark Mode + 🔍 Search + 🔔 Notifications + 📊 Charts R
 <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" title="تبديل الوضع الليلي">
   🌙
 </button>
+
+<!-- MEDICAL EVENT MODAL -->
+<div class="modal-overlay" id="m-med-event">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-med-event-title">➕ إضافة حدث طبي</span>
+      <button class="modal-close" onclick="closeModal('m-med-event')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="med-event-patient-id">
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>نوع الحدث *</label>
+          <select id="med-event-type">
+            <option value="كيماوي">💉 كيماوي</option>
+            <option value="إشعاعي">☢️ إشعاعي</option>
+            <option value="عملية جراحية">🔪 عملية جراحية</option>
+            <option value="فحص">🔬 فحص</option>
+            <option value="تحليل">🧪 تحليل</option>
+            <option value="صور طبية">🩻 صور طبية (سكانر/رنين)</option>
+            <option value="استشارة">👨‍⚕️ استشارة</option>
+            <option value="علاج هرموني">💊 علاج هرموني</option>
+            <option value="مساعدة">🎁 مساعدة تلقاها</option>
+            <option value="أخرى">📋 أخرى</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>التاريخ *</label>
+          <input type="date" id="med-event-date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>العنوان / الملخص</label>
+        <input type="text" id="med-event-title-input" placeholder="مثال: الجلسة الثالثة من العلاج الكيماوي">
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الطبيب المعالج</label>
+          <input type="text" id="med-event-doctor" placeholder="د. ...">
+        </div>
+        <div class="form-group">
+          <label>المستشفى / المصحة</label>
+          <input type="text" id="med-event-hospital" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>التفاصيل والملاحظات</label>
+        <textarea id="med-event-desc" rows="3" placeholder="نتائج الفحص، الجرعة، ردود الفعل..."></textarea>
+      </div>
+      <div class="form-group finance-admin-only">
+        <label>التكلفة (اختياري - للمالية فقط)</label>
+        <input type="number" id="med-event-cost" min="0" placeholder="0">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-med-event')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveMedicalEvent()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
