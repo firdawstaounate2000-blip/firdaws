@@ -899,7 +899,7 @@ body.dark-mode .gs-result-item .gs-name {
 .id-card {
   width: 85mm;
   height: 55mm;
-  background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
+  background: linear-gradient(135deg, #d23c1e 0%, #b41e00 100%);
   border-radius: 4mm;
   position: relative;
   overflow: hidden;
@@ -907,15 +907,15 @@ body.dark-mode .gs-result-item .gs-name {
   direction: rtl;
   color: #fff;
   margin: 10mm auto;
-  box-shadow: 0 12px 30px rgba(15,118,110,0.35);
+  box-shadow: 0 12px 30px rgba(210,60,30,0.35);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   display: flex;
 }
 
 .id-card.friend-card {
-  background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
-  box-shadow: 0 12px 30px rgba(180,83,9,0.35);
+  background: linear-gradient(135deg, #15803d 0%, #005a00 100%);
+  box-shadow: 0 12px 30px rgba(0,90,0,0.35);
 }
 
 .id-card-deco {
@@ -2672,6 +2672,30 @@ window.installPWA = function() {
         <div class="form-group full"><label>رسالة الترحيب (الصفحة العامة)</label><textarea id="set-welcome" placeholder="رسالة ترحيب للمرضى في الصفحة العامة..."></textarea></div>
       </div>
       <button class="btn btn-primary" style="margin-top:14px" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+    </div>
+  </div>
+  
+  <!-- 📧 Email Test Card -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-header" style="background:linear-gradient(90deg,#dbeafe,#e0e7ff)">
+      <span class="card-title">📧 اختبار نظام البريد الإلكتروني</span>
+    </div>
+    <div class="card-pad">
+      <div style="background:#f1f5f9;padding:14px;border-radius:10px;margin-bottom:14px;font-size:13px;line-height:1.8">
+        <div style="font-weight:700;color:#0f172a;margin-bottom:6px">الإعدادات الحالية:</div>
+        <div>• Public Key: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#0d9488" id="email-status-pk">—</code></div>
+        <div>• Service ID: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#0d9488" id="email-status-sid">—</code></div>
+        <div>• Template ID: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#0d9488" id="email-status-tid">—</code></div>
+        <div>• إيميل المستلم: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#0d9488" id="email-status-em">—</code></div>
+        <div>• الحالة: <span id="email-status-enabled" style="font-weight:800">—</span></div>
+      </div>
+      <button class="btn btn-success" onclick="testEmailNow()" style="font-size:14px;padding:12px 28px">
+        📨 إرسال إيميل تجريبي
+      </button>
+      <div style="margin-top:14px;padding:12px;background:#fef3c7;border-radius:8px;font-size:12px;color:#78350f">
+        💡 افتح Console (F12) قبل الضغط لرؤية تفاصيل أي خطأ.<br>
+        💡 يمكنك أيضاً استخدام اختصار <kbd style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #ccc">Ctrl + Shift + E</kbd>
+      </div>
     </div>
   </div>
 </div>
@@ -5337,6 +5361,26 @@ function switchReportTab(tab) {
 
 // ===================== SETTINGS =====================
 function renderSettings(){
+  // Update email status display
+  setTimeout(() => {
+    try {
+      const pk = document.getElementById('email-status-pk');
+      const sid = document.getElementById('email-status-sid');
+      const tid = document.getElementById('email-status-tid');
+      const em = document.getElementById('email-status-em');
+      const en = document.getElementById('email-status-enabled');
+      if (pk) pk.textContent = (emailjsConfig.publicKey || '—').substring(0, 8) + '...';
+      if (sid) sid.textContent = emailjsConfig.serviceId || '—';
+      if (tid) tid.textContent = emailjsConfig.templateId || '—';
+      if (em) em.textContent = emailjsConfig.adminEmail || '—';
+      if (en) {
+        en.innerHTML = EMAIL_NOTIFICATIONS_ENABLED 
+          ? '<span style="color:#16a34a">✅ مُفعَّل</span>' 
+          : '<span style="color:#dc2626">❌ معطَّل</span>';
+      }
+    } catch(e) {}
+  }, 100);
+
   document.getElementById('set-name').value=settings.name||'';
   document.getElementById('set-phone').value=settings.phone||'';
   document.getElementById('set-address').value=settings.address||'';
@@ -8655,11 +8699,25 @@ function tStatus(s) {
     };
     
     emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, params)
-      .then(function() {
-        console.log('📧 Email sent to admin for:', collection);
+      .then(function(response) {
+        console.log('%c📧 Email SENT for: ' + collection, 'background:#16a34a;color:#fff;padding:2px 8px;border-radius:3px', response);
       })
       .catch(function(e) {
-        console.log('Email send failed:', e && e.text || e);
+        console.error('%c❌ Email FAILED for: ' + collection, 'background:#dc2626;color:#fff;padding:2px 8px;border-radius:3px');
+        console.error('  Status:', e && e.status);
+        console.error('  Text:', e && e.text);
+        console.error('  Full error:', e);
+        console.error('  Params sent:', params);
+        // Show user-visible error in console for debugging
+        if (e && e.status === 422) {
+          console.error('  ⚠️ HINT: Template variables mismatch. Check template_wavanqb on EmailJS dashboard.');
+        } else if (e && e.status === 401) {
+          console.error('  ⚠️ HINT: Public key invalid or not authorized.');
+        } else if (e && e.status === 400) {
+          console.error('  ⚠️ HINT: Bad request - check Service ID and Template ID.');
+        } else if (e && e.status === 412) {
+          console.error('  ⚠️ HINT: Gmail API authentication issue. Reconnect Gmail in EmailJS dashboard.');
+        }
       });
   }
 
@@ -11149,8 +11207,8 @@ function getCertificatePrintCSS() {
     .cert-ref { font-size: 9px; color: #a16207; margin-top: 0.5mm; }
     .cert-qr { position: absolute; bottom: 12mm; left: 12mm; width: 18mm; height: 18mm; background: #fff; padding: 1.5mm; border: 1px solid #d97706; border-radius: 4px; }
     
-    .id-card { background: linear-gradient(135deg, #0f766e 0%, #065f46 100%); border-radius: 4mm; position: relative; overflow: hidden; direction: rtl; color: #fff; display: flex; }
-    .id-card.friend-card { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); }
+    .id-card { background: linear-gradient(135deg, #d23c1e 0%, #b41e00 100%); border-radius: 4mm; position: relative; overflow: hidden; direction: rtl; color: #fff; display: flex; }
+    .id-card.friend-card { background: linear-gradient(135deg, #15803d 0%, #005a00 100%); }
     .id-card-deco { position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; }
     .id-card-deco-2 { position: absolute; bottom: -40px; left: -40px; width: 120px; height: 120px; background: rgba(255,255,255,0.06); border-radius: 50%; }
     .id-card-photo { width: 32mm; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
@@ -11180,6 +11238,74 @@ function getCertificatePrintCSS() {
 }
 
 console.log('%c👥 Batch printing & card sizes ready', 'background:#7c3aed;color:#fff;padding:4px 10px;border-radius:4px');
+
+
+
+// ================================================================
+// 📧 TEST EMAIL — debug helper
+// ================================================================
+window.testEmailNow = function() {
+  if (!EMAIL_NOTIFICATIONS_ENABLED) {
+    alert('⚠️ الإيميلات غير مُفعَّلة في الكود');
+    return;
+  }
+  
+  if (typeof emailjs === 'undefined') {
+    alert('❌ مكتبة EmailJS لم تُحمَّل. تحقق من الاتصال بالإنترنت.');
+    return;
+  }
+  
+  const params = {
+    to_email:       emailjsConfig.adminEmail,
+    subject:        '🧪 إيميل تجريبي من نظام فردوس',
+    collection:     'اختبار',
+    change_type:    'تجربة',
+    item_count:     '1',
+    user_name:      currentUser?.name || currentUser?.username || 'مدير',
+    change_date:    new Date().toLocaleString('ar-MA'),
+    change_details: 'هذا إيميل اختباري للتأكد من عمل النظام. إذا وصلك هذا الإيميل، فالنظام يعمل بشكل صحيح! ✅',
+    org_name:       (typeof settings !== 'undefined' && settings.name) ? settings.name : 'جمعية فردوس'
+  };
+  
+  console.log('📧 Sending test email with params:', params);
+  
+  alert('⏳ جاري إرسال إيميل تجريبي إلى:\n' + emailjsConfig.adminEmail + '\n\nراقب Console (F12) للتفاصيل');
+  
+  emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, params)
+    .then(function(response) {
+      console.log('✅ Test email response:', response);
+      alert('✅ تم الإرسال بنجاح!\n\nالحالة: ' + response.status + ' ' + response.text + '\n\nتحقق من بريدك (و Spam) خلال دقيقة.');
+    })
+    .catch(function(e) {
+      console.error('❌ Test email error:', e);
+      let msg = '❌ فشل الإرسال!\n\n';
+      if (e && e.status) msg += 'كود الخطأ: ' + e.status + '\n';
+      if (e && e.text) msg += 'الرسالة: ' + e.text + '\n\n';
+      
+      if (e && e.status === 422) {
+        msg += '🔧 الحل: في EmailJS dashboard، افتح القالب template_wavanqb وتأكد أنه يحتوي على المتغيرات:\n{{to_email}} {{subject}} {{collection}} {{change_type}} {{user_name}} {{change_date}} {{change_details}} {{org_name}}\n\nوحقل "To Email" يجب أن يحتوي: {{to_email}}';
+      } else if (e && e.status === 401) {
+        msg += '🔧 الحل: Public Key غير صحيح أو غير مفعَّل.\nاذهب لـ Account → API Keys في EmailJS وتأكد من Key.';
+      } else if (e && e.status === 412) {
+        msg += '🔧 الحل: مشكلة في Gmail. اذهب لـ Email Services → service_xtkzs4q → Reconnect Gmail.';
+      } else if (e && e.status === 400) {
+        msg += '🔧 الحل: Service ID أو Template ID غير صحيح.\nتحقق من الإعدادات.';
+      } else {
+        msg += '🔧 افتح Console (F12) وانسخ الخطأ الكامل لي';
+      }
+      alert(msg);
+    });
+};
+
+// Add helpful keyboard shortcut: Ctrl+Shift+E
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+    e.preventDefault();
+    window.testEmailNow();
+  }
+});
+
+console.log('%c💡 اضغط Ctrl+Shift+E لإرسال إيميل تجريبي', 'background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:3px;font-weight:bold');
 
 </script>
 
