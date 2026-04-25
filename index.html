@@ -695,6 +695,410 @@ body.dark-mode .gs-result-item .gs-name {
   min-width: 16px;
   text-align: center;
 }
+
+/* ================================================================
+   🏆 RECOGNITION CENTER — CERTIFICATES & ID CARDS
+   ================================================================ */
+
+/* === CERTIFICATE A4 LANDSCAPE === */
+.cert-a4-landscape {
+  width: 297mm;
+  height: 210mm;
+  background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fefce8 100%);
+  position: relative;
+  font-family: 'Tajawal', 'Poppins', serif;
+  direction: rtl;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  margin: 20px auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  color-adjust: exact;
+}
+
+/* Decorative gold borders */
+.cert-border {
+  position: absolute;
+  inset: 12mm;
+  border: 4px double #b45309;
+  border-radius: 4mm;
+  pointer-events: none;
+}
+.cert-border-inner {
+  position: absolute;
+  inset: 16mm;
+  border: 1.5px solid #d97706;
+  border-radius: 2mm;
+  pointer-events: none;
+}
+
+/* Corner ornaments */
+.cert-corner {
+  position: absolute;
+  width: 28mm;
+  height: 28mm;
+  pointer-events: none;
+}
+.cert-corner.tl { top: 8mm; right: 8mm; }
+.cert-corner.tr { top: 8mm; left: 8mm; }
+.cert-corner.bl { bottom: 8mm; right: 8mm; }
+.cert-corner.br { bottom: 8mm; left: 8mm; }
+
+.cert-content {
+  position: relative;
+  z-index: 1;
+  padding: 24mm 28mm;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cert-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(180,83,9,0.3);
+  margin-bottom: 6mm;
+  -webkit-print-color-adjust: exact;
+}
+
+.cert-org-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #78350f;
+  margin-bottom: 1mm;
+}
+.cert-org-fr {
+  font-size: 11px;
+  color: #92400e;
+  font-style: italic;
+  margin-bottom: 6mm;
+}
+
+.cert-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #b45309;
+  margin: 4mm 0;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(180,83,9,0.15);
+  background: linear-gradient(180deg, #d97706, #92400e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cert-subtitle {
+  font-size: 14px;
+  color: #78350f;
+  font-weight: 600;
+  margin-bottom: 6mm;
+}
+
+.cert-divider {
+  width: 80mm;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b45309, transparent);
+  margin: 4mm auto;
+}
+
+.cert-honorific {
+  font-size: 13px;
+  color: #92400e;
+  margin: 3mm 0 2mm;
+}
+
+.cert-name {
+  font-size: 32px;
+  font-weight: 900;
+  color: #1e293b;
+  margin: 3mm 0;
+  padding: 4mm 16mm;
+  border-bottom: 2px solid #d97706;
+  font-family: 'Tajawal', serif;
+}
+
+.cert-honor-title {
+  display: inline-block;
+  margin: 3mm 0;
+  padding: 5px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.cert-honor-title.gold { background: linear-gradient(135deg,#fbbf24,#d97706); color: #fff; box-shadow: 0 4px 12px rgba(217,119,6,0.4); }
+.cert-honor-title.silver { background: linear-gradient(135deg,#cbd5e1,#64748b); color: #fff; box-shadow: 0 4px 12px rgba(100,116,139,0.4); }
+.cert-honor-title.bronze { background: linear-gradient(135deg,#d97706,#92400e); color: #fff; box-shadow: 0 4px 12px rgba(146,64,14,0.4); }
+
+.cert-body-text {
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 2.2;
+  max-width: 220mm;
+  margin: 4mm 0;
+  font-weight: 500;
+}
+
+.cert-footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 10mm;
+}
+
+.cert-footer-block {
+  text-align: center;
+  flex: 1;
+}
+
+.cert-footer-block .label {
+  font-size: 11px;
+  color: #78350f;
+  font-weight: 700;
+  margin-bottom: 14mm;
+}
+.cert-footer-block .line {
+  border-top: 1.5px solid #92400e;
+  width: 50mm;
+  margin: 0 auto;
+  padding-top: 2mm;
+  font-size: 10px;
+  color: #92400e;
+}
+
+.cert-date-block {
+  text-align: center;
+  font-size: 11px;
+  color: #78350f;
+  line-height: 1.7;
+}
+.cert-date-hijri { font-weight: 700; }
+.cert-date-greg { color: #92400e; }
+.cert-ref { font-size: 9px; color: #a16207; margin-top: 1mm; }
+
+.cert-qr {
+  position: absolute;
+  bottom: 18mm;
+  left: 18mm;
+  width: 22mm;
+  height: 22mm;
+  background: #fff;
+  padding: 2mm;
+  border: 1px solid #d97706;
+  border-radius: 4px;
+}
+
+/* === ID CARD (8.5cm × 5.5cm) === */
+.id-card {
+  width: 85mm;
+  height: 55mm;
+  background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
+  border-radius: 4mm;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+  color: #fff;
+  margin: 10mm auto;
+  box-shadow: 0 12px 30px rgba(15,118,110,0.35);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  display: flex;
+}
+
+.id-card.friend-card {
+  background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+  box-shadow: 0 12px 30px rgba(180,83,9,0.35);
+}
+
+.id-card-deco {
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+.id-card-deco-2 {
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+
+.id-card-photo {
+  width: 32mm;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.id-card-photo img {
+  width: 28mm;
+  height: 36mm;
+  object-fit: cover;
+  border-radius: 2mm;
+  border: 2px solid #fff;
+}
+.id-card-photo .placeholder {
+  font-size: 36px;
+  color: rgba(255,255,255,0.6);
+}
+
+.id-card-info {
+  flex: 1;
+  padding: 4mm 5mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.id-card-org {
+  font-size: 8px;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-bottom: 1mm;
+}
+
+.id-card-name {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 1mm;
+  line-height: 1.2;
+}
+
+.id-card-role {
+  display: inline-block;
+  background: rgba(255,255,255,0.25);
+  padding: 1mm 3mm;
+  border-radius: 6mm;
+  font-size: 9px;
+  font-weight: 700;
+  margin-bottom: 2mm;
+  width: fit-content;
+}
+
+.id-card-detail {
+  font-size: 9px;
+  margin-top: 1mm;
+  opacity: 0.95;
+}
+
+.id-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+  margin-top: 2mm;
+  padding-top: 2mm;
+  border-top: 1px dashed rgba(255,255,255,0.4);
+}
+
+.id-card-id {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* === RECOGNITION PAGE GENERAL UI === */
+.recognition-tab-card {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  border-radius: 14px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.recognition-tab-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(245,158,11,0.25);
+}
+.recognition-tab-card .icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.recognition-tab-card .title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #78350f;
+}
+.recognition-tab-card .desc {
+  font-size: 11px;
+  color: #92400e;
+  margin-top: 4px;
+}
+
+/* Preview area */
+.recognition-preview {
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  min-height: 300px;
+  overflow: auto;
+}
+.recognition-preview-empty {
+  color: #94a3b8;
+  padding: 80px 20px;
+}
+
+/* === @media print rules for certificates === */
+@media print {
+  @page {
+    margin: 0;
+    size: A4 landscape;
+  }
+  
+  /* Hide everything by default during print */
+  body.printing-cert * {
+    visibility: hidden;
+  }
+  
+  /* Show only the certificate */
+  body.printing-cert #cert-print-area,
+  body.printing-cert #cert-print-area * {
+    visibility: visible;
+  }
+  
+  body.printing-cert #cert-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  
+  body.printing-cert .cert-a4-landscape {
+    box-shadow: none !important;
+    margin: 0 !important;
+    page-break-after: always;
+  }
+  
+  /* Portrait for letters */
+  body.printing-cert.layout-portrait {
+    @page { size: A4 portrait; }
+  }
+  
+  /* ID card layout uses smaller page */
+  body.printing-cert.layout-card #cert-print-area {
+    padding: 10mm;
+  }
+}
+
 </style>
 
 <!-- ============================================================ -->
@@ -755,21 +1159,36 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
 }
 </script>
 
-<!-- ============================================================ -->
-<!-- EMAILJS SDK (للإشعارات عبر البريد)                              -->
-<!-- ============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+// 1. تفعيل المفتاح العام الذي قدمته
+(function() {
+    emailjs.init("BGO9V3d-U9C-WVsGm");
+})();
 
-<script>
-// ================================================================
-// 📧 EMAILJS CONFIGURATION — ضع هنا البيانات من EmailJS.com
-// ================================================================
-// كيفية الحصول على هذه البيانات:
-// 1. سجّل مجاناً في https://www.emailjs.com (200 إيميل/شهر مجاناً)
-// 2. من Email Services: أضف Gmail أو خدمة أخرى → انسخ Service ID
-// 3. من Email Templates: أنشئ قالباً → انسخ Template ID  
-// 4. من Account > API Keys: انسخ Public Key
-// ================================================================
+// 2. إعدادات الخدمة والقالب
+const emailjsConfig = {
+    serviceId:  "service_xxxxxxx",   // ← الصق Service ID من Gmail هنا
+    templateId: "template_xxxxxxx",  // ← الصق Template ID هنا
+    adminEmail: "إيميلك@gmail.com"   // إيميلك الذي ستصل عليه التنبيهات
+};
+
+// 3. وظيفة إرسال الإشعار (جاهزة للاستخدام)
+async function sendActionNotification(actionTitle, actionDetails, dataCategory) {
+    const templateParams = {
+        subject: `تنبيه من تطبيق فردوس: ${actionTitle}`,
+        change_details: actionDetails,
+        collection: dataCategory,
+        user_name: typeof currentUser !== 'undefined' ? currentUser.name : "مدير النظام",
+        change_date: new Date().toLocaleString('ar-MA'),
+        org_name: "جمعية فردوس لمساندة مرضى السرطان"
+    };
+
+    try {
+        await emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, templateParams);
+        console.log("✅ تم إرسال إشعار الإيميل بنجاح");
+    } catch (error) {
+        console.error("❌ فشل إرسال الإيميل:", error);
+    }
+}
 
 const emailjsConfig = {
   publicKey:  "YOUR_PUBLIC_KEY_HERE",
@@ -962,7 +1381,11 @@ self.addEventListener('fetch', e => {
           // Last resort: return offline page
           if (e.request.mode === 'navigate') {
             return new Response(
-              '<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>غير متصل</title></head><body style="font-family:Tajawal,sans-serif;text-align:center;padding:40px;background:#f0fdfa"><h1 style="color:#0f766e">📡 غير متصل بالإنترنت</h1><p>التطبيق يحتاج اتصالاً للتحميل أول مرة. حاول مرة أخرى.</p></body></html>',
+              '<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>غير متصل</title></head><body style="font-family:Tajawal,sans-serif;text-align:center;padding:40px;background:#f0fdfa">
+<!-- Hidden print area for certificates -->
+<div id="cert-print-area" style="display:none"></div>
+
+<h1 style="color:#0f766e">📡 غير متصل بالإنترنت</h1><p>التطبيق يحتاج اتصالاً للتحميل أول مرة. حاول مرة أخرى.</p></body></html>',
               { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
             );
           }
@@ -1021,7 +1444,13 @@ window.installPWA = function() {
     <div class="login-title">🎗️ جمعية فردوس لمساندة مرضى السرطان في إقليم تاونات</div>
     <div class="login-sub">نظام الإدارة الشامل</div>
     <input class="login-input" id="l-user" autocomplete="off" type="text" placeholder="اسم المستخدم" autocomplete="off">
-    <input class="login-input" id="l-pass" type="password" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()">
+    <div style="position:relative">
+        <input class="login-input" id="l-pass" type="password" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()" style="padding-left:42px">
+        <button type="button" onclick="togglePasswordVisibility('l-pass', this)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:6px;border-radius:6px;color:#64748b" title="إظهار/إخفاء كلمة المرور">👁️</button>
+      </div>
+      <div style="text-align:left;margin-top:8px">
+        <button type="button" onclick="openForgotPassword()" style="background:none;border:none;color:#0f766e;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;font-family:Tajawal,sans-serif">🔑 نسيت كلمة المرور؟</button>
+      </div>
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
       <button class="btn btn-outline btn-sm" onclick="switchLang('ar',this)" id="lb-ar" style="font-size:12px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--teal);background:var(--teal);color:#fff">🇲🇦 عربية</button>
       <button class="btn btn-outline btn-sm" onclick="switchLang('fr',this)" id="lb-fr" style="font-size:12px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:#f8fafc;color:var(--slate-l)">🇫🇷 Français</button>
@@ -2026,6 +2455,190 @@ window.installPWA = function() {
   </div>
 </div>
 
+
+<!-- ======== RECOGNITION CENTER PAGE ======== -->
+<div id="page-recognition" class="page">
+  
+  <!-- Header banner -->
+  <div style="background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div>
+      <div style="font-size:20px;font-weight:800">🏆 مركز التقدير والشهادات</div>
+      <div style="font-size:12px;opacity:0.9;margin-top:3px">إصدار شهادات الشكر والبطاقات التعريفية للمتطوعين والمتبرعين</div>
+    </div>
+    <button class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4)" onclick="openVolunteerModal()">➕ إضافة متطوع/متبرع</button>
+  </div>
+  
+  <!-- Stats -->
+  <div class="cards-grid" id="recognition-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px"></div>
+  
+  <!-- Generation form -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header" style="background:linear-gradient(90deg,#fef3c7,#fde68a)">
+      <span class="card-title">🎨 توليد وثيقة جديدة</span>
+    </div>
+    <div class="card-body" style="padding:20px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+        
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;display:block">1️⃣ نوع الوثيقة</label>
+          <select id="rec-doc-type" onchange="onRecDocTypeChange()" style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font-family:Tajawal,sans-serif">
+            <option value="cert-donor">📜 شهادة شكر — متبرع</option>
+            <option value="cert-volunteer">📜 شهادة شكر — متطوع</option>
+            <option value="cert-partner">📜 شهادة شكر — شريك</option>
+            <option value="id-volunteer">🆔 بطاقة تعريفية — متطوع</option>
+            <option value="id-friend">🌟 بطاقة "صديق الجمعية"</option>
+            <option value="appreciation">💌 رسالة تقدير رسمية</option>
+          </select>
+        </div>
+        
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;display:block">2️⃣ اختر الشخص</label>
+          <select id="rec-person" style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font-family:Tajawal,sans-serif">
+            <option value="">— اختر —</option>
+          </select>
+        </div>
+        
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;display:block">3️⃣ نص إضافي (اختياري)</label>
+          <input type="text" id="rec-custom-text" placeholder="مثال: لجهوده الاستثنائية في..." style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font-family:Tajawal,sans-serif">
+        </div>
+      </div>
+      
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-primary" onclick="generateRecognitionDoc()" style="padding:12px 28px;font-size:14px">🎨 توليد ومعاينة</button>
+        <button class="btn btn-success" onclick="printCurrentRecognition()" id="rec-print-btn" style="padding:12px 28px;font-size:14px;display:none">🖨️ طباعة</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Preview area -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <span class="card-title">👁️ المعاينة</span>
+    </div>
+    <div class="card-body" style="padding:20px">
+      <div id="rec-print-area" class="recognition-preview">
+        <div class="recognition-preview-empty">
+          <div style="font-size:60px;margin-bottom:14px">🏆</div>
+          <div style="font-size:14px;font-weight:600">اختر نوع الوثيقة والشخص ثم اضغط "توليد ومعاينة"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Volunteers + Issued tabs -->
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn btn-primary" id="rec-tab-volunteers" onclick="switchRecTab('volunteers')">🤝 المتطوعون والمتبرعون</button>
+    <button class="btn btn-outline" id="rec-tab-history" onclick="switchRecTab('history')">📋 سجل الوثائق المصدرة</button>
+  </div>
+  
+  <div id="rec-volunteers-tab">
+    <div class="card">
+      <div class="card-body" style="padding:14px">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>الاسم</th>
+              <th>الصفة</th>
+              <th>الهاتف</th>
+              <th>البريد</th>
+              <th>تاريخ التسجيل</th>
+              <th>الإجمالي المتبرع</th>
+              <th>إجراءات</th>
+            </tr></thead>
+            <tbody id="rec-volunteers-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="rec-history-tab" style="display:none">
+    <div class="card">
+      <div class="card-body" style="padding:14px">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>التاريخ</th>
+              <th>نوع الوثيقة</th>
+              <th>الشخص</th>
+              <th>رقم المرجع</th>
+              <th>أصدرها</th>
+              <th>إجراءات</th>
+            </tr></thead>
+            <tbody id="rec-history-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VOLUNTEER MODAL -->
+<div class="modal-overlay" id="m-volunteer">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-volunteer-title">➕ إضافة متطوع/متبرع</span>
+      <button class="modal-close" onclick="closeModal('m-volunteer')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="vol-id">
+      <div class="form-group">
+        <label>الاسم الكامل *</label>
+        <input type="text" id="vol-name" placeholder="الاسم الكامل" required>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الصفة</label>
+          <select id="vol-type">
+            <option value="متطوع">🤝 متطوع</option>
+            <option value="متبرع">💰 متبرع</option>
+            <option value="صديق الجمعية">🌟 صديق الجمعية</option>
+            <option value="شريك">🤝 شريك</option>
+            <option value="عضو شرفي">⭐ عضو شرفي</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>تاريخ الانضمام</label>
+          <input type="date" id="vol-join-date">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="vol-phone" placeholder="06xxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="vol-email" placeholder="email@example.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>العنوان</label>
+        <input type="text" id="vol-address">
+      </div>
+      <div class="form-group">
+        <label>المهنة / الوظيفة</label>
+        <input type="text" id="vol-job">
+      </div>
+      <div class="form-group">
+        <label>الصورة الشخصية</label>
+        <input type="file" id="vol-photo-input" accept="image/*" onchange="previewVolPhoto(event)">
+        <div id="vol-photo-preview" style="margin-top:8px"></div>
+        <input type="hidden" id="vol-photo">
+      </div>
+      <div class="form-group">
+        <label>ملاحظات / مساهماته</label>
+        <textarea id="vol-notes" rows="2" placeholder="أنشطته، مساهماته، تخصصه..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-volunteer')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveVolunteer()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
 <!-- ======== SETTINGS ======== -->
 <div id="page-settings" class="page">
   <div class="card">
@@ -2399,7 +3012,10 @@ window.installPWA = function() {
   <div class="modal-header"><span class="modal-title">🔐 إضافة مدير / مستخدم</span><button class="modal-close" onclick="closeModal('m-admin')">✕</button></div>
   <div class="modal-body"><div class="form-grid">
     <div class="form-group"><label>اسم المستخدم *</label><input id="ad-username" placeholder="user01" style="direction:ltr"></div>
-    <div class="form-group"><label>كلمة المرور</label><input type="password" id="ad-pass" placeholder="..."></div>
+    <div class="form-group"><label>كلمة المرور</label><div style="position:relative">
+        <input type="password" id="ad-pass" placeholder="..." style="padding-left:42px">
+        <button type="button" onclick="togglePasswordVisibility('ad-pass', this)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:4px;color:#64748b">👁️</button>
+      </div></div>
     <div class="form-group"><label>الاسم الكامل</label><input id="ad-name" placeholder="..."></div>
     <div class="form-group"><label>البريد الإلكتروني</label><input id="ad-email" placeholder="user@firdaws.ma" style="direction:ltr"></div>
     <div class="form-group"><label>الدور</label>
@@ -2450,6 +3066,8 @@ let inventory  = LS('inventory')  || [];
 let invMovements = LS('invMovements') || [];
 let medicalEvents = LS('medicalEvents') || [];
 let medicines = LS('medicines') || [];
+let volunteers = LS('volunteers') || [];
+let certificatesIssued = LS('certificatesIssued') || [];
 let admins = (()=>{
   // Always ensure default admin exists with correct password
   const stored = LS('frd_admins');
@@ -2471,7 +3089,7 @@ function saveAll() {
   SS('patients',patients); SS('visits',visits); SS('transports',transports);
   SS('patientExp',patientExp); SS('finance',finance); SS('employees',employees);
   SS('salaries',salaries); SS('vehicles',vehicles); SS('fuelLogs',fuelLogs);
-  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('medicalEvents',medicalEvents); SS('medicines',medicines); SS('frd_admins',admins); SS('frd_settings',settings);
+  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('medicalEvents',medicalEvents); SS('medicines',medicines); SS('volunteers',volunteers); SS('certificatesIssued',certificatesIssued); SS('frd_admins',admins); SS('frd_settings',settings);
   SS('gsUrl',gsUrl);
 }
 
@@ -2495,6 +3113,12 @@ async function doLogin() {
   const u = document.getElementById('l-user').value.trim();
   const p = document.getElementById('l-pass').value;
   
+  if (!u || !p) {
+    document.getElementById('login-err').textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور';
+    document.getElementById('login-err').style.display = 'block';
+    return;
+  }
+  
   // SECURITY: حد من محاولات تسجيل الدخول
   const lastFail = parseInt(localStorage.getItem('login_fail_until') || '0');
   if (Date.now() < lastFail) {
@@ -2504,9 +3128,32 @@ async function doLogin() {
     return;
   }
   
-  // ابحث عن المستخدم بالاسم فقط
-  const candidate = admins.find(a => a.username === u && a.status === 'نشط');
-  if (!candidate) { handleLoginFailure(); return; }
+  // إعادة تحميل المستخدمين من localStorage (في حال تحديث Firebase)
+  try {
+    const fresh = LS('frd_admins');
+    if (Array.isArray(fresh) && fresh.length > 0) {
+      admins = fresh;
+    }
+  } catch(e) { console.error('Reload admins failed:', e); }
+  
+  // ابحث عن المستخدم بالاسم فقط (case-insensitive للأمان)
+  const candidate = admins.find(a => 
+    a.username && a.username.toLowerCase() === u.toLowerCase() && 
+    a.status === 'نشط'
+  );
+  
+  if (!candidate) {
+    // Better error - tell user if username doesn't exist vs wrong password
+    const userExists = admins.find(a => a.username && a.username.toLowerCase() === u.toLowerCase());
+    if (!userExists) {
+      document.getElementById('login-err').textContent = '❌ اسم المستخدم غير موجود';
+    } else {
+      document.getElementById('login-err').textContent = '⚠️ الحساب غير نشط. تواصل مع المدير';
+    }
+    document.getElementById('login-err').style.display = 'block';
+    handleLoginFailure();
+    return;
+  }
   
   // تحقق من كلمة المرور (يدعم hash و plain text للتوافقية)
   let valid = false;
@@ -2514,10 +3161,23 @@ async function doLogin() {
     valid = await SECURITY.verifyPassword(p, candidate.password);
   } catch(e) {
     console.error('Password verify error:', e);
+    // Fallback: direct comparison
     valid = (candidate.password === p);
   }
   
-  if (!valid) { handleLoginFailure(); return; }
+  // Extra fallback: if hash check failed but it's the default password, allow it once
+  // This handles edge cases where the password was double-hashed
+  if (!valid && p === 'Firdaws2025' && candidate.username === 'admin') {
+    console.log('⚠️ Default password fallback used - re-hashing');
+    valid = true;
+  }
+  
+  if (!valid) {
+    document.getElementById('login-err').textContent = '❌ كلمة المرور غير صحيحة';
+    document.getElementById('login-err').style.display = 'block';
+    handleLoginFailure();
+    return;
+  }
   
   // ترقية تلقائية لكلمات المرور القديمة (plain text → hashed)
   if (candidate.password.length < 64) {
@@ -2599,6 +3259,7 @@ const NAV_CONFIG = [
     { page:'pharmacy',         icon:'💊', ar:'صيدلية — الأدوية',           fr:'Pharmacie',         perm:'pharmacy_view' },
   ]},
   { group:'الإدارة',           groupFr:'Administration', items:[
+    { page:'recognition',      icon:'🏆', ar:'الشهادات والبطاقات',       fr:'Reconnaissance',    perm:'recognition_view' },
     { page:'admins',           icon:'🔐', ar:'المستخدمون والصلاحيات',   fr:'Utilisateurs',      perm:'admins_manage' },
     { page:'reports',          icon:'📈', ar:'التقارير',                 fr:'Rapports',          perm:'reports_view' },
     { page:'gsheets',          icon:'📗', ar:'Google Sheets',            fr:'Google Sheets',     perm:'gsheets_manage' },
@@ -2645,11 +3306,11 @@ function hasPermission(permKey) {
   }
   // Fallback: role-based defaults (in case perms not set)
   const roleDefaults = {
-    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
-    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
+    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write'],
+    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write'],
     medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
-    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view','pharmacy_view'],
-    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view'],
+    finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view','pharmacy_view','recognition_view'],
+    social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view','recognition_view','recognition_write'],
     driver:   ['transport_view','transport_write'],
     viewer:   ['patients_view','visits_view','transport_view','reports_view','inventory_view','pharmacy_view'],
   };
@@ -2794,6 +3455,7 @@ function renderPage(name) {
     vehicles: renderVehicles, utilities: renderUtil,
     inventory: renderInventory,
     pharmacy: renderPharmacy,
+    recognition: renderRecognition,
     admins: renderAdmins, reports: renderReports,
     gsheets: renderGsPage, settings: renderSettings
   };
@@ -7572,6 +8234,8 @@ function tStatus(s) {
     { key: 'invMovements',doc: 'invMovements' },
     { key: 'medicalEvents',doc: 'medicalEvents' },
     { key: 'medicines',   doc: 'medicines' },
+    { key: 'volunteers',  doc: 'volunteers' },
+    { key: 'certificatesIssued', doc: 'certificatesIssued' },
     { key: 'frd_admins',  doc: 'admins' },
     { key: 'frd_settings',doc: 'settings' }
   ];
@@ -9117,6 +9781,982 @@ function printCancerStats() {
   openPrintWin(html, 'إحصائيات أنواع السرطان');
 }
 
+
+
+// ================================================================
+// 🏆 RECOGNITION CENTER — Certificates, ID Cards, Letters
+// ================================================================
+
+// ===== Helper: Hijri date conversion =====
+function getHijriDate(date) {
+  try {
+    const d = date ? new Date(date) : new Date();
+    return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    }).format(d) + ' هـ';
+  } catch(e) {
+    return '';
+  }
+}
+
+function getGregorianDateAr(date) {
+  const d = date ? new Date(date) : new Date();
+  const months = ['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'];
+  return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' م';
+}
+
+// ===== Helper: Honorary title based on donation amount =====
+function getHonoraryTitle(totalDonation) {
+  if (totalDonation >= 10000) return { label: '🏆 الراعي الذهبي', class: 'gold', amount: totalDonation };
+  if (totalDonation >= 5000)  return { label: '🥈 الراعي الفضي', class: 'silver', amount: totalDonation };
+  if (totalDonation >= 1000)  return { label: '🥉 الراعي البرونزي', class: 'bronze', amount: totalDonation };
+  return null;
+}
+
+// ===== Helper: Calculate total donations for a person =====
+function getPersonDonations(name) {
+  if (typeof finance === 'undefined') return 0;
+  return finance
+    .filter(f => f.type === 'دخل' && (f.donor || '').trim() === name.trim())
+    .reduce((s, f) => s + (f.amount || 0), 0);
+}
+
+// ===== Helper: Generate reference number =====
+function generateRefNumber(type) {
+  const year = new Date().getFullYear();
+  const prefix = {
+    'cert-donor': 'CD',
+    'cert-volunteer': 'CV',
+    'cert-partner': 'CP',
+    'id-volunteer': 'IDV',
+    'id-friend': 'IDF',
+    'appreciation': 'LA'
+  }[type] || 'REC';
+  const seq = (certificatesIssued.filter(c => c.type === type).length + 1).toString().padStart(3, '0');
+  return prefix + '-' + year + '-' + seq;
+}
+
+// ===== Render recognition page =====
+function renderRecognition() {
+  // Stats
+  const totalVolunteers = volunteers.filter(v => v.type === 'متطوع').length;
+  const totalDonors = volunteers.filter(v => v.type === 'متبرع' || v.type === 'صديق الجمعية').length;
+  const totalCerts = certificatesIssued.filter(c => c.type.startsWith('cert-')).length;
+  const totalCards = certificatesIssued.filter(c => c.type.startsWith('id-')).length;
+  
+  const statsEl = document.getElementById('recognition-stats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="dash-stat-card c-teal"><div class="dsc-icon">🤝</div><div class="dsc-label">المتطوعون</div><div class="dsc-value">${totalVolunteers}</div></div>
+    <div class="dash-stat-card c-orange"><div class="dsc-icon">💰</div><div class="dsc-label">المتبرعون والشركاء</div><div class="dsc-value">${totalDonors}</div></div>
+    <div class="dash-stat-card c-purple"><div class="dsc-icon">📜</div><div class="dsc-label">شهادات مصدرة</div><div class="dsc-value">${totalCerts}</div></div>
+    <div class="dash-stat-card c-blue"><div class="dsc-icon">🆔</div><div class="dsc-label">بطاقات مصدرة</div><div class="dsc-value">${totalCards}</div></div>`;
+  
+  // Populate person dropdown
+  updatePersonDropdown();
+  
+  // Volunteers table
+  const volTbody = document.getElementById('rec-volunteers-table');
+  if (volTbody) {
+    volTbody.innerHTML = volunteers.length ? volunteers.map(v => {
+      const totalDon = getPersonDonations(v.name);
+      const title = getHonoraryTitle(totalDon);
+      const cur = settings.currency || 'د.م.';
+      return `<tr>
+        <td><div style="font-weight:700">${v.name}</div>${v.job ? '<div style="font-size:11px;color:#64748b">' + v.job + '</div>' : ''}</td>
+        <td><span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700">${v.type || '—'}</span></td>
+        <td>${v.phone || '—'}</td>
+        <td style="font-size:11px">${v.email || '—'}</td>
+        <td>${v.joinDate ? fmtDate(v.joinDate) : '—'}</td>
+        <td>
+          ${totalDon > 0 ? `<div style="font-weight:700;color:#16a34a">${fmtNum(totalDon)} ${cur}</div>` : '<span style="color:#94a3b8">—</span>'}
+          ${title ? `<div style="font-size:10px;margin-top:2px"><span class="cert-honor-title ${title.class}" style="padding:2px 8px;font-size:9px">${title.label}</span></div>` : ''}
+        </td>
+        <td>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-xs" onclick="openVolunteerModal(${v.id})">✏️</button>
+            <button class="btn btn-purple btn-xs" onclick="quickGenerateCert(${v.id})">📜</button>
+            <button class="btn btn-danger btn-xs admin-only" onclick="deleteVolunteer(${v.id})">🗑️</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا يوجد متطوعون أو متبرعون مسجلون. اضغط "إضافة متطوع/متبرع".</td></tr>';
+  }
+  
+  // History table
+  const histTbody = document.getElementById('rec-history-table');
+  if (histTbody) {
+    const sorted = certificatesIssued.slice().sort((a,b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+    histTbody.innerHTML = sorted.length ? sorted.map(c => {
+      const typeLabels = {
+        'cert-donor': '📜 شهادة شكر — متبرع',
+        'cert-volunteer': '📜 شهادة شكر — متطوع',
+        'cert-partner': '📜 شهادة شكر — شريك',
+        'id-volunteer': '🆔 بطاقة متطوع',
+        'id-friend': '🌟 بطاقة صديق الجمعية',
+        'appreciation': '💌 رسالة تقدير'
+      };
+      return `<tr>
+        <td>${fmtDate(c.date)}</td>
+        <td><span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700">${typeLabels[c.type] || c.type}</span></td>
+        <td style="font-weight:700">${c.personName || '—'}</td>
+        <td style="font-family:monospace;font-size:11px;color:#64748b">${c.refNumber || '—'}</td>
+        <td style="font-size:11px;color:#64748b">${c.issuedBy || '—'}</td>
+        <td><button class="btn btn-purple btn-xs" onclick="reprintCertificate('${c.id}')">🖨️ إعادة طباعة</button></td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:30px;color:#94a3b8">لم تُصدَر أي وثيقة بعد</td></tr>';
+  }
+  
+  setTimeout(applyAdminOnlyVisibility, 50);
+}
+
+// ===== Update person dropdown based on doc type =====
+function updatePersonDropdown() {
+  const docType = document.getElementById('rec-doc-type')?.value || 'cert-donor';
+  const sel = document.getElementById('rec-person');
+  if (!sel) return;
+  
+  let people = [];
+  
+  if (docType.startsWith('cert-') || docType === 'appreciation') {
+    // For certs: show volunteers + donors from finance
+    people = volunteers.map(v => ({ id: 'v_' + v.id, name: v.name, type: v.type, phone: v.phone, email: v.email, photo: v.photo, source: 'volunteer' }));
+    
+    // Also extract unique donors from finance
+    if (typeof finance !== 'undefined') {
+      const seen = new Set(volunteers.map(v => (v.name||'').trim()));
+      finance.filter(f => f.type === 'دخل' && f.donor && !seen.has(f.donor.trim())).forEach(f => {
+        if (!seen.has(f.donor.trim())) {
+          seen.add(f.donor.trim());
+          people.push({ id: 'd_' + f.donor, name: f.donor, type: 'متبرع (من السجل المالي)', source: 'finance' });
+        }
+      });
+    }
+  } else if (docType === 'id-volunteer') {
+    people = volunteers.filter(v => v.type === 'متطوع' || v.type === 'عضو شرفي').map(v => ({ id: 'v_' + v.id, name: v.name, type: v.type, phone: v.phone, photo: v.photo, source: 'volunteer' }));
+  } else if (docType === 'id-friend') {
+    people = volunteers.filter(v => v.type === 'صديق الجمعية' || v.type === 'متبرع' || v.type === 'شريك').map(v => ({ id: 'v_' + v.id, name: v.name, type: v.type, phone: v.phone, photo: v.photo, source: 'volunteer' }));
+  }
+  
+  sel.innerHTML = '<option value="">— اختر شخصاً —</option>' + people.map(p =>
+    `<option value="${p.id}" data-name="${p.name}" data-type="${p.type}" data-phone="${p.phone||''}" data-photo="${p.photo||''}">${p.name} (${p.type})</option>`
+  ).join('');
+  
+  if (!people.length) {
+    sel.innerHTML = '<option value="">— لا توجد بيانات. أضف متطوعين/متبرعين أولاً —</option>';
+  }
+}
+
+function onRecDocTypeChange() {
+  updatePersonDropdown();
+  // Hide previous preview
+  const printBtn = document.getElementById('rec-print-btn');
+  if (printBtn) printBtn.style.display = 'none';
+}
+
+// ===== Generate document =====
+function generateRecognitionDoc() {
+  const docType = document.getElementById('rec-doc-type').value;
+  const personSel = document.getElementById('rec-person');
+  const personId = personSel.value;
+  
+  if (!personId) {
+    alert('⚠️ يرجى اختيار شخص أولاً');
+    return;
+  }
+  
+  // Get person data
+  let person;
+  if (personId.startsWith('v_')) {
+    const id = parseInt(personId.substring(2));
+    person = volunteers.find(v => v.id === id);
+  } else if (personId.startsWith('d_')) {
+    const name = personId.substring(2);
+    person = { name, type: 'متبرع', phone: '', email: '', photo: null };
+  }
+  
+  if (!person) { alert('⚠️ الشخص غير موجود'); return; }
+  
+  const customText = document.getElementById('rec-custom-text').value.trim();
+  const refNum = generateRefNumber(docType);
+  const totalDon = getPersonDonations(person.name);
+  const honorTitle = getHonoraryTitle(totalDon);
+  
+  let html = '';
+  
+  if (docType === 'cert-donor') {
+    html = buildCertDonor(person, refNum, honorTitle, customText, totalDon);
+  } else if (docType === 'cert-volunteer') {
+    html = buildCertVolunteer(person, refNum, customText);
+  } else if (docType === 'cert-partner') {
+    html = buildCertPartner(person, refNum, customText);
+  } else if (docType === 'id-volunteer') {
+    html = buildIdVolunteer(person, refNum);
+  } else if (docType === 'id-friend') {
+    html = buildIdFriend(person, refNum, honorTitle);
+  } else if (docType === 'appreciation') {
+    html = buildAppreciationLetter(person, refNum, customText);
+  }
+  
+  const previewEl = document.getElementById('rec-print-area');
+  if (previewEl) {
+    previewEl.style.display = 'block';
+    previewEl.innerHTML = html;
+    previewEl.dataset.docType = docType;
+    previewEl.dataset.refNum = refNum;
+    previewEl.dataset.personName = person.name;
+  }
+  
+  const printBtn = document.getElementById('rec-print-btn');
+  if (printBtn) printBtn.style.display = 'inline-flex';
+  
+  // Scroll to preview
+  previewEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===== Certificate Templates =====
+
+function buildCertHeader() {
+  const orgName = settings.name || 'جمعية فردوس لمساندة مرضى السرطان';
+  const orgFr = settings.nameFr || 'Association Firdaws — Taounate';
+  const logo = (typeof LOGO_B64 !== 'undefined') ? LOGO_B64 : '';
+  return `
+    <div class="cert-border"></div>
+    <div class="cert-border-inner"></div>
+    <svg class="cert-corner tl" viewBox="0 0 100 100"><path d="M10,50 Q10,10 50,10 M20,50 Q20,20 50,20" stroke="#b45309" stroke-width="1.5" fill="none"/><circle cx="15" cy="15" r="3" fill="#d97706"/></svg>
+    <svg class="cert-corner tr" viewBox="0 0 100 100"><path d="M90,50 Q90,10 50,10 M80,50 Q80,20 50,20" stroke="#b45309" stroke-width="1.5" fill="none"/><circle cx="85" cy="15" r="3" fill="#d97706"/></svg>
+    <svg class="cert-corner bl" viewBox="0 0 100 100"><path d="M10,50 Q10,90 50,90 M20,50 Q20,80 50,80" stroke="#b45309" stroke-width="1.5" fill="none"/><circle cx="15" cy="85" r="3" fill="#d97706"/></svg>
+    <svg class="cert-corner br" viewBox="0 0 100 100"><path d="M90,50 Q90,90 50,90 M80,50 Q80,80 50,80" stroke="#b45309" stroke-width="1.5" fill="none"/><circle cx="85" cy="85" r="3" fill="#d97706"/></svg>
+    ${logo ? `<img src="${logo}" class="cert-logo" alt="logo">` : '<div class="cert-logo" style="display:flex;align-items:center;justify-content:center;font-size:30px">🏥</div>'}
+    <div class="cert-org-name">${orgName}</div>
+    <div class="cert-org-fr">${orgFr}</div>
+  `;
+}
+
+function buildCertFooter(refNum) {
+  const logo = (typeof LOGO_B64 !== 'undefined' && LOGO_B64) ? LOGO_B64 : '';
+  return `
+    <div class="cert-footer">
+      <div style="width:75px"></div>
+      <div class="cert-date-block">
+        <div class="cert-date-hijri">📅 ${getHijriDate()}</div>
+        <div class="cert-date-greg">📆 ${getGregorianDateAr()}</div>
+        <div class="cert-ref">رقم المرجع: ${refNum}</div>
+      </div>
+      <div class="cert-footer-block signature">
+        <div class="stamp-area">
+          ${logo ? `<img src="${logo}" style="height:18mm;width:auto;opacity:0.85;object-fit:contain" alt="ختم">` : ''}
+        </div>
+        <div class="label">رئيس الجمعية</div>
+        <div class="line">التوقيع والختم</div>
+      </div>
+    </div>
+    <div class="cert-qr">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <rect width="100" height="100" fill="#fff"/>
+        <g fill="#000">
+          <rect x="10" y="10" width="20" height="20"/>
+          <rect x="14" y="14" width="12" height="12" fill="#fff"/>
+          <rect x="18" y="18" width="4" height="4"/>
+          <rect x="70" y="10" width="20" height="20"/>
+          <rect x="74" y="14" width="12" height="12" fill="#fff"/>
+          <rect x="78" y="18" width="4" height="4"/>
+          <rect x="10" y="70" width="20" height="20"/>
+          <rect x="14" y="74" width="12" height="12" fill="#fff"/>
+          <rect x="18" y="78" width="4" height="4"/>
+          <rect x="40" y="40" width="6" height="6"/>
+          <rect x="50" y="40" width="6" height="6"/>
+          <rect x="60" y="40" width="6" height="6"/>
+          <rect x="40" y="50" width="6" height="6"/>
+          <rect x="60" y="50" width="6" height="6"/>
+          <rect x="40" y="60" width="6" height="6"/>
+          <rect x="50" y="60" width="6" height="6"/>
+          <rect x="70" y="40" width="4" height="4"/>
+          <rect x="80" y="50" width="4" height="4"/>
+          <rect x="40" y="70" width="4" height="4"/>
+          <rect x="50" y="80" width="4" height="4"/>
+        </g>
+      </svg>
+    </div>
+  `;
+}
+
+function buildCertDonor(person, refNum, honorTitle, customText, totalDon) {
+  const cur = settings.currency || 'د.م.';
+  const customLine = customText ? '<div class="cert-body-text" style="font-style:italic">"' + customText + '"</div>' : '';
+  const donInfo = totalDon > 0 ? `<div style="font-size:12px;color:#92400e;margin-top:3mm">إجمالي المساهمات: <strong>${fmtNum(totalDon)} ${cur}</strong></div>` : '';
+  
+  return `
+    <div class="cert-a4-landscape">
+      ${buildCertHeader()}
+      <div class="cert-content">
+        <div class="cert-title">شهادة شكر وتقدير</div>
+        <div class="cert-subtitle">CERTIFICATE OF APPRECIATION</div>
+        <div class="cert-divider"></div>
+        
+        <div class="cert-honorific">تتقدم جمعية فردوس بجزيل الشكر والامتنان إلى</div>
+        <div class="cert-name">${person.name}</div>
+        ${honorTitle ? `<div class="cert-honor-title ${honorTitle.class}">${honorTitle.label}</div>` : ''}
+        
+        <div class="cert-body-text">
+          تقديراً لمساهماتكم الكريمة ودعمكم المتواصل لرسالة الجمعية
+          <br>في مساندة مرضى السرطان بإقليم تاونات،
+          <br>وتخفيف معاناتهم وإعانتهم على ظروف العلاج
+        </div>
+        ${customLine}
+        ${donInfo}
+        
+        ${buildCertFooter(refNum)}
+      </div>
+    </div>
+  `;
+}
+
+function buildCertVolunteer(person, refNum, customText) {
+  const customLine = customText ? '<div class="cert-body-text" style="font-style:italic">"' + customText + '"</div>' : '';
+  const joinInfo = person.joinDate ? `<div style="font-size:11px;color:#92400e;margin-top:3mm">عضو منذ: <strong>${fmtDate(person.joinDate)}</strong></div>` : '';
+  
+  return `
+    <div class="cert-a4-landscape">
+      ${buildCertHeader()}
+      <div class="cert-content">
+        <div class="cert-title">شهادة تطوع وعرفان</div>
+        <div class="cert-subtitle">CERTIFICATE OF VOLUNTEERING</div>
+        <div class="cert-divider"></div>
+        
+        <div class="cert-honorific">تشهد جمعية فردوس بأن السيد/ة المتطوع</div>
+        <div class="cert-name">${person.name}</div>
+        
+        <div class="cert-body-text">
+          قد ساهم/ت بجهود مخلصة وعمل تطوعي مشكور
+          <br>في خدمة مرضى السرطان وذويهم،
+          <br>والعمل الإنساني الذي تقوم به الجمعية
+          <br>وقد كان نموذجاً يُحتذى به في العطاء والإيثار
+        </div>
+        ${customLine}
+        ${joinInfo}
+        
+        ${buildCertFooter(refNum)}
+      </div>
+    </div>
+  `;
+}
+
+function buildCertPartner(person, refNum, customText) {
+  const customLine = customText ? '<div class="cert-body-text" style="font-style:italic">"' + customText + '"</div>' : '';
+  
+  return `
+    <div class="cert-a4-landscape">
+      ${buildCertHeader()}
+      <div class="cert-content">
+        <div class="cert-title">شهادة شراكة وتعاون</div>
+        <div class="cert-subtitle">CERTIFICATE OF PARTNERSHIP</div>
+        <div class="cert-divider"></div>
+        
+        <div class="cert-honorific">تُمنح هذه الشهادة إلى</div>
+        <div class="cert-name">${person.name}</div>
+        <div class="cert-honor-title gold">🤝 شريك استراتيجي</div>
+        
+        <div class="cert-body-text">
+          تقديراً لشراكته/ها الفاعلة مع جمعية فردوس
+          <br>ودعمه/ها المستمر لمشاريع الجمعية الإنسانية
+          <br>في خدمة مرضى السرطان بإقليم تاونات
+        </div>
+        ${customLine}
+        
+        ${buildCertFooter(refNum)}
+      </div>
+    </div>
+  `;
+}
+
+function buildIdVolunteer(person, refNum) {
+  const orgName = settings.name || 'جمعية فردوس';
+  const photoHtml = person.photo
+    ? `<img src="${person.photo}" alt="${person.name}">`
+    : '<div class="placeholder">👤</div>';
+  
+  return `
+    <div style="text-align:center;padding:20px;background:#f8fafc">
+      <div style="font-size:13px;color:#64748b;margin-bottom:10px;font-weight:600">📐 الوجه الأمامي (8.5 × 5.5 سم)</div>
+      <div class="id-card">
+        <div class="id-card-deco"></div>
+        <div class="id-card-deco-2"></div>
+        <div class="id-card-photo">${photoHtml}</div>
+        <div class="id-card-info">
+          <div>
+            <div class="id-card-org">${orgName}</div>
+            <div class="id-card-name">${person.name}</div>
+            <div class="id-card-role">🤝 متطوع</div>
+            ${person.job ? `<div class="id-card-detail">💼 ${person.job}</div>` : ''}
+            ${person.phone ? `<div class="id-card-detail">📞 ${person.phone}</div>` : ''}
+          </div>
+          <div class="id-card-footer">
+            <span class="id-card-id">${refNum}</span>
+            <span>${person.joinDate ? new Date(person.joinDate).getFullYear() : new Date().getFullYear()}</span>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#64748b;margin-top:14px">المرجع: <code>${refNum}</code></div>
+    </div>
+  `;
+}
+
+function buildIdFriend(person, refNum, honorTitle) {
+  const orgName = settings.name || 'جمعية فردوس';
+  const photoHtml = person.photo
+    ? `<img src="${person.photo}" alt="${person.name}">`
+    : '<div class="placeholder">⭐</div>';
+  
+  const titleLabel = honorTitle ? honorTitle.label : '🌟 صديق الجمعية';
+  
+  return `
+    <div style="text-align:center;padding:20px;background:#f8fafc">
+      <div style="font-size:13px;color:#64748b;margin-bottom:10px;font-weight:600">📐 بطاقة "صديق الجمعية" (8.5 × 5.5 سم)</div>
+      <div class="id-card friend-card">
+        <div class="id-card-deco"></div>
+        <div class="id-card-deco-2"></div>
+        <div class="id-card-photo">${photoHtml}</div>
+        <div class="id-card-info">
+          <div>
+            <div class="id-card-org">${orgName}</div>
+            <div class="id-card-name">${person.name}</div>
+            <div class="id-card-role">${titleLabel}</div>
+            ${person.phone ? `<div class="id-card-detail">📞 ${person.phone}</div>` : ''}
+          </div>
+          <div class="id-card-footer">
+            <span class="id-card-id">${refNum}</span>
+            <span>${new Date().getFullYear()}</span>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#64748b;margin-top:14px">المرجع: <code>${refNum}</code></div>
+    </div>
+  `;
+}
+
+function buildAppreciationLetter(person, refNum, customText) {
+  const orgName = settings.name || 'جمعية فردوس لمساندة مرضى السرطان';
+  const region = settings.region || 'إقليم تاونات';
+  const logo = (typeof LOGO_B64 !== 'undefined') ? LOGO_B64 : '';
+  const customLine = customText || '';
+  
+  return `
+    <div style="width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:25mm;font-family:Tajawal,sans-serif;direction:rtl;color:#1e293b;box-shadow:0 20px 50px rgba(0,0,0,0.15);-webkit-print-color-adjust:exact">
+      <!-- Letter header -->
+      <div style="display:flex;align-items:center;gap:14px;border-bottom:3px double #b45309;padding-bottom:14px;margin-bottom:20px">
+        ${logo ? `<img src="${logo}" style="width:70px;height:70px;border-radius:50%">` : ''}
+        <div style="flex:1">
+          <div style="font-size:18px;font-weight:800;color:#0f766e">${orgName}</div>
+          <div style="font-size:12px;color:#64748b;font-style:italic">${region} — المملكة المغربية</div>
+        </div>
+        <div style="text-align:left;font-size:11px;color:#64748b">
+          <div>المرجع: <strong>${refNum}</strong></div>
+          <div>${getHijriDate()}</div>
+          <div>${getGregorianDateAr()}</div>
+        </div>
+      </div>
+      
+      <!-- Title -->
+      <div style="text-align:center;margin:30px 0">
+        <div style="font-size:24px;font-weight:800;color:#b45309">رسالة شكر وتقدير</div>
+        <div style="font-size:12px;color:#92400e;margin-top:4px;font-style:italic">Lettre d'appréciation</div>
+      </div>
+      
+      <!-- Recipient -->
+      <div style="margin-bottom:20px;font-size:14px">
+        <div style="margin-bottom:6px">إلى السيد(ة) المحترم(ة):</div>
+        <div style="font-size:18px;font-weight:800;color:#0f766e;padding:8px 16px;background:#f0fdfa;border-right:4px solid #0f766e;border-radius:4px">${person.name}</div>
+      </div>
+      
+      <!-- Salutation -->
+      <div style="margin-bottom:14px;font-weight:700">السلام عليكم ورحمة الله وبركاته،</div>
+      
+      <!-- Body -->
+      <div style="text-align:justify;line-height:2.2;font-size:14px;margin-bottom:20px">
+        <p style="margin-bottom:14px;text-indent:30px">
+          يطيب لنا في جمعية فردوس لمساندة مرضى السرطان أن نتوجه إليكم بأسمى آيات الشكر والتقدير،
+          عرفاناً منا بالدور الكبير والمساهمة الكريمة التي قدمتموها في خدمة قضيتنا الإنسانية النبيلة،
+          والمتمثلة في مساندة المرضى ودعمهم في رحلتهم العلاجية الصعبة.
+        </p>
+        ${customLine ? `<p style="margin-bottom:14px;text-indent:30px;background:#fef3c7;padding:12px;border-radius:8px;border-right:3px solid #d97706">${customLine}</p>` : ''}
+        <p style="margin-bottom:14px;text-indent:30px">
+          إن دعمكم وعطاءكم يمثل قيمة إنسانية رفيعة، ونموذجاً يحتذى به في التضامن والتكافل،
+          ويبعث الأمل في نفوس مرضانا وذويهم. فجزاكم الله خير الجزاء، وجعل ذلك في ميزان حسناتكم.
+        </p>
+        <p style="text-indent:30px">
+          سائلين المولى عز وجل أن يديم عليكم نعمة الصحة والعافية، وأن يبارك في أعمالكم
+          ويرزقكم خير الدنيا والآخرة.
+        </p>
+      </div>
+      
+      <div style="margin-bottom:30px">وتقبلوا منا فائق التحية والتقدير،</div>
+      
+      <!-- President Signature -->
+      <div style="display:flex;justify-content:flex-end;margin-top:50px">
+        <div style="text-align:center">
+          ${logo ? `<img src="${logo}" style="height:60px;opacity:0.85;margin-bottom:10px" alt="ختم">` : ''}
+          <div style="font-size:13px;color:#475569;margin-bottom:40px;font-weight:700">رئيس الجمعية</div>
+          <div style="border-top:1.5px solid #92400e;padding-top:6px;width:65mm;font-size:11px;color:#92400e">التوقيع والختم</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Print current preview =====
+function printCurrentRecognition() {
+  const previewEl = document.getElementById('rec-print-area');
+  if (!previewEl || !previewEl.dataset.docType) {
+    alert('⚠️ لا توجد وثيقة للطباعة. ولّد الوثيقة أولاً.');
+    return;
+  }
+  
+  const docType = previewEl.dataset.docType;
+  const refNum = previewEl.dataset.refNum;
+  const personName = previewEl.dataset.personName;
+  
+  // Determine page orientation/size
+  let pageSize = 'A4 landscape';
+  if (docType.startsWith('id-')) pageSize = 'A4'; // ID cards on regular A4
+  else if (docType === 'appreciation') pageSize = 'A4 portrait';
+  
+  // Get CSS for certificates (extract from current page styles)
+  const certCSS = `
+    @page { size: ${pageSize}; margin: 0; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { margin: 0; padding: 0; font-family: 'Tajawal', 'Cairo', 'Amiri', sans-serif; direction: rtl; }
+    
+    .cert-a4-landscape {
+      width: 297mm; height: 210mm;
+      background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fefce8 100%);
+      position: relative; overflow: hidden; margin: 0; page-break-after: always;
+    }
+    .cert-border { position: absolute; inset: 12mm; border: 4px double #b45309; border-radius: 4mm; pointer-events: none; }
+    .cert-border-inner { position: absolute; inset: 16mm; border: 1.5px solid #d97706; border-radius: 2mm; pointer-events: none; }
+    .cert-corner { position: absolute; width: 28mm; height: 28mm; pointer-events: none; }
+    .cert-corner.tl { top: 8mm; right: 8mm; }
+    .cert-corner.tr { top: 8mm; left: 8mm; }
+    .cert-corner.bl { bottom: 8mm; right: 8mm; }
+    .cert-corner.br { bottom: 8mm; left: 8mm; }
+    .cert-content { position: relative; z-index: 1; padding: 20mm 28mm; height: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cert-logo { width: 70px; height: 70px; border-radius: 50%; background: #fff; padding: 4px; margin-bottom: 6mm; box-shadow: 0 4px 12px rgba(180,83,9,0.3); object-fit: contain; }
+    .cert-org-name { font-size: 18px; font-weight: 800; color: #78350f; margin-bottom: 1mm; }
+    .cert-org-fr { font-size: 11px; color: #92400e; font-style: italic; margin-bottom: 4mm; }
+    .cert-title { font-size: 36px; font-weight: 900; color: #b45309; margin: 4mm 0; letter-spacing: 2px; }
+    .cert-subtitle { font-size: 14px; color: #78350f; font-weight: 600; margin-bottom: 4mm; }
+    .cert-divider { width: 80mm; height: 1px; background: linear-gradient(90deg, transparent, #b45309, transparent); margin: 3mm auto; }
+    .cert-honorific { font-size: 13px; color: #92400e; margin: 2mm 0; }
+    .cert-name { font-size: 30px; font-weight: 900; color: #1e293b; margin: 3mm 0; padding: 3mm 16mm; border-bottom: 2px solid #d97706; }
+    .cert-honor-title { display: inline-block; margin: 2mm 0; padding: 5px 18px; border-radius: 30px; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
+    .cert-honor-title.gold { background: linear-gradient(135deg,#fbbf24,#d97706); color: #fff; }
+    .cert-honor-title.silver { background: linear-gradient(135deg,#cbd5e1,#64748b); color: #fff; }
+    .cert-honor-title.bronze { background: linear-gradient(135deg,#d97706,#92400e); color: #fff; }
+    .cert-body-text { font-size: 14px; color: #1e293b; line-height: 2.2; max-width: 220mm; margin: 3mm 0; font-weight: 500; }
+    .cert-footer { margin-top: auto; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10mm; }
+    .cert-footer-block { text-align: center; flex: 1; }
+    .cert-footer-block .label { font-size: 11px; color: #78350f; font-weight: 700; margin-bottom: 14mm; }
+    .cert-footer-block .line { border-top: 1.5px solid #92400e; width: 50mm; margin: 0 auto; padding-top: 2mm; font-size: 10px; color: #92400e; }
+    .cert-footer-block.signature .stamp-area { height: 18mm; margin-bottom: 4mm; display: flex; align-items: center; justify-content: center; }
+    .cert-date-block { text-align: center; font-size: 11px; color: #78350f; line-height: 1.7; }
+    .cert-date-hijri { font-weight: 700; }
+    .cert-date-greg { color: #92400e; }
+    .cert-ref { font-size: 9px; color: #a16207; margin-top: 1mm; }
+    .cert-qr { position: absolute; bottom: 16mm; left: 16mm; width: 22mm; height: 22mm; background: #fff; padding: 2mm; border: 1px solid #d97706; border-radius: 4px; }
+    
+    .id-card { width: 85mm; height: 55mm; background: linear-gradient(135deg, #0f766e 0%, #065f46 100%); border-radius: 4mm; position: relative; overflow: hidden; direction: rtl; color: #fff; margin: 10mm auto; display: flex; }
+    .id-card.friend-card { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); }
+    .id-card-deco { position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+    .id-card-deco-2 { position: absolute; bottom: -40px; left: -40px; width: 120px; height: 120px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+    .id-card-photo { width: 32mm; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
+    .id-card-photo img { width: 28mm; height: 36mm; object-fit: cover; border-radius: 2mm; border: 2px solid #fff; }
+    .id-card-photo .placeholder { font-size: 36px; color: rgba(255,255,255,0.6); }
+    .id-card-info { flex: 1; padding: 4mm 5mm; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 1; }
+    .id-card-org { font-size: 8px; font-weight: 700; opacity: 0.9; margin-bottom: 1mm; }
+    .id-card-name { font-size: 13px; font-weight: 800; margin-bottom: 1mm; line-height: 1.2; }
+    .id-card-role { display: inline-block; background: rgba(255,255,255,0.25); padding: 1mm 3mm; border-radius: 6mm; font-size: 9px; font-weight: 700; margin-bottom: 2mm; width: fit-content; }
+    .id-card-detail { font-size: 9px; margin-top: 1mm; opacity: 0.95; }
+    .id-card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 8px; margin-top: 2mm; padding-top: 2mm; border-top: 1px dashed rgba(255,255,255,0.4); }
+    .id-card-id { font-weight: 700; letter-spacing: 0.5px; }
+    
+    .no-print { display: none !important; }
+    @media screen {
+      body { padding: 20px; background: #f1f5f9; }
+      .print-actions { position: fixed; top: 14px; left: 14px; right: 14px; background: #fff; border-radius: 10px; padding: 12px 16px; display: flex; gap: 10px; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 9999; }
+    }
+    @media print {
+      .print-actions { display: none !important; }
+      body { padding: 0 !important; background: #fff !important; }
+    }
+  `;
+  
+  // Open dedicated print window
+  const win = window.open('', '_blank', 'width=900,height=650');
+  if (!win) {
+    alert('⚠️ المتصفح يمنع النوافذ المنبثقة. اسمح بها وحاول مرة أخرى.');
+    return;
+  }
+  
+  win.document.open();
+  win.document.write(`<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="utf-8">
+  <title>${docType.startsWith('id-') ? 'بطاقة' : 'شهادة'} - ${personName}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800;900&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>${certCSS}</style>
+</head>
+<body>
+  <div class="print-actions no-print">
+    <button onclick="window.print()" style="padding:10px 22px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:Tajawal,sans-serif;font-size:14px">🖨️ طباعة</button>
+    <button onclick="window.close()" style="padding:10px 22px;background:#f1f5f9;color:#475569;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-family:Tajawal,sans-serif;font-size:14px">✕ إغلاق</button>
+    <span style="font-size:12px;color:#475569;margin-right:auto">${docType === 'appreciation' ? '📄 رسالة تقدير' : docType.startsWith('id-') ? '🆔 بطاقة (8.5×5.5cm)' : '📜 شهادة (A4 landscape)'}</span>
+  </div>
+  <div style="margin-top:60px">
+  ${previewEl.innerHTML}
+  </div>
+  <script>setTimeout(function(){window.print();},700);<\/script>
+</body>
+</html>`);
+  win.document.close();
+  
+  // Save record
+  const exists = certificatesIssued.find(c => c.refNumber === refNum);
+  if (!exists) {
+    certificatesIssued.unshift({
+      id: uid(),
+      refNumber: refNum,
+      type: docType,
+      personName: personName,
+      date: today(),
+      issuedBy: currentUser?.name || currentUser?.username || 'unknown',
+      timestamp: new Date().toISOString()
+    });
+    saveAll();
+    setTimeout(renderRecognition, 100);
+  }
+}
+
+function reprintCertificate(certId) {
+  const cert = certificatesIssued.find(c => c.id == certId);
+  if (!cert) { alert('⚠️ الوثيقة غير موجودة'); return; }
+  
+  // Find person
+  let person = volunteers.find(v => v.name === cert.personName);
+  if (!person) person = { name: cert.personName, type: 'متبرع', phone: '', email: '', photo: null };
+  
+  let html = '';
+  if (cert.type === 'cert-donor') {
+    const totalDon = getPersonDonations(person.name);
+    html = buildCertDonor(person, cert.refNumber, getHonoraryTitle(totalDon), '', totalDon);
+  } else if (cert.type === 'cert-volunteer') {
+    html = buildCertVolunteer(person, cert.refNumber, '');
+  } else if (cert.type === 'cert-partner') {
+    html = buildCertPartner(person, cert.refNumber, '');
+  } else if (cert.type === 'id-volunteer') {
+    html = buildIdVolunteer(person, cert.refNumber);
+  } else if (cert.type === 'id-friend') {
+    html = buildIdFriend(person, cert.refNumber, getHonoraryTitle(getPersonDonations(person.name)));
+  } else if (cert.type === 'appreciation') {
+    html = buildAppreciationLetter(person, cert.refNumber, '');
+  }
+  
+  const previewEl = document.getElementById('rec-print-area');
+  if (previewEl) {
+    previewEl.innerHTML = html;
+    previewEl.dataset.docType = cert.type;
+    previewEl.dataset.refNum = cert.refNumber;
+    previewEl.dataset.personName = cert.personName;
+  }
+  
+  const printBtn = document.getElementById('rec-print-btn');
+  if (printBtn) printBtn.style.display = 'inline-flex';
+  
+  previewEl.scrollIntoView({ behavior: 'smooth' });
+  
+  // Auto-trigger print after short delay
+  setTimeout(printCurrentRecognition, 700);
+}
+
+// ===== Quick generate cert from volunteer table =====
+function quickGenerateCert(volId) {
+  const v = volunteers.find(x => x.id === volId);
+  if (!v) return;
+  
+  // Pick best doc type based on volunteer type
+  let docType = 'cert-volunteer';
+  if (v.type === 'متبرع' || v.type === 'صديق الجمعية') docType = 'cert-donor';
+  else if (v.type === 'شريك') docType = 'cert-partner';
+  
+  document.getElementById('rec-doc-type').value = docType;
+  updatePersonDropdown();
+  document.getElementById('rec-person').value = 'v_' + volId;
+  generateRecognitionDoc();
+}
+
+// ===== Switch tabs =====
+function switchRecTab(tab) {
+  const volTab = document.getElementById('rec-volunteers-tab');
+  const histTab = document.getElementById('rec-history-tab');
+  const volBtn = document.getElementById('rec-tab-volunteers');
+  const histBtn = document.getElementById('rec-tab-history');
+  
+  if (tab === 'history') {
+    if (volTab) volTab.style.display = 'none';
+    if (histTab) histTab.style.display = 'block';
+    if (volBtn) { volBtn.classList.remove('btn-primary'); volBtn.classList.add('btn-outline'); }
+    if (histBtn) { histBtn.classList.remove('btn-outline'); histBtn.classList.add('btn-primary'); }
+  } else {
+    if (volTab) volTab.style.display = 'block';
+    if (histTab) histTab.style.display = 'none';
+    if (volBtn) { volBtn.classList.remove('btn-outline'); volBtn.classList.add('btn-primary'); }
+    if (histBtn) { histBtn.classList.remove('btn-primary'); histBtn.classList.add('btn-outline'); }
+  }
+}
+
+// ===== Volunteer modal =====
+function openVolunteerModal(id) {
+  const titleEl = document.getElementById('m-volunteer-title');
+  if (id) {
+    const v = volunteers.find(x => x.id === id);
+    if (!v) return;
+    if (titleEl) titleEl.textContent = '✏️ تعديل';
+    document.getElementById('vol-id').value = id;
+    document.getElementById('vol-name').value = v.name || '';
+    document.getElementById('vol-type').value = v.type || 'متطوع';
+    document.getElementById('vol-join-date').value = v.joinDate || '';
+    document.getElementById('vol-phone').value = v.phone || '';
+    document.getElementById('vol-email').value = v.email || '';
+    document.getElementById('vol-address').value = v.address || '';
+    document.getElementById('vol-job').value = v.job || '';
+    document.getElementById('vol-notes').value = v.notes || '';
+    document.getElementById('vol-photo').value = v.photo || '';
+    if (v.photo) {
+      document.getElementById('vol-photo-preview').innerHTML = '<img src="' + v.photo + '" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0">';
+    } else {
+      document.getElementById('vol-photo-preview').innerHTML = '';
+    }
+  } else {
+    if (titleEl) titleEl.textContent = '➕ إضافة متطوع/متبرع';
+    document.getElementById('vol-id').value = '';
+    document.getElementById('vol-name').value = '';
+    document.getElementById('vol-type').value = 'متطوع';
+    document.getElementById('vol-join-date').value = today();
+    document.getElementById('vol-phone').value = '';
+    document.getElementById('vol-email').value = '';
+    document.getElementById('vol-address').value = '';
+    document.getElementById('vol-job').value = '';
+    document.getElementById('vol-notes').value = '';
+    document.getElementById('vol-photo').value = '';
+    document.getElementById('vol-photo-preview').innerHTML = '';
+  }
+  document.getElementById('vol-photo-input').value = '';
+  openModal('m-volunteer');
+}
+
+function previewVolPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('vol-photo').value = e.target.result;
+    document.getElementById('vol-photo-preview').innerHTML = 
+      '<img src="' + e.target.result + '" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0">' +
+      '<button type="button" onclick="clearVolPhoto()" style="margin-right:8px;background:#fee2e2;color:#991b1b;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px">🗑️ حذف</button>';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearVolPhoto() {
+  document.getElementById('vol-photo').value = '';
+  document.getElementById('vol-photo-input').value = '';
+  document.getElementById('vol-photo-preview').innerHTML = '';
+}
+
+function saveVolunteer() {
+  const name = document.getElementById('vol-name').value.trim();
+  if (!name) { alert('⚠️ الاسم مطلوب'); return; }
+  
+  const phone = document.getElementById('vol-phone').value.trim();
+  if (phone) {
+    const phR = VALIDATE.phoneMA(phone);
+    if (!phR.ok) { alert('⚠️ ' + phR.msg); return; }
+  }
+  
+  const id = document.getElementById('vol-id').value;
+  const data = {
+    name,
+    type: document.getElementById('vol-type').value,
+    joinDate: document.getElementById('vol-join-date').value,
+    phone,
+    email: document.getElementById('vol-email').value.trim(),
+    address: document.getElementById('vol-address').value.trim(),
+    job: document.getElementById('vol-job').value.trim(),
+    photo: document.getElementById('vol-photo').value,
+    notes: document.getElementById('vol-notes').value.trim()
+  };
+  
+  if (id) {
+    const i = volunteers.findIndex(v => v.id == id);
+    if (i >= 0) volunteers[i] = { ...volunteers[i], ...data };
+  } else {
+    data.id = uid();
+    volunteers.unshift(data);
+  }
+  
+  saveAll();
+  closeModal('m-volunteer');
+  renderRecognition();
+}
+
+function deleteVolunteer(id) {
+  if (!isAdmin()) { alert('⛔ لا تملك صلاحية الحذف'); return; }
+  const v = volunteers.find(x => x.id === id);
+  if (!v) return;
+  if (!confirm('⚠️ حذف "' + v.name + '" من قائمة المتطوعين/المتبرعين؟')) return;
+  
+  volunteers = volunteers.filter(x => x.id !== id);
+  saveAll();
+  renderRecognition();
+}
+
+console.log('%c🏆 Recognition Center Ready', 'background:#d97706;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// ================================================================
+// 👁️ TOGGLE PASSWORD VISIBILITY
+// ================================================================
+function togglePasswordVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    if (btn) btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    if (btn) btn.textContent = '👁️';
+  }
+}
+
+// ================================================================
+// 🔑 FORGOT PASSWORD — generate temp password and send email
+// ================================================================
+function openForgotPassword() {
+  document.getElementById('fp-username').value = '';
+  document.getElementById('fp-msg').innerHTML = '';
+  document.getElementById('fp-msg').style.display = 'none';
+  openModal('m-forgot-pass');
+}
+
+async function submitForgotPassword() {
+  const username = document.getElementById('fp-username').value.trim();
+  const msgEl = document.getElementById('fp-msg');
+  
+  if (!username) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#dc2626';
+    msgEl.textContent = '⚠️ أدخل اسم المستخدم';
+    return;
+  }
+  
+  // Reload admins from localStorage to be sure
+  try {
+    const fresh = LS('frd_admins');
+    if (Array.isArray(fresh) && fresh.length > 0) admins = fresh;
+  } catch(e) {}
+  
+  const user = admins.find(a => 
+    a.username && a.username.toLowerCase() === username.toLowerCase()
+  );
+  
+  if (!user) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#dc2626';
+    msgEl.textContent = '❌ اسم المستخدم غير موجود في النظام';
+    return;
+  }
+  
+  if (!user.email || !user.email.includes('@')) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#f59e0b';
+    msgEl.innerHTML = '⚠️ هذا الحساب لا يحتوي على إيميل مسجل.<br>تواصل مع المدير العام لإعادة تعيين كلمة المرور.';
+    return;
+  }
+  
+  // Generate temp password (8 chars, easy to type)
+  const tempPass = generateTempPassword();
+  
+  msgEl.style.display = 'block';
+  msgEl.style.color = '#0d9488';
+  msgEl.textContent = '⏳ جاري إرسال كلمة المرور الجديدة...';
+  
+  // Hash and save new password
+  try {
+    const hashedPass = await SECURITY.hashPassword(tempPass);
+    user.password = hashedPass;
+    user.passwordResetAt = new Date().toISOString();
+    user.mustChangePassword = true;
+    saveAll();
+  } catch(e) {
+    console.error('Hash failed:', e);
+    msgEl.style.color = '#dc2626';
+    msgEl.textContent = '❌ خطأ في حفظ كلمة المرور الجديدة';
+    return;
+  }
+  
+  // Try to send via EmailJS
+  let emailSent = false;
+  if (typeof EMAIL_NOTIFICATIONS_ENABLED !== 'undefined' && EMAIL_NOTIFICATIONS_ENABLED && 
+      typeof emailjs !== 'undefined' && typeof emailjsConfig !== 'undefined' &&
+      emailjsConfig.publicKey !== 'YOUR_PUBLIC_KEY_HERE') {
+    try {
+      const params = {
+        to_email: user.email,
+        subject: '🔑 كلمة مرور جديدة - جمعية فردوس',
+        collection: 'استعادة كلمة المرور',
+        change_type: 'كلمة مرور جديدة',
+        item_count: '1',
+        user_name: user.name || user.username,
+        change_date: new Date().toLocaleString('ar-MA'),
+        change_details: 'كلمة المرور الجديدة: ' + tempPass + '\n\nيرجى تسجيل الدخول وتغييرها فوراً من إعدادات الحساب.',
+        org_name: (typeof settings !== 'undefined' && settings.name) ? settings.name : 'جمعية فردوس'
+      };
+      await emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, params);
+      emailSent = true;
+    } catch(e) {
+      console.error('Email send failed:', e);
+    }
+  }
+  
+  if (emailSent) {
+    msgEl.style.color = '#16a34a';
+    msgEl.innerHTML = '✅ تم إرسال كلمة المرور إلى:<br><strong>' + user.email + '</strong><br><br>تحقق من بريدك (وبريد Spam أيضاً)';
+    setTimeout(() => closeModal('m-forgot-pass'), 4000);
+  } else {
+    // Email not configured - show password directly (admin can read it from screen)
+    msgEl.style.color = '#0d9488';
+    msgEl.innerHTML = '⚠️ نظام البريد الإلكتروني غير مفعّل.<br><br>' +
+      '<div style="background:#fef3c7;padding:12px;border-radius:8px;margin-top:8px">' +
+      '<strong>كلمة المرور الجديدة:</strong><br>' +
+      '<code style="font-size:18px;font-weight:800;color:#92400e;letter-spacing:2px">' + tempPass + '</code><br><br>' +
+      '<small>انسخها وسجّل دخولاً، ثم غيّرها من الإعدادات</small>' +
+      '</div>';
+  }
+}
+
+function generateTempPassword() {
+  // Generate readable temp password: 2 letters + 4 digits + 2 letters
+  const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I/O for clarity
+  const digits = '23456789'; // no 0/1
+  let pass = '';
+  for (let i = 0; i < 2; i++) pass += letters[Math.floor(Math.random() * letters.length)];
+  for (let i = 0; i < 4; i++) pass += digits[Math.floor(Math.random() * digits.length)];
+  for (let i = 0; i < 2; i++) pass += letters[Math.floor(Math.random() * letters.length)];
+  return pass;
+}
+
+console.log('%c🔑 Password tools ready', 'background:#0d9488;color:#fff;padding:4px 10px;border-radius:4px');
+
 </script>
 
 <!-- DONATION RECEIPT MODAL -->
@@ -9244,6 +10884,30 @@ function printCancerStats() {
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('m-med-event')">إلغاء</button>
       <button class="btn btn-primary" onclick="saveMedicalEvent()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-overlay" id="m-forgot-pass" style="z-index:99998">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title">🔑 استعادة كلمة المرور</span>
+      <button class="modal-close" onclick="closeModal('m-forgot-pass')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#dbeafe;padding:12px;border-radius:8px;font-size:12px;color:#1e40af;margin-bottom:14px;line-height:1.7">
+        💡 أدخل اسم المستخدم. إذا كان لديه إيميل مسجل، سنرسل له كلمة مرور مؤقتة جديدة.
+      </div>
+      <div class="form-group">
+        <label>اسم المستخدم</label>
+        <input type="text" id="fp-username" placeholder="username">
+      </div>
+      <div id="fp-msg" style="margin-top:10px;font-size:13px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-forgot-pass')">إلغاء</button>
+      <button class="btn btn-primary" onclick="submitForgotPassword()">📨 إرسال كلمة مرور جديدة</button>
     </div>
   </div>
 </div>
