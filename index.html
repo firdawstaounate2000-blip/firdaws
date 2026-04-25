@@ -1159,36 +1159,21 @@ if (FIREBASE_ENABLED && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
 }
 </script>
 
-// 1. تفعيل المفتاح العام الذي قدمته
-(function() {
-    emailjs.init("BGO9V3d-U9C-WVsGm");
-})();
+<!-- ============================================================ -->
+<!-- EMAILJS SDK (للإشعارات عبر البريد)                              -->
+<!-- ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-// 2. إعدادات الخدمة والقالب
-const emailjsConfig = {
-    serviceId:  "service_xxxxxxx",   // ← الصق Service ID من Gmail هنا
-    templateId: "template_xxxxxxx",  // ← الصق Template ID هنا
-    adminEmail: "إيميلك@gmail.com"   // إيميلك الذي ستصل عليه التنبيهات
-};
-
-// 3. وظيفة إرسال الإشعار (جاهزة للاستخدام)
-async function sendActionNotification(actionTitle, actionDetails, dataCategory) {
-    const templateParams = {
-        subject: `تنبيه من تطبيق فردوس: ${actionTitle}`,
-        change_details: actionDetails,
-        collection: dataCategory,
-        user_name: typeof currentUser !== 'undefined' ? currentUser.name : "مدير النظام",
-        change_date: new Date().toLocaleString('ar-MA'),
-        org_name: "جمعية فردوس لمساندة مرضى السرطان"
-    };
-
-    try {
-        await emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, templateParams);
-        console.log("✅ تم إرسال إشعار الإيميل بنجاح");
-    } catch (error) {
-        console.error("❌ فشل إرسال الإيميل:", error);
-    }
-}
+<script>
+// ================================================================
+// 📧 EMAILJS CONFIGURATION — ضع هنا البيانات من EmailJS.com
+// ================================================================
+// كيفية الحصول على هذه البيانات:
+// 1. سجّل مجاناً في https://www.emailjs.com (200 إيميل/شهر مجاناً)
+// 2. من Email Services: أضف Gmail أو خدمة أخرى → انسخ Service ID
+// 3. من Email Templates: أنشئ قالباً → انسخ Template ID  
+// 4. من Account > API Keys: انسخ Public Key
+// ================================================================
 
 const emailjsConfig = {
   publicKey:  "YOUR_PUBLIC_KEY_HERE",
