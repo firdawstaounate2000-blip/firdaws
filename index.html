@@ -1099,6 +1099,793 @@ body.dark-mode .gs-result-item .gs-name {
   }
 }
 
+
+/* ================================================================
+   🌐 PUBLIC LANDING PAGE — جمعية فردوس
+   ================================================================ */
+#public-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  overflow-y: auto;
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+}
+
+/* === NAVIGATION === */
+.pub-nav {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e2e8f0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.pub-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.pub-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pub-nav-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: #d23c1e;
+  line-height: 1;
+}
+.pub-nav-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.pub-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.pub-nav-links a {
+  padding: 8px 14px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.pub-nav-links a:hover {
+  background: #fef3c7;
+  color: #d23c1e;
+}
+.pub-nav-login {
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: Tajawal, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(210,60,30,0.3);
+}
+.pub-nav-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(210,60,30,0.4);
+}
+.pub-nav-mobile {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #475569;
+}
+
+/* === HERO === */
+.pub-hero {
+  position: relative;
+  min-height: 600px;
+  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #fff 100%);
+  overflow: hidden;
+  padding: 80px 24px;
+}
+.pub-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(210,60,30,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245,158,11,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(0,90,0,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.pub-hero-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.pub-hero-badge {
+  display: inline-block;
+  background: rgba(210,60,30,0.1);
+  color: #b41e00;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border: 1px solid rgba(210,60,30,0.2);
+}
+.pub-hero-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+.pub-hero-title span {
+  display: block;
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 8px;
+}
+.pub-hero-desc {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+.pub-hero-cta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+.pub-btn {
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-family: Tajawal, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.pub-btn-primary {
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(210,60,30,0.35);
+}
+.pub-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(210,60,30,0.45);
+}
+.pub-btn-outline {
+  background: rgba(255,255,255,0.9);
+  color: #0f172a;
+  border: 2px solid #cbd5e1;
+}
+.pub-btn-outline:hover {
+  border-color: #d23c1e;
+  color: #d23c1e;
+}
+.pub-hero-stats {
+  margin-top: 30px;
+}
+.pub-volunteers-row {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 50px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  gap: 4px;
+}
+.pub-vol-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: 3px solid #fff;
+  margin-left: -10px;
+  position: relative;
+  z-index: 1;
+}
+.pub-vol-circle:first-child { margin-left: 0; }
+.pub-vol-text {
+  margin-right: 12px;
+  font-size: 14px;
+  color: #475569;
+}
+.pub-vol-text strong { color: #d23c1e; font-weight: 800; }
+
+/* === SECTIONS === */
+.pub-section {
+  padding: 80px 24px;
+}
+.pub-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.pub-section-head {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.pub-section-tag {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.pub-section-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+.pub-section-sub {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+}
+.pub-bg-light { background: #f8fafc; }
+.pub-bg-light2 { background: #fefce8; }
+
+/* === FEATURE CARDS === */
+.pub-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.pub-feature-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pub-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+}
+.pub-feature-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.pub-feature-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+.pub-feature-card p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.7;
+  margin: 0;
+}
+.pub-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.pub-list li {
+  padding: 6px 0;
+  padding-right: 22px;
+  position: relative;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+}
+.pub-list li::before {
+  content: '✓';
+  position: absolute;
+  right: 0;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+/* === QUOTE === */
+.pub-quote {
+  margin-top: 50px;
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  border: 2px solid #fde68a;
+}
+.pub-quote-mark {
+  font-size: 80px;
+  color: #d23c1e;
+  line-height: 0.5;
+  margin-bottom: 20px;
+  font-family: Georgia, serif;
+}
+.pub-quote p {
+  font-size: 28px;
+  font-weight: 800;
+  color: #92400e;
+  margin: 0 0 8px;
+}
+.pub-quote span {
+  font-size: 13px;
+  color: #b45309;
+}
+
+/* === DONATE === */
+.pub-bg-orange {
+  background: linear-gradient(135deg, #d23c1e 0%, #b41e00 100%);
+  color: #fff;
+}
+.pub-donate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.pub-donate-card,
+.pub-donate-impact {
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  color: #0f172a;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+.pub-donate-impact {
+  background: linear-gradient(135deg, #15803d 0%, #005a00 100%);
+  color: #fff;
+}
+.pub-donate-icon {
+  font-size: 36px;
+  margin-bottom: 14px;
+}
+.pub-donate-card h3,
+.pub-donate-impact h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 20px;
+}
+.pub-bank-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.pub-bank-row:last-of-type { border-bottom: none; }
+.pub-bank-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.pub-bank-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.pub-rib {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: #f1f5f9;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.pub-donate-note {
+  margin-top: 16px;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.pub-donate-impact p {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.95;
+}
+.pub-impact-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 24px;
+}
+.pub-impact-stat {
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.pub-impact-num {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.pub-impact-label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* === ORG === */
+.pub-org-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.pub-org-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.pub-org-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+.pub-org-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.pub-org-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+.pub-org-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.pub-org-meta > div {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+.pub-org-meta strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #d23c1e;
+  margin-bottom: 4px;
+}
+.pub-org-meta span {
+  font-size: 11px;
+  color: #64748b;
+}
+.pub-org-members {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pub-member {
+  text-align: center;
+  flex: 0 0 auto;
+}
+.pub-member-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d23c1e, #b41e00);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 auto 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.pub-member-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.pub-member-role {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* === ACTIVITIES === */
+.pub-activity-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pub-activity-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+}
+.pub-activity-img {
+  height: 140px;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  position: relative;
+}
+.pub-activity-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.pub-activity-body { padding: 20px; }
+.pub-activity-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.pub-activity-body h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+.pub-activity-body p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+.pub-activity-row {
+  display: flex;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.pub-activity-row strong {
+  color: #475569;
+  margin-left: 6px;
+  min-width: 70px;
+}
+.pub-activity-row span { color: #0f172a; }
+
+/* === CONTACT === */
+.pub-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.pub-contact-info,
+.pub-contact-form {
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.pub-contact-info h3,
+.pub-contact-form h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 20px;
+}
+.pub-contact-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.pub-contact-item:last-child { border-bottom: none; }
+.pub-contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.pub-contact-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.pub-contact-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.pub-form-group {
+  margin-bottom: 14px;
+}
+.pub-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 6px;
+}
+.pub-form-group input,
+.pub-form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-family: Tajawal, sans-serif;
+  font-size: 14px;
+  background: #f8fafc;
+  transition: border-color 0.2s;
+}
+.pub-form-group input:focus,
+.pub-form-group textarea:focus {
+  outline: none;
+  border-color: #d23c1e;
+  background: #fff;
+}
+
+/* === PATIENT PORTAL === */
+.pub-bg-teal {
+  background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+}
+.pub-portal-box {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+.pub-portal-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.pub-portal-search input {
+  flex: 1;
+  padding: 14px 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  font-family: Tajawal, sans-serif;
+  font-size: 14px;
+}
+.pub-portal-search input:focus {
+  outline: none;
+  border-color: #0f766e;
+}
+.pub-portal-search button {
+  background: linear-gradient(135deg, #0f766e, #134e4a);
+  color: #fff;
+  border: none;
+  padding: 0 26px;
+  border-radius: 10px;
+  font-family: Tajawal, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+.pub-portal-upcoming-title {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* === FOOTER === */
+.pub-footer {
+  background: #0f172a;
+  color: #cbd5e1;
+  padding: 40px 24px 24px;
+}
+.pub-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.pub-footer-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+.pub-footer-sub {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+.pub-footer-copy {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #334155;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  .pub-nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: #fff;
+    flex-direction: column;
+    padding: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    align-items: stretch;
+  }
+  .pub-nav-links.open { display: flex; }
+  .pub-nav-mobile { display: block; }
+  .pub-hero-title { font-size: 32px; }
+  .pub-section-title { font-size: 26px; }
+  .pub-donate-grid,
+  .pub-org-grid,
+  .pub-contact-grid { grid-template-columns: 1fr; }
+  .pub-section { padding: 60px 16px; }
+  .pub-hero { padding: 60px 16px; }
+}
+
 </style>
 
 <!-- ============================================================ -->
@@ -1442,7 +2229,7 @@ window.installPWA = function() {
       <button class="btn btn-outline btn-sm" onclick="switchLang('fr',this)" id="lb-fr" style="font-size:12px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:#f8fafc;color:var(--slate-l)">🇫🇷 Français</button>
     </div>
     <button class="login-btn" id="login-main-btn" onclick="doLogin()">🔐 دخول / Se connecter</button>
-    <button class="login-btn login-public" onclick="showPublic()">🌐 الصفحة العامة للمرضى</button>
+    <button class="login-btn login-public" onclick="showPublic()">🌐 الصفحة العامة للجمعية</button>
     <div class="login-err" id="login-err">❌ اسم المستخدم أو كلمة المرور خاطئة</div>
 
   </div>
@@ -1450,42 +2237,313 @@ window.installPWA = function() {
 
 <!-- ============ PUBLIC PATIENT PAGE ============ -->
 <div id="public-screen">
-  <div class="pub-header">
-    <div class="pub-title">🎗️ جمعية فردوس لمساندة مرضى السرطان في إقليم تاونات</div>
-    <div class="pub-sub">بوابة المريض - تتبع مواعيدك وزياراتك</div>
-  </div>
-  <div class="pub-content">
-    <div class="pub-card">
-      <h3>🔍 ابحث عن ملفك</h3>
-      <div class="pub-search">
-        <input id="pub-pid" placeholder="أدخل رقم هويتك الوطنية...">
-        <button onclick="searchPatientPublic()">بحث</button>
-      </div>
-      <div id="pub-result"></div>
-    </div>
-    <div class="pub-card" id="pub-upcoming-wrap">
-      <h3>📅 المواعيد القادمة للجمعية</h3>
-      <div id="pub-upcoming"></div>
-    </div>
-    <div class="pub-card">
-      <h3>ℹ️ معلومات التواصل</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" id="pub-contact-info">
-        <div style="background:#f0fdfa;border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px">📞</div>
-          <div style="font-size:12px;font-weight:700;color:var(--teal-d);margin-top:4px">الهاتف</div>
-          <div style="font-size:13px;color:var(--slate)" id="pub-phone">—</div>
-        </div>
-        <div style="background:#f0fdfa;border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px">📍</div>
-          <div style="font-size:12px;font-weight:700;color:var(--teal-d);margin-top:4px">العنوان</div>
-          <div style="font-size:13px;color:var(--slate)" id="pub-address-info">—</div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <nav class="pub-nav">
+    <div class="pub-nav-inner">
+      <div class="pub-nav-brand">
+        <img src="" id="pub-nav-logo" alt="logo" style="height:42px;width:auto;object-fit:contain">
+        <div>
+          <div class="pub-nav-title">جمعية فردوس</div>
+          <div class="pub-nav-sub">لمساندة مرضى السرطان</div>
         </div>
       </div>
+      <div class="pub-nav-links">
+        <a href="#hero" onclick="pubScrollTo('hero',event)">الرئيسية</a>
+        <a href="#about" onclick="pubScrollTo('about',event)">عن الجمعية</a>
+        <a href="#donate" onclick="pubScrollTo('donate',event)">تبرع</a>
+        <a href="#org" onclick="pubScrollTo('org',event)">الهيكلة</a>
+        <a href="#activities" onclick="pubScrollTo('activities',event)">الأنشطة</a>
+        <a href="#contact" onclick="pubScrollTo('contact',event)">اتصل بنا</a>
+        <button onclick="backToLogin()" class="pub-nav-login">🔐 دخول الموظفين</button>
+      </div>
+      <button class="pub-nav-mobile" onclick="document.querySelector('.pub-nav-links').classList.toggle('open')">☰</button>
     </div>
-  </div>
-  <div style="text-align:center;padding:16px">
-    <button class="btn btn-outline" onclick="backToLogin()">← العودة لتسجيل الدخول</button>
-  </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="pub-hero">
+    <div class="pub-hero-bg"></div>
+    <div class="pub-hero-content">
+      <div class="pub-hero-badge">📍 إقليم تاونات</div>
+      <h1 class="pub-hero-title">
+        أمل جديد في إقليم تاونات
+        <span>نحن معك في كل خطوة</span>
+      </h1>
+      <p class="pub-hero-desc">
+        تأسست جمعية فردوس لمساندة مرضى السرطان بإقليم تاونات لتقديم الدعم المعنوي والمادي،
+        وتعزيز ثقافة الكشف المبكر والوقاية.
+      </p>
+      <div class="pub-hero-cta">
+        <button class="pub-btn pub-btn-primary" onclick="pubScrollTo('donate',event)">💝 تبرع الآن</button>
+        <button class="pub-btn pub-btn-outline" onclick="pubScrollTo('about',event)">← اكتشف المزيد</button>
+      </div>
+      <div class="pub-hero-stats">
+        <div class="pub-volunteers-row">
+          <div class="pub-vol-circle" style="background:#d23c1e">🤝</div>
+          <div class="pub-vol-circle" style="background:#15803d">💚</div>
+          <div class="pub-vol-circle" style="background:#0ea5e9">🎗️</div>
+          <div class="pub-vol-circle" style="background:#f59e0b">⭐</div>
+          <div class="pub-vol-circle" style="background:#7c3aed">🌟</div>
+          <div class="pub-vol-text">
+            <strong>+1000</strong> مستفيد سنوياً في إقليم تاونات
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pub-hero-decor"></div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="pub-section pub-bg-light">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag">🎗️ عن الجمعية</span>
+        <h2 class="pub-section-title">نعمل بجد لنكون السند الأول</h2>
+        <p class="pub-section-sub">لمرضى السرطان في إقليم تاونات</p>
+      </div>
+      <div class="pub-grid-3">
+        <div class="pub-feature-card">
+          <div class="pub-feature-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">📅</div>
+          <h3>تاريخ التأسيس</h3>
+          <p>تأسست الجمعية بهدف ملء الفراغ في خدمات دعم مرضى السرطان بالإقليم، وتجسد روح التضامن التاوناتي.</p>
+        </div>
+        <div class="pub-feature-card">
+          <div class="pub-feature-icon" style="background:linear-gradient(135deg,#fed7aa,#fdba74)">🎯</div>
+          <h3>أهدافنا الأساسية</h3>
+          <ul class="pub-list">
+            <li>تقديم الدعم المادي والمعنوي للمرضى</li>
+            <li>تسهيل الولوج إلى مراكز العلاج الوطنية</li>
+            <li>تنظيم حملات توعوية وتشخيصية</li>
+            <li>المساهمة في توفير الأدوية والاحتياجات</li>
+          </ul>
+        </div>
+        <div class="pub-feature-card">
+          <div class="pub-feature-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">👁️</div>
+          <h3>رؤيتنا</h3>
+          <p>مجتمع واعٍ، ونظام صحي متكامل يساند الفئات الهشة في مواجهة هذا التحدي الكبير.</p>
+        </div>
+      </div>
+      <div class="pub-quote">
+        <div class="pub-quote-mark">"</div>
+        <p>فردوس.. لمسة رحمة</p>
+        <span>شعار الجمعية</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONATE SECTION -->
+  <section id="donate" class="pub-section pub-bg-orange">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag" style="background:#fee2e2;color:#991b1b">💝 تبرع</span>
+        <h2 class="pub-section-title" style="color:#fff">ساهم معنا في الأمل</h2>
+        <p class="pub-section-sub" style="color:#fef3c7">تبرعك الصغير يصنع فرقاً كبيراً في حياة شخص يكافح السرطان</p>
+      </div>
+      <div class="pub-donate-grid">
+        <div class="pub-donate-card">
+          <div class="pub-donate-icon">🏦</div>
+          <h3>معلومات الحساب البنكي</h3>
+          <div class="pub-bank-row">
+            <div class="pub-bank-label">اسم المؤسسة</div>
+            <div class="pub-bank-value" id="pub-bank-name">جمعية فردوس لمساندة مرضى السرطان</div>
+          </div>
+          <div class="pub-bank-row">
+            <div class="pub-bank-label">رقم الحساب (RIB)</div>
+            <div class="pub-bank-value pub-rib" id="pub-bank-rib">0000 0000 0000 0000 0000 0000</div>
+          </div>
+          <div class="pub-bank-row">
+            <div class="pub-bank-label">البنك</div>
+            <div class="pub-bank-value" id="pub-bank-bank">بريد المغرب - تاونات</div>
+          </div>
+          <div class="pub-donate-note">
+            ⚠️ يُرجى إرسال نسخة من وصل التحويل عبر الواتساب أو البريد الإلكتروني.
+          </div>
+        </div>
+        <div class="pub-donate-impact">
+          <h3>لماذا نتبرع؟</h3>
+          <p>تبرعاتكم تغطي تكاليف التنقل للمرضى المعوزين، تساهم في توفير الأدوية الأساسية، وتدعم تنظيم القوافل الطبية التشخيصية في المناطق النائية بالإقليم.</p>
+          <div class="pub-impact-stats">
+            <div class="pub-impact-stat">
+              <div class="pub-impact-num">100%</div>
+              <div class="pub-impact-label">تصل للمرضى</div>
+            </div>
+            <div class="pub-impact-stat">
+              <div class="pub-impact-num">+500</div>
+              <div class="pub-impact-label">مستفيد سنوياً</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORG SECTION -->
+  <section id="org" class="pub-section pub-bg-light">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag">👥 الهيكلة</span>
+        <h2 class="pub-section-title">هيكل تنظيمي متطوع</h2>
+        <p class="pub-section-sub">يهدف لتحقيق الشفافية والفعالية</p>
+      </div>
+      <div class="pub-org-grid">
+        <div class="pub-org-card">
+          <div class="pub-org-header">
+            <div class="pub-org-icon">⭐</div>
+            <h3>الأعضاء المؤسسون</h3>
+          </div>
+          <div class="pub-org-meta">
+            <div><strong>2020</strong><span>تاريخ التأسيس</span></div>
+            <div><strong>+3</strong><span>عضو نشط</span></div>
+          </div>
+          <div class="pub-org-members">
+            <div class="pub-member">
+              <div class="pub-member-avatar">م1</div>
+              <div class="pub-member-name">عضو مؤسس 1</div>
+            </div>
+            <div class="pub-member">
+              <div class="pub-member-avatar">م2</div>
+              <div class="pub-member-name">عضو مؤسس 2</div>
+            </div>
+            <div class="pub-member">
+              <div class="pub-member-avatar">م3</div>
+              <div class="pub-member-name">عضو مؤسس 3</div>
+            </div>
+          </div>
+        </div>
+        <div class="pub-org-card">
+          <div class="pub-org-header">
+            <div class="pub-org-icon" style="background:linear-gradient(135deg,#15803d,#005a00)">🗳️</div>
+            <h3>الأعضاء المنتخبون</h3>
+          </div>
+          <div class="pub-org-meta">
+            <div><strong>2023</strong><span>تاريخ التجديد</span></div>
+            <div><strong>+3</strong><span>عضو نشط</span></div>
+          </div>
+          <div class="pub-org-members">
+            <div class="pub-member">
+              <div class="pub-member-avatar" style="background:linear-gradient(135deg,#15803d,#005a00)">رئ</div>
+              <div class="pub-member-name">رئيس الجمعية</div>
+              <div class="pub-member-role">2023-2026</div>
+            </div>
+            <div class="pub-member">
+              <div class="pub-member-avatar" style="background:linear-gradient(135deg,#15803d,#005a00)">ك</div>
+              <div class="pub-member-name">الكاتب العام</div>
+              <div class="pub-member-role">2023-2026</div>
+            </div>
+            <div class="pub-member">
+              <div class="pub-member-avatar" style="background:linear-gradient(135deg,#15803d,#005a00)">أم</div>
+              <div class="pub-member-name">أمين المال</div>
+              <div class="pub-member-role">2023-2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITIES SECTION -->
+  <section id="activities" class="pub-section pub-bg-light2">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag">🎯 أنشطتنا</span>
+        <h2 class="pub-section-title">نحول نوايانا الحسنة</h2>
+        <p class="pub-section-sub">إلى خطوات ملموسة على أرض الواقع</p>
+      </div>
+      <div class="pub-grid-3" id="pub-activities-grid">
+        <!-- populated by renderPublicPage -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="pub-section pub-bg-light">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag">📞 اتصل بنا</span>
+        <h2 class="pub-section-title">لا تتردد في التواصل معنا</h2>
+        <p class="pub-section-sub">لأي استفسار أو طلب مساعدة</p>
+      </div>
+      <div class="pub-contact-grid">
+        <div class="pub-contact-info">
+          <h3>معلومات التواصل</h3>
+          <div class="pub-contact-item">
+            <div class="pub-contact-icon" style="background:#fee2e2;color:#dc2626">📞</div>
+            <div>
+              <div class="pub-contact-label">رقم الهاتف</div>
+              <div class="pub-contact-value" id="pub-phone">—</div>
+            </div>
+          </div>
+          <div class="pub-contact-item">
+            <div class="pub-contact-icon" style="background:#dcfce7;color:#15803d">📧</div>
+            <div>
+              <div class="pub-contact-label">البريد الإلكتروني</div>
+              <div class="pub-contact-value" id="pub-email">—</div>
+            </div>
+          </div>
+          <div class="pub-contact-item">
+            <div class="pub-contact-icon" style="background:#fef3c7;color:#d97706">📍</div>
+            <div>
+              <div class="pub-contact-label">العنوان</div>
+              <div class="pub-contact-value" id="pub-address-info">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="pub-contact-form">
+          <h3>راسلنا مباشرة</h3>
+          <div class="pub-form-group">
+            <label>الاسم الكامل</label>
+            <input type="text" id="pub-msg-name" placeholder="اسمك">
+          </div>
+          <div class="pub-form-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" id="pub-msg-phone" placeholder="06xxxxxxxx">
+          </div>
+          <div class="pub-form-group">
+            <label>رسالتك</label>
+            <textarea id="pub-msg-text" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
+          </div>
+          <button class="pub-btn pub-btn-primary" onclick="sendPublicMessage()" style="width:100%">📨 إرسال الرسالة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATIENT PORTAL (compact, as side-feature) -->
+  <section id="patient-portal" class="pub-section pub-bg-teal">
+    <div class="pub-section-inner">
+      <div class="pub-section-head">
+        <span class="pub-section-tag" style="background:rgba(255,255,255,.2);color:#fff">🔍 بوابة المريض</span>
+        <h2 class="pub-section-title" style="color:#fff">تتبع مواعيدك وزياراتك</h2>
+        <p class="pub-section-sub" style="color:#cffafe">أدخل رقم بطاقتك للوصول لملفك الطبي</p>
+      </div>
+      <div class="pub-portal-box">
+        <div class="pub-portal-search">
+          <input id="pub-pid" placeholder="أدخل رقم بطاقة التعريف الوطنية..." onkeydown="if(event.key==='Enter')searchPatientPublic()">
+          <button onclick="searchPatientPublic()">🔍 بحث</button>
+        </div>
+        <div id="pub-result"></div>
+        <div id="pub-upcoming-wrap">
+          <div class="pub-portal-upcoming-title">📅 المواعيد القادمة للجمعية</div>
+          <div id="pub-upcoming"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="pub-footer">
+    <div class="pub-footer-inner">
+      <div class="pub-footer-brand">
+        <img src="" id="pub-footer-logo" style="height:60px;width:auto;object-fit:contain;margin-bottom:10px">
+        <div class="pub-footer-name">جمعية فردوس</div>
+        <div class="pub-footer-sub">لمساندة مرضى السرطان - تاونات</div>
+      </div>
+      <div class="pub-footer-copy">
+        جميع الحقوق محفوظة © <span id="pub-year"></span> جمعية فردوس
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- ============ MAIN APP ============ -->
@@ -5404,21 +6462,168 @@ function saveSettings(){
 
 // ===================== PUBLIC PAGE =====================
 function renderPublicPage(){
-  document.getElementById('pub-phone').textContent=settings.phone||'غير محدد';
-  document.getElementById('pub-address-info').textContent=settings.address||'غير محدد';
-  const now=today();
-  const upcoming=visits.filter(v=>v.date>=now&&v.vstatus==='مجدولة').sort((a,b)=>a.date.localeCompare(b.date)).slice(0,8);
-  document.getElementById('pub-upcoming').innerHTML=upcoming.length?
-    `<div style="color:var(--slate-l);font-size:12px;margin-bottom:12px">المواعيد الطبية القادمة في الجمعية (لا تُعرض بيانات شخصية)</div>`+
-    upcoming.map((v,i)=>`<div class="timeline-item">
-      ${i<upcoming.length-1?'<div class="timeline-line"></div>':''}
-      <div class="timeline-dot"></div>
-      <div class="timeline-content">
-        <div class="timeline-date">${fmtDate(v.date)} ${v.time||''}</div>
-        <div class="timeline-title">${v.type}</div>
-        <div class="timeline-desc">${v.hospital||v.doctor?'📍 '+(v.hospital||'')+(v.doctor?' · د. '+v.doctor:''):'—'}</div>
+  // === Logos ===
+  const logo = (typeof LOGO_B64 !== 'undefined' && LOGO_B64) ? LOGO_B64 : '';
+  const navLogo = document.getElementById('pub-nav-logo');
+  const footerLogo = document.getElementById('pub-footer-logo');
+  if (navLogo && logo) navLogo.src = logo;
+  if (footerLogo && logo) footerLogo.src = logo;
+  
+  // === Year ===
+  const yearEl = document.getElementById('pub-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  
+  // === Contact ===
+  const phoneEl = document.getElementById('pub-phone');
+  if (phoneEl) phoneEl.textContent = settings.phone || '0660-727076';
+  const emailEl = document.getElementById('pub-email');
+  if (emailEl) emailEl.textContent = settings.email || 'assferdaouscancer20@gmail.com';
+  const addrEl = document.getElementById('pub-address-info');
+  if (addrEl) addrEl.textContent = settings.address || 'طريق الوحدة حي احجر مطاحن، تاونات، المغرب';
+  
+  // === Bank info (from settings) ===
+  const bankNameEl = document.getElementById('pub-bank-name');
+  if (bankNameEl) bankNameEl.textContent = settings.name || 'جمعية فردوس لمساندة مرضى السرطان';
+  const ribEl = document.getElementById('pub-bank-rib');
+  if (ribEl && settings.rib) ribEl.textContent = settings.rib;
+  const bankEl = document.getElementById('pub-bank-bank');
+  if (bankEl && settings.bank) bankEl.textContent = settings.bank;
+  
+  // === Activities (from real data if available, or sample) ===
+  const activitiesGrid = document.getElementById('pub-activities-grid');
+  if (activitiesGrid) {
+    // Sample activities - can be made dynamic later via settings
+    const activities = (settings.publicActivities && settings.publicActivities.length) 
+      ? settings.publicActivities 
+      : [
+        {
+          icon: '🏥',
+          tag: 'وقائي',
+          date: '2024-05-15',
+          time: '09:00',
+          title: 'حملة الكشف المبكر',
+          desc: 'رفع مستوى الوعي بأهمية الكشف المبكر وتقليل معدلات الوفيات.',
+          place: 'المركز الصحي تاونات',
+          target: 'النساء فوق 40 سنة',
+          color: '#fee2e2'
+        },
+        {
+          icon: '🚐',
+          tag: 'توعوي',
+          date: '2024-06-10',
+          time: '08:30',
+          title: 'قافلة طبية تضامنية',
+          desc: 'توفير فحوصات طبية وتوزيع الأدوية وتقديم الدعم النفسي.',
+          place: 'دوار احجر مطاحن',
+          target: 'سكان المناطق الجبلية',
+          color: '#dcfce7'
+        },
+        {
+          icon: '🎗️',
+          tag: 'تعليمي',
+          date: '2024-10-20',
+          time: '15:00',
+          title: 'ندوة حول سرطان الثدي',
+          desc: 'تثقيف المجتمع حول طرق الوقاية والعلاجات الحديثة.',
+          place: 'قاعة الندوات البلدية',
+          target: 'الشباب والطلبة',
+          color: '#fef3c7'
+        }
+      ];
+    activitiesGrid.innerHTML = activities.map(a => `
+      <div class="pub-activity-card">
+        <div class="pub-activity-img" style="background:linear-gradient(135deg,${a.color},#fff)">
+          ${a.icon}
+          <span class="pub-activity-tag">${a.tag}</span>
+        </div>
+        <div class="pub-activity-body">
+          <div class="pub-activity-meta">
+            <span>📅 ${a.date}</span>
+            <span>🕐 ${a.time}</span>
+          </div>
+          <h3>${a.title}</h3>
+          <p>${a.desc}</p>
+          <div class="pub-activity-row"><strong>المكان:</strong><span>${a.place}</span></div>
+          <div class="pub-activity-row"><strong>المستهدف:</strong><span>${a.target}</span></div>
+        </div>
       </div>
-    </div>`).join(''):`<p style="color:var(--slate-l);font-size:13px;padding:8px 0">لا توجد مواعيد قادمة</p>`;
+    `).join('');
+  }
+  
+  // === Patient portal upcoming visits ===
+  const now = today();
+  const upcoming = visits.filter(v => v.date >= now && v.vstatus === 'مجدولة')
+    .sort((a,b) => a.date.localeCompare(b.date)).slice(0,8);
+  const upEl = document.getElementById('pub-upcoming');
+  if (upEl) {
+    upEl.innerHTML = upcoming.length 
+      ? '<div style="color:#64748b;font-size:12px;margin-bottom:12px">المواعيد الطبية القادمة (لا تُعرض بيانات شخصية)</div>' +
+        upcoming.map((v,i) => `<div style="background:#f0fdfa;border-right:3px solid #0f766e;padding:12px 14px;border-radius:8px;margin-bottom:8px">
+          <div style="font-weight:700;color:#0f766e;font-size:13px">📅 ${fmtDate(v.date)} ${v.time || ''}</div>
+          <div style="font-weight:700;font-size:14px;margin-top:4px">${v.type}</div>
+          <div style="color:#64748b;font-size:12px;margin-top:2px">${v.hospital || v.doctor ? '📍 ' + (v.hospital || '') + (v.doctor ? ' · د. ' + v.doctor : '') : '—'}</div>
+        </div>`).join('')
+      : '<p style="color:#64748b;font-size:13px;padding:12px;text-align:center">لا توجد مواعيد قادمة حالياً</p>';
+  }
+}
+
+// Smooth scroll to section
+function pubScrollTo(id, event) {
+  if (event) event.preventDefault();
+  const el = document.getElementById(id);
+  if (el) {
+    const navHeight = 70;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - navHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  // Close mobile menu
+  const links = document.querySelector('.pub-nav-links');
+  if (links) links.classList.remove('open');
+}
+
+// Send public message (saves locally + email if configured)
+function sendPublicMessage() {
+  const name = document.getElementById('pub-msg-name').value.trim();
+  const phone = document.getElementById('pub-msg-phone').value.trim();
+  const text = document.getElementById('pub-msg-text').value.trim();
+  
+  if (!name || !text) {
+    alert('⚠️ يرجى إدخال الاسم والرسالة على الأقل');
+    return;
+  }
+  
+  // Save to public messages list (admin can review later)
+  if (typeof publicMessages === 'undefined') window.publicMessages = LS('publicMessages') || [];
+  publicMessages = LS('publicMessages') || [];
+  publicMessages.unshift({
+    id: uid(),
+    name, phone, text,
+    date: new Date().toISOString(),
+    read: false
+  });
+  SS('publicMessages', publicMessages);
+  
+  // Try send email notification
+  if (typeof EMAIL_NOTIFICATIONS_ENABLED !== 'undefined' && EMAIL_NOTIFICATIONS_ENABLED && typeof emailjs !== 'undefined') {
+    try {
+      emailjs.send(emailjsConfig.serviceId, emailjsConfig.templateId, {
+        to_email: emailjsConfig.adminEmail,
+        subject: '📨 رسالة جديدة من الموقع — ' + name,
+        collection: 'الموقع العام',
+        change_type: 'رسالة من زائر',
+        item_count: '1',
+        user_name: name + (phone ? ' (' + phone + ')' : ''),
+        change_date: new Date().toLocaleString('ar-MA'),
+        change_details: text,
+        org_name: settings.name || 'جمعية فردوس'
+      }).catch(e => console.log('Email failed:', e));
+    } catch(e) { console.error(e); }
+  }
+  
+  alert('✅ تم إرسال رسالتك بنجاح!\nسنتواصل معك في أقرب وقت ممكن.');
+  document.getElementById('pub-msg-name').value = '';
+  document.getElementById('pub-msg-phone').value = '';
+  document.getElementById('pub-msg-text').value = '';
 }
 
 function searchPatientPublic(){
