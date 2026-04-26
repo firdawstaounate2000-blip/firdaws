@@ -119,14 +119,14 @@ tr:hover td{background:#f8fafc}
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:slideUp .2s ease}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:slideUp .2s ease}
 .modal-lg{max-width:820px}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
 .modal-title{font-size:15px;font-weight:800}
 .modal-close{width:28px;height:28px;border-radius:7px;border:none;background:#f1f5f9;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
-.modal-body{padding:22px}
-.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-body{padding:22px;overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;background:#fff;position:sticky;bottom:0;z-index:5}
 
 /* FORM */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -1886,6 +1886,304 @@ body.dark-mode .gs-result-item .gs-name {
   .pub-hero { padding: 60px 16px; }
 }
 
+
+/* ================================================================
+   📱 MOBILE OPTIMIZATIONS — تحسينات الموبايل الشاملة
+   ================================================================ */
+
+/* Modal on mobile: full-screen with sticky footer */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: stretch !important;
+  }
+  .modal {
+    max-width: 100% !important;
+    max-height: 100vh !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+  .modal-header {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+  }
+  .modal-title {
+    font-size: 15px !important;
+  }
+  .modal-body {
+    padding: 14px 16px !important;
+    padding-bottom: 80px !important; /* Extra space so footer doesn't cover content */
+  }
+  .modal-footer {
+    padding: 10px 14px !important;
+    gap: 6px !important;
+    flex-direction: row !important;
+    justify-content: stretch !important;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  }
+  .modal-footer .btn {
+    flex: 1;
+    padding: 13px !important;
+    font-size: 14px !important;
+    min-height: 46px;
+  }
+  
+  /* Form fields - bigger touch targets */
+  .form-group { margin-bottom: 12px !important; }
+  .form-group label {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    padding: 10px 12px !important;
+    min-height: 44px;
+  }
+  textarea { min-height: 70px; }
+  
+  /* Form grid → stack on mobile */
+  .form-grid,
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  
+  /* Cards padding */
+  .card-header {
+    padding: 12px 14px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .card-title {
+    font-size: 14px !important;
+  }
+  .card-body, .card-pad {
+    padding: 12px !important;
+  }
+  
+  /* Buttons in card headers */
+  .card-header .btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    min-height: 36px;
+  }
+  
+  /* Sidebar - make sure it slides smoothly */
+  .sidebar { width: 85% !important; max-width: 320px; }
+  
+  /* Tables → card-style on mobile */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+  table { font-size: 12px !important; }
+  th, td { padding: 8px 6px !important; }
+  
+  /* Filter rows: stack */
+  .filter-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .filter-row > * { width: 100% !important; }
+  
+  /* Action buttons in tables */
+  .btn-xs {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    min-height: 32px;
+  }
+  
+  /* Dashboard grids stack */
+  .dash-grid-2,
+  .dash-grid-3,
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  
+  /* Stats cards - 2 columns minimum for compact view */
+  .cards-grid[id*="stats"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .dash-stat-card {
+    padding: 12px !important;
+  }
+  .dsc-icon { font-size: 22px !important; }
+  .dsc-value { font-size: 20px !important; }
+  .dsc-label { font-size: 10.5px !important; }
+  
+  /* Top bar - simpler */
+  .topbar {
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+  
+  /* Global search - smaller */
+  .global-search-box {
+    margin: 0 8px !important;
+    flex: 1;
+    max-width: none !important;
+  }
+  .global-search-box input {
+    padding: 8px 12px 8px 32px !important;
+    font-size: 13px !important;
+  }
+  
+  /* Tab buttons */
+  div[id*="-tab-"] button,
+  button[id*="-tab-"] {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    min-height: 36px;
+  }
+  
+  /* Recognition center buttons in row */
+  #rec-mode-single-btn, #rec-mode-batch-btn {
+    flex: 1;
+    font-size: 11px !important;
+    padding: 7px 8px !important;
+  }
+  
+  /* Hide PWA install button on mobile if too cramped */
+  #pwa-install-btn {
+    font-size: 11px !important;
+    padding: 5px 8px !important;
+  }
+  
+  /* Notifications panel */
+  .notifs-panel {
+    width: 90% !important;
+    max-width: 320px;
+  }
+  
+  /* Print/edit buttons - smaller text */
+  .btn { font-size: 13px; }
+  .btn-sm { font-size: 12px !important; padding: 7px 12px !important; }
+  
+  /* Patient detail modal sections */
+  .modal-body h4 { font-size: 13px !important; }
+  
+  /* Recognition preview - shrink to fit */
+  .recognition-preview {
+    padding: 10px !important;
+    overflow-x: auto;
+  }
+  .cert-a4-landscape {
+    transform: scale(0.32);
+    transform-origin: top center;
+    margin: 0 auto -135mm !important;
+  }
+  
+  /* ID cards in preview - smaller scale */
+  .id-card {
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+  
+  /* Appreciation letter preview */
+  .appr-letter {
+    transform: scale(0.45);
+    transform-origin: top center;
+    margin: 0 auto -160mm !important;
+  }
+  
+  /* Hide certain decorative elements */
+  .topbar .lang-switch { display: none !important; }
+  
+  /* Dark mode toggle - smaller, top corner */
+  .dark-toggle {
+    width: 40px !important;
+    height: 40px !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    font-size: 18px !important;
+  }
+  
+  /* Forms within modals - ensure no horizontal scroll */
+  .modal-body * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Login screen */
+  .login-card {
+    margin: 12px !important;
+    padding: 20px !important;
+  }
+  
+  /* Page padding consistent */
+  .page {
+    padding: 12px !important;
+  }
+  
+  /* Hide some stats in compact mode */
+  #pp-bank-rib-input { font-size: 13px !important; letter-spacing: 0 !important; }
+}
+
+/* Permissions checkboxes grid - stack on mobile */
+  #perm-checkboxes > div,
+  #perm-checkboxes-v2 > div,
+  #ad-perms > div {
+    grid-template-columns: 1fr !important;
+  }
+  #perm-checkboxes label,
+  #perm-checkboxes-v2 label,
+  #ad-perms label {
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+    min-height: 38px;
+  }
+  
+  /* Make the modal title visible */
+  #m-admin .modal-title,
+  #m-ad .modal-title {
+    font-size: 14px !important;
+  }
+  
+/* Very small screens (< 380px) */
+@media (max-width: 380px) {
+  .pub-hero-title { font-size: 24px !important; }
+  .pub-hero-desc { font-size: 14px !important; }
+  .pub-section-title { font-size: 22px !important; }
+  .modal-title { font-size: 14px !important; }
+  .cards-grid[id*="stats"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Better touch feedback */
+@media (hover: none) {
+  .btn:active, button:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+
+/* ================================================================
+   Hide Firebase sync indicator from UI (still works in background)
+   ================================================================ */
+#fb-sync-indicator {
+  display: none !important;
+}
+
 </style>
 
 <!-- ============================================================ -->
@@ -3137,7 +3435,7 @@ window.installPWA = function() {
 
 <div id="page-admins" class="page">
   <div class="card" style="margin-bottom:18px">
-    <div class="card-header"><span class="card-title">🔐 إدارة المستخدمين والصلاحيات</span><button class="btn btn-primary" onclick="openAdminModal()">➕ إضافة مدير</button></div>
+    <div class="card-header"><span class="card-title">🔐 إدارة المستخدمين والصلاحيات</span><button class="btn btn-primary" onclick="openAdminModalV2()">➕ إضافة مدير</button></div>
     <table><thead><tr><th>اسم المستخدم</th><th>الاسم الكامل</th><th>الصلاحية</th><th>تاريخ الإنشاء</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="admins-table"></tbody></table>
   </div>
   <div class="card">
@@ -4372,7 +4670,7 @@ window.installPWA = function() {
     <div class="form-group full" style="grid-column:1/-1;padding:10px 0 4px;font-size:12px;font-weight:800;color:var(--teal-d);border-bottom:2px solid var(--teal-l);display:flex;align-items:center;gap:6px">🛡️ صلاحيات تفصيلية / Permissions détaillées</div>
     <div class="form-group full" id="perm-checkboxes"><div style="color:var(--slate-l);font-size:12px">اختر الدور أولاً...</div></div>
   </div></div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('m-admin')">إلغاء</button><button class="btn btn-primary" onclick="saveAdmin()">💾 حفظ</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('m-admin')">إلغاء</button><button class="btn btn-primary" onclick="saveAdminV2()">💾 حفظ</button></div>
 </div>
 </div>
 
@@ -4611,7 +4909,6 @@ const NAV_CONFIG = [
     { page:'publicpage',       icon:'🌐', ar:'إدارة الصفحة العامة',      fr:'Page publique',     perm:'publicpage_manage' },
     { page:'admins',           icon:'🔐', ar:'المستخدمون والصلاحيات',   fr:'Utilisateurs',      perm:'admins_manage' },
     { page:'reports',          icon:'📈', ar:'التقارير',                 fr:'Rapports',          perm:'reports_view' },
-    { page:'gsheets',          icon:'📗', ar:'Google Sheets',            fr:'Google Sheets',     perm:'gsheets_manage' },
     { page:'settings',         icon:'⚙️', ar:'الإعدادات',               fr:'Paramètres',        perm:'settings_manage' },
   ]},
 ];
@@ -6169,26 +6466,13 @@ function renderUtil(){
 
 // ===================== ADMINS =====================
 function openAdminModal(){
-  ['ad-username','ad-pass','ad-name','ad-notes'].forEach(id=>{const el=document.getElementById(id);if(el) el.value='';});
-  document.getElementById('ad-role').value='admin';
-  document.getElementById('ad-status').value='نشط';
-  openModal('m-admin');
+  // Aliased to V2 (with hashing + email + permissions)
+  openAdminModalV2();
 }
 
 function saveAdmin(){
-  const username=document.getElementById('ad-username').value.trim();
-  const pass=document.getElementById('ad-pass').value;
-  if(!username||!pass){alert('اسم المستخدم وكلمة المرور مطلوبان');return;}
-  if(admins.find(a=>a.username===username)){alert('اسم المستخدم موجود بالفعل');return;}
-  const a={
-    id:uid(),username,password:pass,
-    name:document.getElementById('ad-name').value||username,
-    role:document.getElementById('ad-role').value,
-    status:document.getElementById('ad-status').value,
-    notes:document.getElementById('ad-notes').value,
-    created:today()
-  };
-  admins.push(a); saveAll(); closeModal('m-admin'); renderAdmins();
+  // Aliased to V2 (with hashing, email, permissions)
+  return saveAdminV2();
 }
 
 function deleteAdmin(id){
@@ -6197,10 +6481,41 @@ function deleteAdmin(id){
     alert('⛔ لا تملك صلاحية الحذف. تواصل مع الإدارة.');
     return;
   }
-
-  if(id===currentUser?.id||id===1){alert('لا يمكن حذف المستخدم الحالي أو المدير الرئيسي');return;}
-  if(!confirm('حذف هذا المستخدم؟')) return;
-  admins=admins.filter(a=>a.id!==id); saveAll(); renderAdmins();
+  
+  if(id === currentUser?.id || id === 1) {
+    alert('⛔ لا يمكن حذف المستخدم الحالي أو المدير الرئيسي');
+    return;
+  }
+  
+  // Reload admins from localStorage
+  try {
+    const fresh = LS('frd_admins');
+    if (Array.isArray(fresh) && fresh.length > 0) admins = fresh;
+  } catch(e) {}
+  
+  const target = admins.find(a => a.id === id);
+  if (!target) {
+    alert('⚠️ المستخدم غير موجود');
+    return;
+  }
+  
+  if(!confirm('⚠️ حذف المستخدم "' + (target.name || target.username) + '"؟\nلن تتمكن من استرجاعه.')) return;
+  
+  admins = admins.filter(a => a.id !== id);
+  
+  try {
+    saveAll();
+  } catch(e) {
+    console.error('saveAll failed:', e);
+    alert('⚠️ حدث خطأ في الحفظ');
+    return;
+  }
+  
+  try { renderAdmins(); } catch(e) { console.error('Render failed:', e); }
+  
+  if (typeof addNotification === 'function') {
+    addNotification('🗑️ تم حذف المستخدم: ' + (target.name || target.username), 'b-red');
+  }
 }
 
 function toggleAdminStatus(id){
@@ -7426,47 +7741,109 @@ async function saveAdminV2() {
   const status = (document.getElementById('ad-status')||document.getElementById('ad-st'))?.value||'نشط';
   const editId = window._editAdminId;
   
-  if(!username) { alert('اسم المستخدم مطلوب'); return; }
-  if(!editId && !pass) { alert('كلمة المرور مطلوبة'); return; }
-  if(!editId && admins.find(a=>a.username===username)) { alert('اسم المستخدم موجود مسبقاً'); return; }
+  if(!username) { alert('⚠️ اسم المستخدم مطلوب'); return; }
+  if(!editId && !pass) { alert('⚠️ كلمة المرور مطلوبة عند إضافة مستخدم جديد'); return; }
   
-  // SECURITY: قوة كلمة المرور
+  // Reload admins from localStorage to be sure
+  try {
+    const fresh = LS('frd_admins');
+    if (Array.isArray(fresh) && fresh.length > 0) admins = fresh;
+  } catch(e) {}
+  
+  // Check duplicate username (case-insensitive)
+  if(!editId && admins.find(a=>a.username && a.username.toLowerCase()===username.toLowerCase())) {
+    alert('⚠️ اسم المستخدم موجود مسبقاً');
+    return;
+  }
+  
+  // Password strength check
   if (pass) {
     if (pass.length < 8) {
       alert('⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل');
       return;
     }
-    const strength = SECURITY.passwordStrength(pass);
-    if (strength.score < 2) {
-      if (!confirm('⚠️ كلمة المرور ' + strength.label + '\nيُنصح بمزج أحرف كبيرة وصغيرة وأرقام ورموز.\n\nمتابعة؟')) return;
+    if (typeof SECURITY !== 'undefined' && SECURITY.passwordStrength) {
+      const strength = SECURITY.passwordStrength(pass);
+      if (strength.score < 2) {
+        if (!confirm('⚠️ كلمة المرور ' + strength.label + '\nيُنصح بمزج أحرف كبيرة وصغيرة وأرقام ورموز.\n\nهل تريد المتابعة؟')) return;
+      }
     }
   }
   
-  const perms = getCheckedPermsV2();
-  const data = { id: editId||uid(), username, name, email, role, status, perms, created: today() };
+  // Get permissions safely
+  let perms = {};
+  try {
+    perms = (typeof getCheckedPermsV2 === 'function') ? getCheckedPermsV2() : {};
+  } catch(e) { console.error('Get perms failed:', e); }
   
-  // SECURITY: تشفير كلمة المرور
+  const data = { 
+    id: editId || uid(), 
+    username, name, email, role, status, perms, 
+    created: today() 
+  };
+  
+  // Hash password (with safe fallback)
   if (pass) {
     try {
-      data.password = await SECURITY.hashPassword(pass);
+      if (typeof SECURITY !== 'undefined' && SECURITY.hashPassword) {
+        data.password = await SECURITY.hashPassword(pass);
+      } else {
+        data.password = pass;
+      }
     } catch(e) {
-      console.error('Hash failed:', e);
+      console.error('Hash failed, storing plain:', e);
       data.password = pass;
     }
   }
   
-  if(editId) {
-    const i = admins.findIndex(a=>a.id===editId);
-    if(i>=0) { data.created = admins[i].created; admins[i] = {...admins[i], ...data}; }
+  // Save admin
+  if (editId) {
+    const i = admins.findIndex(a => a.id === editId);
+    if (i >= 0) {
+      data.created = admins[i].created;
+      // Don't overwrite password if not provided
+      if (!pass && admins[i].password) data.password = admins[i].password;
+      admins[i] = { ...admins[i], ...data };
+    }
   } else {
     admins.push(data);
   }
   
-  saveAll();
+  // Save to localStorage + Firebase
+  try {
+    saveAll();
+  } catch(e) {
+    console.error('saveAll failed:', e);
+    alert('⚠️ حدث خطأ في الحفظ. حاول مرة أخرى.');
+    return;
+  }
+  
+  // Close modal - try multiple methods for reliability
   const modal = document.getElementById('m-admin') || document.getElementById('m-ad');
-  if(modal) { modal.classList.remove('open'); modal.style.display='none'; }
-  renderAdmins();
-  addNotification(`👤 مستخدم جديد: ${name}`, 'b-blue');
+  if(modal) { 
+    modal.classList.remove('open'); 
+    if(modal.style) modal.style.display='none'; 
+  }
+  
+  // Reset edit state
+  window._editAdminId = null;
+  
+  // Re-render
+  try { renderAdmins(); } catch(e) { console.error('Render failed:', e); }
+  
+  // Notification
+  if (typeof addNotification === 'function') {
+    addNotification(`👤 ${editId ? 'تم تعديل' : 'مستخدم جديد:'} ${name}`, 'b-blue');
+  }
+  
+  // Visual confirmation for mobile
+  setTimeout(() => {
+    const msg = editId ? '✅ تم تحديث بيانات المستخدم' : '✅ تم إضافة المستخدم بنجاح';
+    if (window.innerWidth < 768) {
+      // On mobile show confirmation toast-like
+      console.log(msg);
+    }
+  }, 100);
 }
 
 // Override existing saveAdmin
@@ -7832,7 +8209,7 @@ function renderAdminsEnhanced() {
   }
   
   // Patch openAdminModal button
-  const addBtn = adminsPage.querySelector('[onclick="openAdminModal()"]');
+  const addBtn = adminsPage.querySelector('[onclick="openAdminModalV2()"]');
   if(addBtn) addBtn.onclick = () => openAdminModalV2();
   
   // Patch save button in modal
@@ -11923,16 +12300,21 @@ function buildIdFriend(person, refNum, honorTitle) {
 }
 
 function buildAppreciationLetter(person, refNum, customText) {
+  // Returns BOTH versions: Arabic + French (each on separate page)
+  return buildAppreciationAr(person, refNum, customText) + buildAppreciationFr(person, refNum, customText);
+}
+
+function buildAppreciationAr(person, refNum, customText) {
   const orgName = settings.name || 'جمعية فردوس لمساندة مرضى السرطان';
   const region = settings.region || 'إقليم تاونات';
   const logo = (typeof LOGO_B64 !== 'undefined') ? LOGO_B64 : '';
   const customLine = customText || '';
   
   return `
-    <div style="width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:25mm;font-family:Tajawal,sans-serif;direction:rtl;color:#1e293b;box-shadow:0 20px 50px rgba(0,0,0,0.15);-webkit-print-color-adjust:exact">
+    <div class="appr-letter appr-ar" style="width:210mm;height:297mm;background:#fff;margin:0 auto;padding:25mm;font-family:Tajawal,sans-serif;direction:rtl;color:#1e293b;-webkit-print-color-adjust:exact;page-break-after:always;box-sizing:border-box;display:flex;flex-direction:column">
       <!-- Letter header -->
       <div style="display:flex;align-items:center;gap:14px;border-bottom:3px double #b45309;padding-bottom:14px;margin-bottom:20px">
-        ${logo ? `<img src="${logo}" style="width:70px;height:70px;border-radius:50%">` : ''}
+        ${logo ? `<img src="${logo}" style="width:70px;height:70px;border-radius:50%;object-fit:contain">` : ''}
         <div style="flex:1">
           <div style="font-size:18px;font-weight:800;color:#0f766e">${orgName}</div>
           <div style="font-size:12px;color:#64748b;font-style:italic">${region} — المملكة المغربية</div>
@@ -11945,13 +12327,13 @@ function buildAppreciationLetter(person, refNum, customText) {
       </div>
       
       <!-- Title -->
-      <div style="text-align:center;margin:30px 0">
+      <div style="text-align:center;margin:20px 0">
         <div style="font-size:24px;font-weight:800;color:#b45309">رسالة شكر وتقدير</div>
-        <div style="font-size:12px;color:#92400e;margin-top:4px;font-style:italic">Lettre d'appréciation</div>
+        <div style="font-size:11px;color:#92400e;margin-top:4px">— النسخة العربية —</div>
       </div>
       
       <!-- Recipient -->
-      <div style="margin-bottom:20px;font-size:14px">
+      <div style="margin-bottom:18px;font-size:14px">
         <div style="margin-bottom:6px">إلى السيد(ة) المحترم(ة):</div>
         <div style="font-size:18px;font-weight:800;color:#0f766e;padding:8px 16px;background:#f0fdfa;border-right:4px solid #0f766e;border-radius:4px">${person.name}</div>
       </div>
@@ -11960,7 +12342,7 @@ function buildAppreciationLetter(person, refNum, customText) {
       <div style="margin-bottom:14px;font-weight:700">السلام عليكم ورحمة الله وبركاته،</div>
       
       <!-- Body -->
-      <div style="text-align:justify;line-height:2.2;font-size:14px;margin-bottom:20px">
+      <div style="text-align:justify;line-height:2.1;font-size:14px;margin-bottom:18px;flex:1">
         <p style="margin-bottom:14px;text-indent:30px">
           يطيب لنا في جمعية فردوس لمساندة مرضى السرطان أن نتوجه إليكم بأسمى آيات الشكر والتقدير،
           عرفاناً منا بالدور الكبير والمساهمة الكريمة التي قدمتموها في خدمة قضيتنا الإنسانية النبيلة،
@@ -11977,14 +12359,91 @@ function buildAppreciationLetter(person, refNum, customText) {
         </p>
       </div>
       
-      <div style="margin-bottom:30px">وتقبلوا منا فائق التحية والتقدير،</div>
+      <div style="margin-bottom:20px">وتقبلوا منا فائق التحية والتقدير،</div>
       
       <!-- President Signature -->
-      <div style="display:flex;justify-content:flex-end;margin-top:50px">
+      <div style="display:flex;justify-content:flex-end">
         <div style="text-align:center">
-          ${logo ? `<img src="${logo}" style="height:60px;opacity:0.85;margin-bottom:10px" alt="ختم">` : ''}
-          <div style="font-size:13px;color:#475569;margin-bottom:40px;font-weight:700">رئيس الجمعية</div>
+          ${logo ? `<img src="${logo}" style="height:55px;opacity:0.85;margin-bottom:8px;object-fit:contain" alt="ختم">` : ''}
+          <div style="font-size:13px;color:#475569;margin-bottom:35px;font-weight:700">رئيس الجمعية</div>
           <div style="border-top:1.5px solid #92400e;padding-top:6px;width:65mm;font-size:11px;color:#92400e">التوقيع والختم</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildAppreciationFr(person, refNum, customText) {
+  const orgName = settings.nameFr || 'Association Firdaws — Soutien aux Malades du Cancer';
+  const region = 'Province de Taounate';
+  const logo = (typeof LOGO_B64 !== 'undefined') ? LOGO_B64 : '';
+  const customLine = customText || '';
+  
+  // French Gregorian date
+  const today = new Date();
+  const monthsFr = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const dateFr = today.getDate() + ' ' + monthsFr[today.getMonth()] + ' ' + today.getFullYear();
+  
+  return `
+    <div class="appr-letter appr-fr" style="width:210mm;height:297mm;background:#fff;margin:0 auto;padding:25mm;font-family:'Poppins','Tajawal',sans-serif;direction:ltr;color:#1e293b;-webkit-print-color-adjust:exact;box-sizing:border-box;display:flex;flex-direction:column;page-break-after:auto">
+      <!-- Letter header -->
+      <div style="display:flex;align-items:center;gap:14px;border-bottom:3px double #b45309;padding-bottom:14px;margin-bottom:20px">
+        ${logo ? `<img src="${logo}" style="width:70px;height:70px;border-radius:50%;object-fit:contain">` : ''}
+        <div style="flex:1">
+          <div style="font-size:18px;font-weight:800;color:#0f766e">${orgName}</div>
+          <div style="font-size:12px;color:#64748b;font-style:italic">${region} — Royaume du Maroc</div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:#64748b">
+          <div>Réf : <strong>${refNum}</strong></div>
+          <div>${dateFr}</div>
+        </div>
+      </div>
+      
+      <!-- Title -->
+      <div style="text-align:center;margin:20px 0">
+        <div style="font-size:24px;font-weight:800;color:#b45309">Lettre de Remerciement</div>
+        <div style="font-size:11px;color:#92400e;margin-top:4px">— Version française —</div>
+      </div>
+      
+      <!-- Recipient -->
+      <div style="margin-bottom:18px;font-size:14px">
+        <div style="margin-bottom:6px">À l'attention de Monsieur / Madame :</div>
+        <div style="font-size:18px;font-weight:800;color:#0f766e;padding:8px 16px;background:#f0fdfa;border-left:4px solid #0f766e;border-radius:4px">${person.name}</div>
+      </div>
+      
+      <!-- Salutation -->
+      <div style="margin-bottom:14px;font-weight:700">Madame, Monsieur,</div>
+      
+      <!-- Body -->
+      <div style="text-align:justify;line-height:2.1;font-size:14px;margin-bottom:18px;flex:1">
+        <p style="margin-bottom:14px;text-indent:30px">
+          C'est avec une grande reconnaissance que l'Association Firdaws pour le Soutien des Malades du Cancer 
+          tient à vous adresser ses plus sincères remerciements et toute son estime, 
+          en témoignage de votre précieuse contribution et de votre engagement noble 
+          envers notre cause humanitaire d'accompagnement des patients atteints de cancer 
+          tout au long de leur parcours thérapeutique difficile.
+        </p>
+        ${customLine ? `<p style="margin-bottom:14px;text-indent:30px;background:#fef3c7;padding:12px;border-radius:8px;border-left:3px solid #d97706">${customLine}</p>` : ''}
+        <p style="margin-bottom:14px;text-indent:30px">
+          Votre soutien et votre générosité représentent une valeur humaine 
+          d'une grande noblesse, ainsi qu'un modèle exemplaire de solidarité et d'entraide. 
+          Vous apportez espoir et réconfort à nos patients et à leurs familles. 
+          Que Dieu vous récompense pour vos bienfaits.
+        </p>
+        <p style="text-indent:30px">
+          Nous prions le Tout-Puissant de vous accorder santé, bien-être et prospérité, 
+          et de bénir vos actions et vos entreprises.
+        </p>
+      </div>
+      
+      <div style="margin-bottom:20px">Veuillez agréer, Madame, Monsieur, l'expression de notre profonde gratitude.</div>
+      
+      <!-- President Signature -->
+      <div style="display:flex;justify-content:flex-start">
+        <div style="text-align:center">
+          ${logo ? `<img src="${logo}" style="height:55px;opacity:0.85;margin-bottom:8px;object-fit:contain" alt="cachet">` : ''}
+          <div style="font-size:13px;color:#475569;margin-bottom:35px;font-weight:700">Le Président de l'Association</div>
+          <div style="border-top:1.5px solid #92400e;padding-top:6px;width:65mm;font-size:11px;color:#92400e">Signature et cachet</div>
         </div>
       </div>
     </div>
@@ -12011,7 +12470,14 @@ function printCurrentRecognition() {
   // Get CSS for certificates - use shared print CSS
   let certCSS = getCertificatePrintCSS();
   // Override page size based on doc type
-  certCSS = certCSS.replace(/@page \{[^}]+\}/, '@page { size: ' + pageSize + '; margin: 0; }');
+  if (docType === 'appreciation') {
+    // Special handling for bilingual letter - portrait, no margin
+    certCSS = certCSS.replace(/@page \{[^}]+\}/, '@page { size: A4 portrait; margin: 0; }');
+    // Override body styles for letter (each letter has its own direction)
+    certCSS += ' body { display: block !important; direction: ltr; } .appr-letter { box-shadow: none !important; } @media print { .appr-letter { margin: 0 !important; } }';
+  } else {
+    certCSS = certCSS.replace(/@page \{[^}]+\}/, '@page { size: ' + pageSize + '; margin: 0; }');
+  }
   
     // Open dedicated print window
   const win = window.open('', '_blank', 'width=900,height=650');
@@ -12654,17 +13120,23 @@ function printBatchRecognition() {
 function getCertificatePrintCSS() {
   return `
     * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-    body { margin: 0; padding: 0; font-family: 'Tajawal', 'Cairo', sans-serif; direction: rtl; }
+    html, body { margin: 0; padding: 0; font-family: 'Tajawal', 'Cairo', sans-serif; }
+    body { direction: rtl; display: flex; flex-direction: column; align-items: center; }
     
-    /* Force A4 landscape with no extra margins */
+    /* Force exact A4 landscape size and zero page margins */
     @page { size: 297mm 210mm; margin: 0; }
     
     .cert-a4-landscape {
       width: 287mm; height: 200mm;
       background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fefce8 100%);
-      position: relative; overflow: hidden; margin: 5mm auto;
+      position: relative;
+      overflow: hidden;
       page-break-inside: avoid;
+      page-break-after: always;
+      margin: 5mm auto;
+      direction: rtl;
     }
+    .cert-a4-landscape:last-child { page-break-after: auto; }
     .cert-border { position: absolute; inset: 8mm; border: 4px double #b45309; border-radius: 4mm; pointer-events: none; }
     .cert-border-inner { position: absolute; inset: 12mm; border: 1.5px solid #d97706; border-radius: 2mm; pointer-events: none; }
     .cert-corner { position: absolute; width: 22mm; height: 22mm; pointer-events: none; }
@@ -12719,9 +13191,20 @@ function getCertificatePrintCSS() {
     }
     @media print {
       .print-actions { display: none !important; }
-      body { padding: 0 !important; margin: 0 !important; background: #fff !important; }
-      .cert-print-wrap { padding-top: 0 !important; }
-      .cert-a4-landscape { margin: 0 auto !important; box-shadow: none !important; }
+      html, body { padding: 0 !important; margin: 0 !important; background: #fff !important; width: 100%; }
+      body { display: block !important; }
+      .cert-print-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
+      .cert-a4-landscape {
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        page-break-inside: avoid;
+        page-break-after: always;
+      }
+      .cert-a4-landscape:last-child { page-break-after: auto; }
+      .cert-border { inset: 8mm !important; }
+      .cert-border-inner { inset: 12mm !important; }
       .id-card { box-shadow: none !important; }
     }
   `;
