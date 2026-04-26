@@ -3715,6 +3715,245 @@ window.installPWA = function() {
 </div>
 
 <!-- ======== SETTINGS ======== -->
+<!-- ======== PUBLIC PAGE MANAGER ======== -->
+<div id="page-publicpage" class="page">
+  
+  <!-- Banner -->
+  <div style="background:linear-gradient(135deg,#d23c1e,#b41e00);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:20px;font-weight:800">🌐 إدارة الصفحة العامة</div>
+        <div style="font-size:12px;opacity:0.9;margin-top:3px">الأنشطة، الأعضاء، معلومات الحساب البنكي — كلها تظهر في الصفحة الرئيسية للجمعية</div>
+      </div>
+      <button class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4)" onclick="previewPublicPage()">👁️ معاينة الصفحة العامة</button>
+    </div>
+  </div>
+  
+  <!-- Tabs -->
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn btn-primary" id="pp-tab-activities-btn" onclick="ppSwitchTab('activities')">🎯 الأنشطة</button>
+    <button class="btn btn-outline" id="pp-tab-members-btn" onclick="ppSwitchTab('members')">👥 الأعضاء المنتخبون</button>
+    <button class="btn btn-outline" id="pp-tab-bank-btn" onclick="ppSwitchTab('bank')">🏦 الحساب البنكي</button>
+  </div>
+  
+  <!-- ACTIVITIES TAB -->
+  <div id="pp-activities-tab">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <span class="card-title">🎯 أنشطة الجمعية</span>
+        <button class="btn btn-primary" onclick="openActivityModal()">➕ إضافة نشاط جديد</button>
+      </div>
+      <div class="card-body" style="padding:14px">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>التاريخ</th>
+              <th>الوقت</th>
+              <th>عنوان النشاط</th>
+              <th>الفئة</th>
+              <th>المكان</th>
+              <th>المستهدف</th>
+              <th>الحالة</th>
+              <th>إجراءات</th>
+            </tr></thead>
+            <tbody id="pp-activities-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- MEMBERS TAB -->
+  <div id="pp-members-tab" style="display:none">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <span class="card-title">👥 الأعضاء المنتخبون</span>
+        <button class="btn btn-primary" onclick="openMemberModal()">➕ إضافة عضو</button>
+      </div>
+      <div class="card-body" style="padding:14px">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>الاسم الكامل</th>
+              <th>المنصب</th>
+              <th>فترة الانتداب</th>
+              <th>النوع</th>
+              <th>الترتيب</th>
+              <th>إجراءات</th>
+            </tr></thead>
+            <tbody id="pp-members-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- BANK INFO TAB -->
+  <div id="pp-bank-tab" style="display:none">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <span class="card-title">🏦 معلومات الحساب البنكي</span>
+      </div>
+      <div class="card-body" style="padding:20px">
+        <div style="background:#fef3c7;color:#78350f;padding:12px;border-radius:8px;margin-bottom:16px;font-size:13px">
+          💡 هذه المعلومات تظهر في قسم "تبرع" في الصفحة العامة. تأكد من صحتها قبل الحفظ.
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">
+          <div class="form-group">
+            <label>اسم البنك</label>
+            <input type="text" id="pp-bank-name-input" placeholder="مثال: بريد المغرب - تاونات">
+          </div>
+          <div class="form-group">
+            <label>رقم الحساب (RIB) - 24 رقم</label>
+            <input type="text" id="pp-bank-rib-input" placeholder="0000 0000 0000 0000 0000 0000" style="font-family:monospace;letter-spacing:1px">
+          </div>
+          <div class="form-group">
+            <label>اسم صاحب الحساب</label>
+            <input type="text" id="pp-bank-holder-input" placeholder="جمعية فردوس لمساندة مرضى السرطان">
+          </div>
+          <div class="form-group">
+            <label>رقم الحساب الإضافي (CCP - اختياري)</label>
+            <input type="text" id="pp-bank-ccp-input" placeholder="">
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="saveBankInfo()">💾 حفظ معلومات الحساب</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY MODAL -->
+<div class="modal-overlay" id="m-activity">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-activity-title">➕ إضافة نشاط</span>
+      <button class="modal-close" onclick="closeModal('m-activity')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="act-id">
+      <div class="form-group">
+        <label>عنوان النشاط *</label>
+        <input type="text" id="act-title" placeholder="مثال: حملة الكشف المبكر" required>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الفئة (Tag)</label>
+          <select id="act-tag">
+            <option value="وقائي">🏥 وقائي</option>
+            <option value="توعوي">📢 توعوي</option>
+            <option value="تعليمي">🎓 تعليمي</option>
+            <option value="علاجي">💊 علاجي</option>
+            <option value="إنساني">🤝 إنساني</option>
+            <option value="ترفيهي">🎉 ترفيهي</option>
+            <option value="مالي">💰 جمع تبرعات</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الأيقونة (إيموجي)</label>
+          <input type="text" id="act-icon" maxlength="2" placeholder="🏥" value="🏥" style="font-size:20px;text-align:center">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>التاريخ *</label>
+          <input type="date" id="act-date" required>
+        </div>
+        <div class="form-group">
+          <label>الوقت</label>
+          <input type="time" id="act-time" value="09:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>الوصف *</label>
+        <textarea id="act-desc" rows="3" placeholder="وصف مختصر للنشاط وأهدافه..." required></textarea>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>المكان</label>
+          <input type="text" id="act-place" placeholder="مثال: المركز الصحي تاونات">
+        </div>
+        <div class="form-group">
+          <label>الفئة المستهدفة</label>
+          <input type="text" id="act-target" placeholder="مثال: النساء فوق 40 سنة">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>الحالة</label>
+          <select id="act-status">
+            <option value="قادم">📅 قادم (سيُعرض في الصفحة)</option>
+            <option value="منجز">✅ منجز</option>
+            <option value="مخفي">🔒 مخفي</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الترتيب (الأصغر يظهر أولاً)</label>
+          <input type="number" id="act-order" value="0" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-activity')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveActivity()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER MODAL -->
+<div class="modal-overlay" id="m-pp-member">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title" id="m-member-title">➕ إضافة عضو</span>
+      <button class="modal-close" onclick="closeModal('m-pp-member')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="mem-id">
+      <div class="form-group">
+        <label>الاسم الكامل *</label>
+        <input type="text" id="mem-name" placeholder="الاسم الكامل" required>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>المنصب *</label>
+          <input type="text" id="mem-role" placeholder="مثال: رئيس الجمعية" required>
+        </div>
+        <div class="form-group">
+          <label>الترتيب</label>
+          <input type="number" id="mem-order" value="0" min="0">
+        </div>
+      </div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label>فترة الانتداب من</label>
+          <input type="text" id="mem-from" placeholder="2023">
+        </div>
+        <div class="form-group">
+          <label>إلى</label>
+          <input type="text" id="mem-to" placeholder="2026">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>النوع</label>
+        <select id="mem-type">
+          <option value="elected">🗳️ منتخب</option>
+          <option value="founder">⭐ مؤسس</option>
+          <option value="honorary">🏅 شرفي</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الصورة الشخصية (اختياري)</label>
+        <input type="file" id="mem-photo-input" accept="image/*" onchange="previewMemPhoto(event)">
+        <div id="mem-photo-preview" style="margin-top:8px"></div>
+        <input type="hidden" id="mem-photo">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('m-pp-member')">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveMember()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
 <div id="page-settings" class="page">
   <div class="card">
     <div class="card-header"><span class="card-title">⚙️ إعدادات الجمعية</span></div>
@@ -4167,6 +4406,8 @@ let medicalEvents = LS('medicalEvents') || [];
 let medicines = LS('medicines') || [];
 let volunteers = LS('volunteers') || [];
 let certificatesIssued = LS('certificatesIssued') || [];
+let pubActivities = LS('pubActivities') || [];
+let pubMembers = LS('pubMembers') || [];
 let admins = (()=>{
   // Always ensure default admin exists with correct password
   const stored = LS('frd_admins');
@@ -4188,7 +4429,7 @@ function saveAll() {
   SS('patients',patients); SS('visits',visits); SS('transports',transports);
   SS('patientExp',patientExp); SS('finance',finance); SS('employees',employees);
   SS('salaries',salaries); SS('vehicles',vehicles); SS('fuelLogs',fuelLogs);
-  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('medicalEvents',medicalEvents); SS('medicines',medicines); SS('volunteers',volunteers); SS('certificatesIssued',certificatesIssued); SS('frd_admins',admins); SS('frd_settings',settings);
+  SS('utilities',utilities); SS('inventory',inventory); SS('invMovements',invMovements); SS('medicalEvents',medicalEvents); SS('medicines',medicines); SS('volunteers',volunteers); SS('certificatesIssued',certificatesIssued); SS('pubActivities',pubActivities); SS('pubMembers',pubMembers); SS('frd_admins',admins); SS('frd_settings',settings);
   SS('gsUrl',gsUrl);
 }
 
@@ -4367,6 +4608,7 @@ const NAV_CONFIG = [
   ]},
   { group:'الإدارة',           groupFr:'Administration', items:[
     { page:'recognition',      icon:'🏆', ar:'الشهادات والبطاقات',       fr:'Reconnaissance',    perm:'recognition_view' },
+    { page:'publicpage',       icon:'🌐', ar:'إدارة الصفحة العامة',      fr:'Page publique',     perm:'publicpage_manage' },
     { page:'admins',           icon:'🔐', ar:'المستخدمون والصلاحيات',   fr:'Utilisateurs',      perm:'admins_manage' },
     { page:'reports',          icon:'📈', ar:'التقارير',                 fr:'Rapports',          perm:'reports_view' },
     { page:'gsheets',          icon:'📗', ar:'Google Sheets',            fr:'Google Sheets',     perm:'gsheets_manage' },
@@ -4413,8 +4655,8 @@ function hasPermission(permKey) {
   }
   // Fallback: role-based defaults (in case perms not set)
   const roleDefaults = {
-    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write'],
-    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write'],
+    admin:    ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','settings_manage','gsheets_manage','invoices_generate','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write','publicpage_manage'],
+    manager:  ['patients_view','patients_write','patients_delete','visits_view','visits_write','transport_view','transport_write','reports_view','settings_manage','gsheets_manage','export_data','inventory_view','inventory_write','pharmacy_view','pharmacy_write','recognition_view','recognition_write','publicpage_manage'],
     medical:  ['patients_view','patients_write','visits_view','visits_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view','pharmacy_write'],
     finance:  ['finance_view','finance_write','pexp_view','pexp_write','salaries_view','salaries_write','vehicles_view','vehicles_write','utilities_view','utilities_write','reports_view','invoices_generate','export_data','patients_view','visits_view','transport_view','inventory_view','pharmacy_view','recognition_view'],
     social:   ['patients_view','patients_write','transport_view','transport_write','reports_view','inventory_view','inventory_write','pharmacy_view','recognition_view','recognition_write'],
@@ -4565,6 +4807,7 @@ function renderPage(name) {
     inventory: renderInventory,
     pharmacy: renderPharmacy,
     recognition: renderRecognition,
+    publicpage: renderPublicPageManager,
     admins: renderAdmins, reports: renderReports,
     gsheets: renderGsPage, settings: renderSettings
   };
@@ -6489,65 +6732,91 @@ function renderPublicPage(){
   const bankEl = document.getElementById('pub-bank-bank');
   if (bankEl && settings.bank) bankEl.textContent = settings.bank;
   
-  // === Activities (from real data if available, or sample) ===
+  // === Activities (from admin-managed pubActivities) ===
   const activitiesGrid = document.getElementById('pub-activities-grid');
   if (activitiesGrid) {
-    // Sample activities - can be made dynamic later via settings
-    const activities = (settings.publicActivities && settings.publicActivities.length) 
-      ? settings.publicActivities 
-      : [
-        {
-          icon: '🏥',
-          tag: 'وقائي',
-          date: '2024-05-15',
-          time: '09:00',
-          title: 'حملة الكشف المبكر',
-          desc: 'رفع مستوى الوعي بأهمية الكشف المبكر وتقليل معدلات الوفيات.',
-          place: 'المركز الصحي تاونات',
-          target: 'النساء فوق 40 سنة',
-          color: '#fee2e2'
-        },
-        {
-          icon: '🚐',
-          tag: 'توعوي',
-          date: '2024-06-10',
-          time: '08:30',
-          title: 'قافلة طبية تضامنية',
-          desc: 'توفير فحوصات طبية وتوزيع الأدوية وتقديم الدعم النفسي.',
-          place: 'دوار احجر مطاحن',
-          target: 'سكان المناطق الجبلية',
-          color: '#dcfce7'
-        },
-        {
-          icon: '🎗️',
-          tag: 'تعليمي',
-          date: '2024-10-20',
-          time: '15:00',
-          title: 'ندوة حول سرطان الثدي',
-          desc: 'تثقيف المجتمع حول طرق الوقاية والعلاجات الحديثة.',
-          place: 'قاعة الندوات البلدية',
-          target: 'الشباب والطلبة',
-          color: '#fef3c7'
-        }
-      ];
-    activitiesGrid.innerHTML = activities.map(a => `
-      <div class="pub-activity-card">
-        <div class="pub-activity-img" style="background:linear-gradient(135deg,${a.color},#fff)">
-          ${a.icon}
-          <span class="pub-activity-tag">${a.tag}</span>
-        </div>
-        <div class="pub-activity-body">
-          <div class="pub-activity-meta">
-            <span>📅 ${a.date}</span>
-            <span>🕐 ${a.time}</span>
+    // Filter out hidden activities, sort by order then date
+    const visibleActs = (typeof pubActivities !== 'undefined' ? pubActivities : [])
+      .filter(a => a.status !== 'مخفي')
+      .sort((a,b) => (a.order||0) - (b.order||0) || (b.date||'').localeCompare(a.date||''));
+    
+    const tagColors = {
+      'وقائي': '#fee2e2',
+      'توعوي': '#dcfce7',
+      'تعليمي': '#fef3c7',
+      'علاجي': '#dbeafe',
+      'إنساني': '#fce7f3',
+      'ترفيهي': '#e0e7ff',
+      'مالي': '#fef3c7'
+    };
+    
+    if (visibleActs.length) {
+      activitiesGrid.innerHTML = visibleActs.map(a => {
+        const bgColor = tagColors[a.tag] || '#f1f5f9';
+        const statusBadge = a.status === 'منجز' 
+          ? '<span style="position:absolute;top:12px;left:12px;background:#16a34a;color:#fff;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700">✅ منجز</span>'
+          : '';
+        return `<div class="pub-activity-card">
+          <div class="pub-activity-img" style="background:linear-gradient(135deg,${bgColor},#fff)">
+            ${a.icon || '🎯'}
+            <span class="pub-activity-tag">${a.tag}</span>
+            ${statusBadge}
           </div>
-          <h3>${a.title}</h3>
-          <p>${a.desc}</p>
-          <div class="pub-activity-row"><strong>المكان:</strong><span>${a.place}</span></div>
-          <div class="pub-activity-row"><strong>المستهدف:</strong><span>${a.target}</span></div>
-        </div>
-      </div>
-    `).join('');
+          <div class="pub-activity-body">
+            <div class="pub-activity-meta">
+              <span>📅 ${fmtDate(a.date)}</span>
+              ${a.time ? '<span>🕐 ' + a.time + '</span>' : ''}
+            </div>
+            <h3>${a.title}</h3>
+            <p>${a.desc || ''}</p>
+            ${a.place ? '<div class="pub-activity-row"><strong>المكان:</strong><span>' + a.place + '</span></div>' : ''}
+            ${a.target ? '<div class="pub-activity-row"><strong>المستهدف:</strong><span>' + a.target + '</span></div>' : ''}
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      activitiesGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;font-size:14px">لا توجد أنشطة معلنة حالياً</div>';
+    }
+  }
+  
+  // === Render dynamic members (founders + elected) ===
+  if (typeof pubMembers !== 'undefined' && pubMembers.length) {
+    const founders = pubMembers.filter(m => m.type === 'founder').sort((a,b) => (a.order||0) - (b.order||0));
+    const elected = pubMembers.filter(m => m.type === 'elected').sort((a,b) => (a.order||0) - (b.order||0));
+    
+    // Update founders section
+    const orgCards = document.querySelectorAll('.pub-org-card');
+    if (orgCards.length >= 2) {
+      // Founders card (first one)
+      const foundersMembers = orgCards[0].querySelector('.pub-org-members');
+      if (foundersMembers && founders.length) {
+        foundersMembers.innerHTML = founders.map(m => `<div class="pub-member">
+          ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar">${(m.name || '?').substring(0,2)}</div>`}
+          <div class="pub-member-name">${m.name}</div>
+          ${m.role ? '<div class="pub-member-role">' + m.role + '</div>' : ''}
+        </div>`).join('');
+      }
+      
+      // Elected card (second one)
+      const electedMembers = orgCards[1].querySelector('.pub-org-members');
+      if (electedMembers && elected.length) {
+        electedMembers.innerHTML = elected.map(m => `<div class="pub-member">
+          ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar" style="background:linear-gradient(135deg,#15803d,#005a00)">${(m.name || '?').substring(0,2)}</div>`}
+          <div class="pub-member-name">${m.name}</div>
+          <div class="pub-member-role">${m.role}${m.from || m.to ? ' · ' + (m.from || '') + '-' + (m.to || '') : ''}</div>
+        </div>`).join('');
+      }
+      
+      // Update meta counts
+      const foundersMeta = orgCards[0].querySelectorAll('.pub-org-meta strong');
+      if (foundersMeta && foundersMeta.length >= 2) {
+        foundersMeta[1].textContent = '+' + founders.length;
+      }
+      const electedMeta = orgCards[1].querySelectorAll('.pub-org-meta strong');
+      if (electedMeta && electedMeta.length >= 2) {
+        electedMeta[1].textContent = '+' + elected.length;
+      }
+    }
   }
   
   // === Patient portal upcoming visits ===
@@ -6567,15 +6836,23 @@ function renderPublicPage(){
   }
 }
 
-// Smooth scroll to section
+// Smooth scroll to section (handles fixed-position container)
 function pubScrollTo(id, event) {
   if (event) event.preventDefault();
-  const el = document.getElementById(id);
-  if (el) {
-    const navHeight = 70;
-    const top = el.getBoundingClientRect().top + window.pageYOffset - navHeight;
-    window.scrollTo({ top, behavior: 'smooth' });
+  const target = document.getElementById(id);
+  if (!target) return;
+  
+  const screen = document.getElementById('public-screen');
+  const navHeight = 70;
+  
+  if (screen) {
+    // Scroll within the public-screen container
+    const screenTop = screen.getBoundingClientRect().top;
+    const targetTop = target.getBoundingClientRect().top;
+    const scrollTo = screen.scrollTop + (targetTop - screenTop) - navHeight;
+    screen.scrollTo({ top: scrollTo, behavior: 'smooth' });
   }
+  
   // Close mobile menu
   const links = document.querySelector('.pub-nav-links');
   if (links) links.classList.remove('open');
@@ -6859,11 +7136,17 @@ function tryRestoreSession() {
   }
 }
 
-// Try restore - if fails, show login
+// Public page is the DEFAULT — landing page first
+// Only show admin app if a valid session is restored
 if (!tryRestoreSession()) {
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('main-sidebar').style.display='none';
-  document.getElementById('main-content').style.display='none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-sidebar').style.display = 'none';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('public-screen').style.display = 'block';
+  // Render public page after a tick to ensure DOM is ready
+  setTimeout(() => { 
+    if (typeof renderPublicPage === 'function') renderPublicPage(); 
+  }, 100);
 }
 
 
@@ -9584,6 +9867,8 @@ function tStatus(s) {
     { key: 'medicines',   doc: 'medicines' },
     { key: 'volunteers',  doc: 'volunteers' },
     { key: 'certificatesIssued', doc: 'certificatesIssued' },
+    { key: 'pubActivities', doc: 'pubActivities' },
+    { key: 'pubMembers',  doc: 'pubMembers' },
     { key: 'frd_admins',  doc: 'admins' },
     { key: 'frd_settings',doc: 'settings' }
   ];
@@ -12511,6 +12796,298 @@ document.addEventListener('keydown', function(e) {
 });
 
 console.log('%c💡 اضغط Ctrl+Shift+E لإرسال إيميل تجريبي', 'background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:3px;font-weight:bold');
+
+
+
+// ================================================================
+// 🌐 PUBLIC PAGE MANAGER — Activities, Members, Bank Info
+// ================================================================
+
+function renderPublicPageManager() {
+  // Populate bank info inputs
+  setTimeout(() => {
+    const bankName = document.getElementById('pp-bank-name-input');
+    const bankRib = document.getElementById('pp-bank-rib-input');
+    const bankHolder = document.getElementById('pp-bank-holder-input');
+    const bankCcp = document.getElementById('pp-bank-ccp-input');
+    if (bankName) bankName.value = settings.bank || 'بريد المغرب - تاونات';
+    if (bankRib) bankRib.value = settings.rib || '';
+    if (bankHolder) bankHolder.value = settings.bankHolder || (settings.name || 'جمعية فردوس لمساندة مرضى السرطان');
+    if (bankCcp) bankCcp.value = settings.ccp || '';
+  }, 50);
+  
+  ppRenderActivities();
+  ppRenderMembers();
+}
+
+function ppSwitchTab(tab) {
+  ['activities','members','bank'].forEach(t => {
+    const tabEl = document.getElementById('pp-' + t + '-tab');
+    const btnEl = document.getElementById('pp-tab-' + t + '-btn');
+    if (tabEl) tabEl.style.display = (t === tab) ? 'block' : 'none';
+    if (btnEl) {
+      btnEl.classList.remove('btn-primary','btn-outline');
+      btnEl.classList.add(t === tab ? 'btn-primary' : 'btn-outline');
+    }
+  });
+}
+
+// ===== Activities =====
+function ppRenderActivities() {
+  const tbody = document.getElementById('pp-activities-table');
+  if (!tbody) return;
+  
+  const sorted = pubActivities.slice().sort((a,b) => 
+    (a.order||0) - (b.order||0) || (b.date||'').localeCompare(a.date||'')
+  );
+  
+  tbody.innerHTML = sorted.length ? sorted.map(a => {
+    const statusColors = { 'قادم': '#16a34a', 'منجز': '#0ea5e9', 'مخفي': '#94a3b8' };
+    const c = statusColors[a.status] || '#64748b';
+    return `<tr>
+      <td>${fmtDate(a.date)}</td>
+      <td>${a.time || '—'}</td>
+      <td>
+        <div style="font-weight:700">${a.icon || '🎯'} ${a.title}</div>
+        <div style="font-size:11px;color:#64748b;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.desc || ''}</div>
+      </td>
+      <td><span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700">${a.tag}</span></td>
+      <td>${a.place || '—'}</td>
+      <td style="font-size:11.5px">${a.target || '—'}</td>
+      <td><span style="color:${c};font-weight:700">${a.status || 'قادم'}</span></td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-outline btn-xs" onclick="openActivityModal(${a.id})">✏️</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteActivity(${a.id})">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">لم تُضَف أنشطة بعد. اضغط "إضافة نشاط جديد" للبدء.</td></tr>';
+}
+
+function openActivityModal(id) {
+  const titleEl = document.getElementById('m-activity-title');
+  if (id) {
+    const a = pubActivities.find(x => x.id === id);
+    if (!a) return;
+    if (titleEl) titleEl.textContent = '✏️ تعديل نشاط';
+    document.getElementById('act-id').value = id;
+    document.getElementById('act-title').value = a.title || '';
+    document.getElementById('act-tag').value = a.tag || 'وقائي';
+    document.getElementById('act-icon').value = a.icon || '🏥';
+    document.getElementById('act-date').value = a.date || '';
+    document.getElementById('act-time').value = a.time || '09:00';
+    document.getElementById('act-desc').value = a.desc || '';
+    document.getElementById('act-place').value = a.place || '';
+    document.getElementById('act-target').value = a.target || '';
+    document.getElementById('act-status').value = a.status || 'قادم';
+    document.getElementById('act-order').value = a.order || 0;
+  } else {
+    if (titleEl) titleEl.textContent = '➕ إضافة نشاط';
+    document.getElementById('act-id').value = '';
+    document.getElementById('act-title').value = '';
+    document.getElementById('act-tag').value = 'وقائي';
+    document.getElementById('act-icon').value = '🏥';
+    document.getElementById('act-date').value = today();
+    document.getElementById('act-time').value = '09:00';
+    document.getElementById('act-desc').value = '';
+    document.getElementById('act-place').value = '';
+    document.getElementById('act-target').value = '';
+    document.getElementById('act-status').value = 'قادم';
+    document.getElementById('act-order').value = pubActivities.length;
+  }
+  openModal('m-activity');
+}
+
+function saveActivity() {
+  const title = document.getElementById('act-title').value.trim();
+  const desc = document.getElementById('act-desc').value.trim();
+  if (!title || !desc) { alert('⚠️ العنوان والوصف مطلوبان'); return; }
+  
+  const date = document.getElementById('act-date').value;
+  if (!date) { alert('⚠️ التاريخ مطلوب'); return; }
+  
+  const id = document.getElementById('act-id').value;
+  const data = {
+    title,
+    tag: document.getElementById('act-tag').value,
+    icon: document.getElementById('act-icon').value || '🎯',
+    date,
+    time: document.getElementById('act-time').value,
+    desc,
+    place: document.getElementById('act-place').value.trim(),
+    target: document.getElementById('act-target').value.trim(),
+    status: document.getElementById('act-status').value,
+    order: parseInt(document.getElementById('act-order').value) || 0
+  };
+  
+  if (id) {
+    const i = pubActivities.findIndex(a => a.id == id);
+    if (i >= 0) pubActivities[i] = { ...pubActivities[i], ...data };
+  } else {
+    data.id = uid();
+    data.created = today();
+    pubActivities.unshift(data);
+  }
+  
+  saveAll();
+  closeModal('m-activity');
+  ppRenderActivities();
+  if (typeof addNotification === 'function') {
+    addNotification('🎯 ' + (id ? 'تم تعديل' : 'أُضيف') + ' نشاط: ' + title, 'b-orange');
+  }
+}
+
+function deleteActivity(id) {
+  if (!isAdmin() && !hasPermission('publicpage_manage')) {
+    alert('⛔ لا تملك صلاحية الحذف'); return;
+  }
+  const a = pubActivities.find(x => x.id === id);
+  if (!a) return;
+  if (!confirm('⚠️ حذف النشاط "' + a.title + '"؟')) return;
+  
+  pubActivities = pubActivities.filter(x => x.id !== id);
+  saveAll();
+  ppRenderActivities();
+}
+
+// ===== Members =====
+function ppRenderMembers() {
+  const tbody = document.getElementById('pp-members-table');
+  if (!tbody) return;
+  
+  const sorted = pubMembers.slice().sort((a,b) => (a.order||0) - (b.order||0));
+  const typeIcons = { 'elected': '🗳️', 'founder': '⭐', 'honorary': '🏅' };
+  const typeLabels = { 'elected': 'منتخب', 'founder': 'مؤسس', 'honorary': 'شرفي' };
+  
+  tbody.innerHTML = sorted.length ? sorted.map(m => `<tr>
+    <td>
+      <div style="display:flex;align-items:center;gap:10px">
+        ${m.photo ? `<img src="${m.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover">` : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#d23c1e,#b41e00);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">${(m.name || '?')[0]}</div>`}
+        <div style="font-weight:700">${m.name}</div>
+      </div>
+    </td>
+    <td style="font-weight:600">${m.role || '—'}</td>
+    <td style="font-size:12px">${m.from || '—'} - ${m.to || '—'}</td>
+    <td><span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700">${typeIcons[m.type] || ''} ${typeLabels[m.type] || m.type}</span></td>
+    <td>${m.order || 0}</td>
+    <td>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-outline btn-xs" onclick="openMemberModal(${m.id})">✏️</button>
+        <button class="btn btn-danger btn-xs" onclick="deleteMember(${m.id})">🗑️</button>
+      </div>
+    </td>
+  </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:30px;color:#94a3b8">لم يُضف أعضاء بعد. اضغط "إضافة عضو".</td></tr>';
+}
+
+function openMemberModal(id) {
+  const titleEl = document.getElementById('m-member-title');
+  if (id) {
+    const m = pubMembers.find(x => x.id === id);
+    if (!m) return;
+    if (titleEl) titleEl.textContent = '✏️ تعديل عضو';
+    document.getElementById('mem-id').value = id;
+    document.getElementById('mem-name').value = m.name || '';
+    document.getElementById('mem-role').value = m.role || '';
+    document.getElementById('mem-order').value = m.order || 0;
+    document.getElementById('mem-from').value = m.from || '';
+    document.getElementById('mem-to').value = m.to || '';
+    document.getElementById('mem-type').value = m.type || 'elected';
+    document.getElementById('mem-photo').value = m.photo || '';
+    if (m.photo) {
+      document.getElementById('mem-photo-preview').innerHTML = '<img src="' + m.photo + '" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0">';
+    } else {
+      document.getElementById('mem-photo-preview').innerHTML = '';
+    }
+  } else {
+    if (titleEl) titleEl.textContent = '➕ إضافة عضو';
+    document.getElementById('mem-id').value = '';
+    document.getElementById('mem-name').value = '';
+    document.getElementById('mem-role').value = '';
+    document.getElementById('mem-order').value = pubMembers.length;
+    document.getElementById('mem-from').value = '';
+    document.getElementById('mem-to').value = '';
+    document.getElementById('mem-type').value = 'elected';
+    document.getElementById('mem-photo').value = '';
+    document.getElementById('mem-photo-preview').innerHTML = '';
+  }
+  document.getElementById('mem-photo-input').value = '';
+  openModal('m-pp-member');
+}
+
+function previewMemPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('mem-photo').value = e.target.result;
+    document.getElementById('mem-photo-preview').innerHTML = 
+      '<img src="' + e.target.result + '" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0">';
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveMember() {
+  const name = document.getElementById('mem-name').value.trim();
+  const role = document.getElementById('mem-role').value.trim();
+  if (!name || !role) { alert('⚠️ الاسم والمنصب مطلوبان'); return; }
+  
+  const id = document.getElementById('mem-id').value;
+  const data = {
+    name,
+    role,
+    order: parseInt(document.getElementById('mem-order').value) || 0,
+    from: document.getElementById('mem-from').value.trim(),
+    to: document.getElementById('mem-to').value.trim(),
+    type: document.getElementById('mem-type').value,
+    photo: document.getElementById('mem-photo').value
+  };
+  
+  if (id) {
+    const i = pubMembers.findIndex(m => m.id == id);
+    if (i >= 0) pubMembers[i] = { ...pubMembers[i], ...data };
+  } else {
+    data.id = uid();
+    pubMembers.unshift(data);
+  }
+  
+  saveAll();
+  closeModal('m-pp-member');
+  ppRenderMembers();
+}
+
+function deleteMember(id) {
+  if (!isAdmin() && !hasPermission('publicpage_manage')) {
+    alert('⛔ لا تملك صلاحية الحذف'); return;
+  }
+  const m = pubMembers.find(x => x.id === id);
+  if (!m) return;
+  if (!confirm('⚠️ حذف "' + m.name + '"؟')) return;
+  
+  pubMembers = pubMembers.filter(x => x.id !== id);
+  saveAll();
+  ppRenderMembers();
+}
+
+// ===== Bank Info =====
+function saveBankInfo() {
+  settings.bank = document.getElementById('pp-bank-name-input').value.trim();
+  settings.rib = document.getElementById('pp-bank-rib-input').value.trim();
+  settings.bankHolder = document.getElementById('pp-bank-holder-input').value.trim();
+  settings.ccp = document.getElementById('pp-bank-ccp-input').value.trim();
+  saveAll();
+  alert('✅ تم حفظ معلومات الحساب البنكي. ستظهر في الصفحة العامة فوراً.');
+}
+
+// ===== Preview public page from admin =====
+function previewPublicPage() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('main-sidebar').style.display = 'none';
+  document.getElementById('public-screen').style.display = 'block';
+  if (typeof renderPublicPage === 'function') renderPublicPage();
+}
+
+console.log('%c🌐 Public Page Manager Ready', 'background:#d23c1e;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
 
 </script>
 
