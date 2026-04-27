@@ -1891,22 +1891,23 @@ body.dark-mode .gs-result-item .gs-name {
    📱 MOBILE OPTIMIZATIONS — تحسينات الموبايل الشاملة
    ================================================================ */
 
-/* Modal on mobile: TRUE full-screen with sticky footer (works on iOS/Android) */
+/* Modal on mobile: full-screen with sticky footer - STRONG version */
 @media (max-width: 768px) {
-  .modal-overlay {
+  .modal-overlay.open {
     padding: 0 !important;
     align-items: stretch !important;
     justify-content: stretch !important;
-  }
-  .modal-overlay.open,
-  .modal-overlay[style*="flex"] {
     display: flex !important;
+  }
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: stretch !important;
   }
   .modal {
     max-width: 100% !important;
     width: 100% !important;
     max-height: 100vh !important;
-    max-height: 100dvh !important; /* dynamic viewport height for mobile browsers */
+    max-height: 100dvh !important; /* Dynamic viewport - excludes mobile browser chrome */
     height: 100vh !important;
     height: 100dvh !important;
     border-radius: 0 !important;
@@ -1916,52 +1917,42 @@ body.dark-mode .gs-result-item .gs-name {
     overflow: hidden !important;
   }
   .modal-header {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    z-index: 10;
-    padding: 14px 16px !important;
-    border-bottom: 1px solid #e2e8f0;
     flex-shrink: 0 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
+    background: #fff !important;
+    z-index: 10 !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--border, #e2e8f0) !important;
+    position: relative !important;
   }
   .modal-title {
     font-size: 15px !important;
   }
-  .modal-close {
-    min-width: 36px;
-    min-height: 36px;
-    font-size: 20px !important;
-  }
   .modal-body {
-    padding: 14px 16px !important;
-    padding-bottom: 100px !important; /* Big bottom space - footer won't cover */
+    flex: 1 1 auto !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    flex: 1 1 auto !important;
+    padding: 14px 16px !important;
+    padding-bottom: 20px !important;
     min-height: 0 !important;
   }
   .modal-footer {
-    position: sticky !important;
-    bottom: 0 !important;
+    flex-shrink: 0 !important;
     padding: 12px 14px !important;
     gap: 8px !important;
     flex-direction: row !important;
     justify-content: stretch !important;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
     background: #fff !important;
-    border-top: 1px solid #e2e8f0 !important;
-    box-shadow: 0 -4px 16px rgba(0,0,0,0.1) !important;
-    flex-shrink: 0 !important;
+    position: relative !important;
     z-index: 10 !important;
+    border-top: 1px solid var(--border, #e2e8f0) !important;
   }
   .modal-footer .btn {
     flex: 1 !important;
     padding: 14px !important;
-    font-size: 14px !important;
-    min-height: 48px !important;
-    border-radius: 8px !important;
+    font-size: 15px !important;
+    min-height: 50px !important;
+    font-weight: 700 !important;
   }
   
   /* Form fields - bigger touch targets */
@@ -4675,65 +4666,61 @@ window.installPWA = function() {
 
 <!-- ADMIN MODAL -->
 <div class="modal-overlay" id="m-admin">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="m-admin-title">🔐 إضافة مدير / مستخدم</span>
-      <button class="modal-close" onclick="closeModal('m-admin')">✕</button>
+<div class="modal">
+  <div class="modal-header">
+    <span class="modal-title" id="admin-modal-title">🔐 إضافة مستخدم</span>
+    <button class="modal-close" onclick="closeModal('m-admin')">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>اسم المستخدم *</label>
+      <input id="ad-username" placeholder="user01" style="direction:ltr" autocomplete="off">
     </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>اسم المستخدم *</label>
-          <input id="ad-username" placeholder="user01" style="direction:ltr">
-        </div>
-        <div class="form-group">
-          <label>كلمة المرور</label>
-          <div style="position:relative">
-            <input type="password" id="ad-pass" placeholder="••••••••" style="padding-left:42px">
-            <button type="button" onclick="togglePasswordVisibility('ad-pass', this)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:4px;color:#64748b">👁️</button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>الاسم الكامل</label>
-          <input id="ad-name" placeholder="...">
-        </div>
-        <div class="form-group">
-          <label>البريد الإلكتروني</label>
-          <input id="ad-email" placeholder="user@firdaws.ma" style="direction:ltr">
-        </div>
-        <div class="form-group">
-          <label>الدور</label>
-          <select id="ad-role" onchange="renderPermCheckboxesV2(this.value)">
-            <option value="superadmin">👑 مدير عام</option>
-            <option value="admin">🔧 مدير</option>
-            <option value="manager">📋 مسيّر الجمعية</option>
-            <option value="medical">🏥 طاقم طبي</option>
-            <option value="finance">💹 مالي</option>
-            <option value="social">🤝 اجتماعي</option>
-            <option value="driver">🚐 سائق</option>
-            <option value="viewer">👁️ مشاهد</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>الحالة</label>
-          <select id="ad-status">
-            <option value="نشط">نشط ✅</option>
-            <option value="موقوف">موقوف ⏸️</option>
-          </select>
-        </div>
-      </div>
-      <div style="margin-top:14px;padding:10px 0 4px;font-size:12px;font-weight:800;color:#0f766e;border-bottom:2px solid #99f6e4;display:flex;align-items:center;gap:6px">
-        🛡️ صلاحيات تفصيلية
-      </div>
-      <div id="perm-checkboxes" style="margin-top:10px">
-        <div style="color:#94a3b8;font-size:12px">اختر الدور أولاً...</div>
+    <div class="form-group">
+      <label>كلمة المرور</label>
+      <div style="position:relative">
+        <input type="password" id="ad-pass" placeholder="••••••••" style="padding-left:42px" autocomplete="new-password">
+        <button type="button" onclick="togglePasswordVisibility('ad-pass', this)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:4px;color:#64748b">👁️</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('m-admin')">إلغاء</button>
-      <button class="btn btn-primary" onclick="saveAdminV2()">💾 حفظ</button>
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input id="ad-name" placeholder="...">
+    </div>
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input id="ad-email" type="email" placeholder="user@firdaws.ma" style="direction:ltr" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>الدور</label>
+      <select id="ad-role" onchange="renderPermCheckboxesV2(this.value)">
+        <option value="superadmin">👑 مدير عام</option>
+        <option value="admin">🔧 مدير</option>
+        <option value="manager">📋 مسيّر الجمعية</option>
+        <option value="medical">🏥 طاقم طبي</option>
+        <option value="finance">💹 مالي / Comptable</option>
+        <option value="social">🤝 اجتماعي</option>
+        <option value="driver">🚐 سائق / Chauffeur</option>
+        <option value="viewer">👁️ مشاهد / Lecteur</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>الحالة</label>
+      <select id="ad-status">
+        <option value="نشط">نشط ✅</option>
+        <option value="موقوف">موقوف ⏸️</option>
+      </select>
+    </div>
+    <div style="padding:10px 0 4px;font-size:12px;font-weight:800;color:var(--teal-d);border-bottom:2px solid var(--teal-l);margin:8px 0 10px;display:flex;align-items:center;gap:6px">🛡️ صلاحيات تفصيلية</div>
+    <div id="perm-checkboxes" style="background:#f8fafc;padding:10px;border-radius:8px">
+      <div style="color:var(--slate-l, #64748b);font-size:12px;text-align:center;padding:14px">اختر الدور أولاً...</div>
     </div>
   </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal('m-admin')">إلغاء</button>
+    <button class="btn btn-primary" onclick="saveAdminV2()">💾 حفظ</button>
+  </div>
+</div>
 </div>
 
 <!-- DETAIL MODAL -->
@@ -4896,14 +4883,12 @@ async function doLogin() {
   user.lastLogin = new Date().toISOString();
   saveAll();
   
-  // Save session for refresh persistence (localStorage = persistent across browser closes)
+  // Save session for refresh persistence
   try {
-    const sessionData = JSON.stringify({
+    localStorage.setItem('frd_session', JSON.stringify({
       username: user.username,
       timestamp: Date.now()
-    });
-    localStorage.setItem('frd_session', sessionData);
-    sessionStorage.setItem('frd_session', sessionData);
+    }));
   } catch(e) { console.error('Session save failed:', e); }
   // Hide login, show app
   document.getElementById('login-screen').style.display = 'none';
@@ -5066,11 +5051,8 @@ function applyPermissions() {
 
 function doLogout() {
   currentUser = null;
-  // Clear session from both storages
-  try { 
-    localStorage.removeItem('frd_session');
-    sessionStorage.removeItem('frd_session'); 
-  } catch(e) {}
+  // Clear session
+  try { localStorage.removeItem('frd_session'); } catch(e) {}
   closeSidebar();
   document.body.classList.add('logged-out');
   document.getElementById('main-content').style.display = 'none';
@@ -7450,78 +7432,18 @@ function populateSel(selId,arr,nameField){
 saveAll(); // ensure admins saved with default
 
 // Try to restore previous session
-// ================================================================
-// 🔙 BACK BUTTON HANDLING - Handle Android back button properly
-// ================================================================
-window.addEventListener('popstate', function(e) {
-  // 1. If any modal is open, close it instead of going back
-  const openModals = document.querySelectorAll('.modal-overlay.open, .modal-overlay[style*="flex"]');
-  if (openModals.length > 0) {
-    openModals.forEach(m => {
-      m.classList.remove('open');
-      if (m.style) m.style.display = 'none';
-    });
-    history.pushState({ modalClosed: true }, '');
-    return;
-  }
-  
-  // 2. If sidebar drawer is open on mobile, close it
-  const sidebar = document.getElementById('main-sidebar');
-  if (sidebar && sidebar.classList.contains('open')) {
-    sidebar.classList.remove('open');
-    document.body.classList.remove('sidebar-open');
-    history.pushState({ sidebarClosed: true }, '');
-    return;
-  }
-  
-  // 3. If on a page other than dashboard, go to dashboard
-  if (currentUser && e.state && e.state.page && e.state.page !== 'dashboard') {
-    if (typeof goPageByName === 'function') {
-      goPageByName('dashboard');
-      history.pushState({ page: 'dashboard' }, '');
-      return;
-    }
-  }
-  
-  // 4. If on public-screen and went somewhere, just stay (user pressed back)
-  // Default browser behavior will handle it
-});
-
-// Push initial state so we have something to go back from
-if (typeof history.pushState === 'function') {
-  history.replaceState({ initial: true }, '');
-}
-
-// Override openModal to push history state
-const _origOpenModal = window.openModal;
-window.openModal = function(id) {
-  if (_origOpenModal) _origOpenModal(id);
-  else {
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.add('open');
-      el.style.display = 'flex';
-    }
-  }
-  try { history.pushState({ modal: id }, ''); } catch(e) {}
-};
-
 function tryRestoreSession() {
   try {
-    // Try localStorage first (persistent), then sessionStorage (current tab only)
-    let saved = localStorage.getItem('frd_session');
-    if (!saved) saved = sessionStorage.getItem('frd_session');
+    const saved = localStorage.getItem('frd_session');
     if (!saved) return false;
     
     const data = JSON.parse(saved);
     if (!data || !data.username) return false;
     
-    // Check session age (max 7 days for localStorage)
+    // Check session age (max 12 hours)
     const age = Date.now() - (data.timestamp || 0);
-    const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
-    if (age > maxAge) {
+    if (age > 7 * 24 * 60 * 60 * 1000) {
       localStorage.removeItem('frd_session');
-      sessionStorage.removeItem('frd_session');
       return false;
     }
     
@@ -7538,12 +7460,11 @@ function tryRestoreSession() {
     );
     if (!user) return false;
     
-    // Restore session
+    // Restore session - same code as successful login
     currentUser = user;
     
-    // Hide login + public, show app
+    // Hide login, show app
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('public-screen').style.display = 'none';
     document.body.classList.remove('logged-out');
     const mc = document.getElementById('main-content');
     if (mc) { mc.style.display = 'flex'; mc.style.width = ''; }
@@ -7558,28 +7479,23 @@ function tryRestoreSession() {
     const sbRole = document.getElementById('sb-role');
     if (sbRole) sbRole.textContent = roleLabel(user.role);
     
+    // Set logos
     if (typeof LOGO_B64 !== 'undefined') {
       const sbLogo = document.getElementById('sb-logo-img');
       if (sbLogo) sbLogo.src = LOGO_B64;
     }
     
+    // Build nav and go to dashboard
     if (typeof buildNav === 'function') buildNav();
     if (typeof goPageByName === 'function') goPageByName('dashboard');
     if (typeof startClock === 'function') startClock();
     if (typeof generateNotifs === 'function') generateNotifs();
-    
-    // Refresh session timestamp
-    localStorage.setItem('frd_session', JSON.stringify({
-      username: user.username,
-      timestamp: Date.now()
-    }));
     
     console.log('🔄 Session restored for:', user.username);
     return true;
   } catch(e) {
     console.error('Session restore failed:', e);
     localStorage.removeItem('frd_session');
-    sessionStorage.removeItem('frd_session');
     return false;
   }
 }
@@ -13704,6 +13620,95 @@ function previewPublicPage() {
 }
 
 console.log('%c🌐 Public Page Manager Ready', 'background:#d23c1e;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold');
+
+
+
+// ================================================================
+// 📱 BACK BUTTON HANDLER - Close modal/sidebar first, then navigate
+// ================================================================
+(function() {
+  let backHandled = false;
+  
+  // Push initial state
+  if (typeof history !== 'undefined' && history.pushState) {
+    try { history.pushState({ page: 'home' }, '', ''); } catch(e) {}
+  }
+  
+  // Patch openModal to push history state
+  const originalOpenModal = window.openModal;
+  window.openModal = function(id) {
+    try {
+      history.pushState({ modal: id }, '', '');
+    } catch(e) {}
+    if (typeof originalOpenModal === 'function') {
+      return originalOpenModal(id);
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('open');
+    }
+  };
+  
+  // Listen to back button
+  window.addEventListener('popstate', function(e) {
+    // Check if a modal is open
+    const openModalEl = document.querySelector('.modal-overlay.open');
+    if (openModalEl) {
+      // Close the open modal instead of navigating back
+      openModalEl.classList.remove('open');
+      if (openModalEl.style) openModalEl.style.display = 'none';
+      // Push state again so user can press back another time
+      try { history.pushState({ page: 'home' }, '', ''); } catch(err) {}
+      return;
+    }
+    
+    // Check if sidebar is open (mobile)
+    const sidebar = document.getElementById('main-sidebar');
+    if (sidebar && (sidebar.classList.contains('open') || sidebar.classList.contains('mobile-open'))) {
+      sidebar.classList.remove('open');
+      sidebar.classList.remove('mobile-open');
+      // Also close overlay
+      const overlay = document.getElementById('sidebar-overlay');
+      if (overlay) overlay.classList.remove('show');
+      try { history.pushState({ page: 'home' }, '', ''); } catch(err) {}
+      return;
+    }
+    
+    // Check if we're on a sub-page → go back to dashboard
+    const pages = document.querySelectorAll('.page');
+    let activePageId = null;
+    pages.forEach(p => {
+      if (p.style.display !== 'none' && p.id !== 'page-dashboard') {
+        activePageId = p.id;
+      }
+    });
+    
+    if (activePageId && activePageId !== 'page-dashboard') {
+      // Go to dashboard
+      if (typeof goPageByName === 'function') {
+        goPageByName('dashboard');
+      }
+      try { history.pushState({ page: 'home' }, '', ''); } catch(err) {}
+      return;
+    }
+    
+    // We're on dashboard - allow normal back behavior
+    // (Will exit app or go to previous URL)
+    try { history.pushState({ page: 'home' }, '', ''); } catch(err) {}
+  });
+  
+  // Also patch closeModal to update history
+  const originalCloseModal = window.closeModal;
+  window.closeModal = function(id) {
+    if (typeof originalCloseModal === 'function') {
+      originalCloseModal(id);
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('open');
+    }
+  };
+  
+  console.log('%c📱 Back button handler ready', 'background:#0f766e;color:#fff;padding:3px 8px;border-radius:3px');
+})();
 
 </script>
 
