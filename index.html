@@ -2159,9 +2159,11 @@ body.dark-mode .gs-result-item .gs-name {
   #pp-bank-rib-input { font-size: 13px !important; letter-spacing: 0 !important; }
 }
 
-/* Show admin cards on mobile, hide table */
-  #admins-table-wrap { display: none !important; }
-  #admins-cards-mobile { display: block !important; }
+/* Show admin/patient cards on mobile, hide tables */
+  #admins-table-wrap,
+  #patients-table-wrap { display: none !important; }
+  #admins-cards-mobile,
+  #patients-cards-mobile { display: block !important; }
   
   /* Hide the permission matrix card on mobile (too complex) */
   #perm-matrix { 
@@ -3038,7 +3040,10 @@ window.installPWA = function() {
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title" id="patients-lbl">المرضى</span></div>
-    <table><thead><tr><th>المريض</th><th>رقم الهوية</th><th>نوع السرطان</th><th>المرحلة</th><th>الهاتف</th><th>الحالة</th><th class="finance-admin-only">المصاريف</th><th>إجراءات</th></tr></thead><tbody id="patients-table"></tbody></table>
+    <div class="table-wrap" id="patients-table-wrap">
+      <table><thead><tr><th>المريض</th><th>رقم الهوية</th><th>نوع السرطان</th><th>المرحلة</th><th>الهاتف</th><th>الحالة</th><th class="finance-admin-only">المصاريف</th><th>إجراءات</th></tr></thead><tbody id="patients-table"></tbody></table>
+    </div>
+    <div id="patients-cards-mobile" style="display:none"></div>
   </div>
 </div>
 
@@ -5533,30 +5538,118 @@ function deletePatient(id){
 }
 
 function renderPatients(){
-  const q=document.getElementById('patient-search')?.value?.toLowerCase()||'';
-  let list=patients;
-  if(pf!=='all') list=list.filter(p=>p.status===pf);
-  if(q) list=list.filter(p=>p.name?.toLowerCase().includes(q)||p.pid?.includes(q));
-  document.getElementById('patients-lbl').textContent=`المرضى المسجلون (${list.length})`;
-  const tbody=document.getElementById('patients-table');
-  if(!list.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="ei">👤</div><p>${t("no_patients")}</p></div></td></tr>`;return;}
-  tbody.innerHTML=list.map(p=>{
-    const exp=pExpTotal(p.id);
-    const ph=p.photo?`<img src="${p.photo}" style="width:30px;height:30px;border-radius:50%;object-fit:cover">`:
-      `<div class="avatar">${initials(p.name)}</div>`;
-    return`<tr>
-      <td><div class="name-cell">${ph}<div><div style="font-weight:600">${p.name}</div><div style="font-size:10px;color:var(--slate-l)">${p.gender||''} ${p.dob?'· '+calcAge(p.dob)+' سنة':''}</div></div></div></td>
-      <td>${p.pid||'—'}</td><td>${p.cancer||'—'}</td><td>${p.stage||'—'}</td><td>${p.phone||'—'}</td>
-      <td>${statusBadge(p.status)}</td>
-      <td class="finance-admin-only" style="font-weight:700;color:var(--teal-d)">${fmtNum(exp)} ${settings.currency||"درهم"}</td>
-      <td><div style="display:flex;gap:4px">
-        <button class="btn btn-outline btn-xs" onclick="showPatientDetail(${p.id})">🔍</button>
-        <button class="btn btn-outline btn-xs admin-only" onclick="openPatientModal(${p.id})">✏️</button>
-        <button class="btn btn-purple btn-xs" onclick="printPatientCard(${p.id})" title="طباعة الملف">🖨️</button>
-      <button class="btn btn-danger btn-xs admin-only" onclick="deletePatient(${p.id})">🗑️</button>
-      </div></td>
-    </tr>`;
-  }).join('');
+  const q = document.getElementById('patient-search')?.value?.toLowerCase()||'';
+  let list = patients;
+  if(pf!=='all') list = list.filter(p => p.status === pf);
+  if(q) list = list.filter(p => p.name?.toLowerCase().includes(q) || p.pid?.includes(q));
+  
+  const lbl = document.getElementById('patients-lbl');
+  if (lbl) lbl.textContent = `المرضى المسجلون (${list.length})`;
+  
+  // Permission check for edit/delete buttons
+  const canEdit = (typeof isAdmin === 'function' && isAdmin()) || 
+                  (typeof hasPermission === 'function' && hasPermission('patients_write'));
+  const canSeeFinance = (typeof isFinanceAdmin === 'function' && isFinanceAdmin()) || 
+                        (typeof isAdmin === 'function' && isAdmin());
+  
+  // ============ DESKTOP TABLE ============
+  const tbody = document.getElementById('patients-table');
+  if (tbody) {
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><div class="ei">👤</div><p>${t("no_patients")}</p></div></td></tr>`;
+    } else {
+      tbody.innerHTML = list.map(p => {
+        const exp = pExpTotal(p.id);
+        const ph = p.photo 
+          ? `<img src="${p.photo}" style="width:30px;height:30px;border-radius:50%;object-fit:cover">` 
+          : `<div class="avatar">${initials(p.name)}</div>`;
+        return `<tr>
+          <td><div class="name-cell">${ph}<div><div style="font-weight:600">${p.name}</div><div style="font-size:10px;color:var(--slate-l)">${p.gender||''} ${p.dob?'· '+calcAge(p.dob)+' سنة':''}</div></div></div></td>
+          <td>${p.pid||'—'}</td><td>${p.cancer||'—'}</td><td>${p.stage||'—'}</td><td>${p.phone||'—'}</td>
+          <td>${statusBadge(p.status)}</td>
+          <td class="finance-admin-only" style="font-weight:700;color:var(--teal-d)">${fmtNum(exp)} ${settings.currency||"درهم"}</td>
+          <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-xs" onclick="showPatientDetail(${p.id})">🔍</button>
+            <button class="btn btn-outline btn-xs admin-only" onclick="openPatientModal(${p.id})">✏️</button>
+            <button class="btn btn-purple btn-xs" onclick="printPatientCard(${p.id})" title="طباعة الملف">🖨️</button>
+            <button class="btn btn-danger btn-xs admin-only" onclick="deletePatient(${p.id})">🗑️</button>
+          </div></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+  
+  // ============ MOBILE CARDS ============
+  const mobileCards = document.getElementById('patients-cards-mobile');
+  if (mobileCards) {
+    if (!list.length) {
+      mobileCards.innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8"><div style="font-size:48px;margin-bottom:8px">👤</div><p>' + t("no_patients") + '</p></div>';
+    } else {
+      mobileCards.innerHTML = list.map(p => {
+        const exp = pExpTotal(p.id);
+        const statusColors = {
+          'نشط': '#16a34a', 'متابعة': '#0ea5e9', 'حرج': '#dc2626',
+          'تعافى': '#15803d', 'متوفى': '#64748b', 'منقطع': '#a16207', 'أوقف العلاج': '#92400e'
+        };
+        const sColor = statusColors[p.status] || '#64748b';
+        const ph = p.photo 
+          ? `<img src="${p.photo}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;flex-shrink:0">`
+          : `<div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#d23c1e,#b41e00);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0">${initials(p.name)}</div>`;
+        
+        return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <!-- Header: photo + name + status -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            ${ph}
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:15px;color:#0f172a;line-height:1.3">${p.name}</div>
+              <div style="font-size:11px;color:#64748b;margin-top:2px">${p.gender || ''} ${p.dob ? '· ' + calcAge(p.dob) + ' سنة' : ''}</div>
+            </div>
+            <span style="background:${sColor};color:#fff;padding:4px 10px;border-radius:12px;font-size:10.5px;font-weight:700;flex-shrink:0">${p.status || 'نشط'}</span>
+          </div>
+          
+          <!-- Info grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:#f8fafc;border-radius:8px;margin-bottom:12px">
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600;margin-bottom:2px">رقم الهوية</div>
+              <div style="font-size:12.5px;color:#334155;font-weight:600;font-family:monospace">${p.pid || '—'}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600;margin-bottom:2px">الهاتف</div>
+              <div style="font-size:12.5px;color:#334155;font-weight:600;direction:ltr;text-align:right">${p.phone || '—'}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600;margin-bottom:2px">نوع السرطان</div>
+              <div style="font-size:12px;color:#0f172a;font-weight:700">${p.cancer || '—'}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600;margin-bottom:2px">المرحلة</div>
+              <div style="font-size:12px;color:#0f172a;font-weight:700">${p.stage || '—'}</div>
+            </div>
+            ${canSeeFinance ? `<div style="grid-column:1/-1;border-top:1px solid #e2e8f0;padding-top:6px;margin-top:2px">
+              <div style="font-size:10px;color:#64748b;font-weight:600;margin-bottom:2px">إجمالي المصاريف</div>
+              <div style="font-size:14px;color:#0f766e;font-weight:800">${fmtNum(exp)} ${settings.currency||"درهم"}</div>
+            </div>` : ''}
+          </div>
+          
+          <!-- Action buttons (LARGE for touch) -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-outline" onclick="showPatientDetail(${p.id})" style="flex:1;min-width:48%;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700">
+              🔍 تفاصيل
+            </button>
+            ${canEdit ? `<button class="btn btn-outline" onclick="openPatientModal(${p.id})" style="flex:1;min-width:48%;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700;background:#fef3c7;border-color:#fde68a;color:#92400e">
+              ✏️ تعديل
+            </button>` : ''}
+            <button class="btn btn-outline" onclick="printPatientCard(${p.id})" style="flex:1;min-width:48%;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700;background:#ede9fe;border-color:#ddd6fe;color:#7c3aed">
+              🖨️ طباعة
+            </button>
+            ${canEdit ? `<button class="btn btn-danger" onclick="deletePatient(${p.id})" style="flex:1;min-width:48%;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700">
+              🗑️ حذف
+            </button>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
 }
 
 function showPatientDetail(id){
@@ -7418,42 +7511,60 @@ function renderPublicPage(){
     }
   }
   
-  // === Render dynamic members (founders + elected) ===
+  // === Render dynamic members (founders + elected) - NO DUPLICATES ===
   if (typeof pubMembers !== 'undefined' && pubMembers.length) {
-    const founders = pubMembers.filter(m => m.type === 'founder').sort((a,b) => (a.order||0) - (b.order||0));
-    const elected = pubMembers.filter(m => m.type === 'elected').sort((a,b) => (a.order||0) - (b.order||0));
+    const allFounders = pubMembers.filter(m => m.type === 'founder').sort((a,b) => (a.order||0) - (b.order||0));
+    const allElected = pubMembers.filter(m => m.type === 'elected').sort((a,b) => (a.order||0) - (b.order||0));
+    
+    // Names that appear in both → show ONLY in elected (with "مؤسس ومنتخب" badge)
+    const electedNames = new Set(allElected.map(m => (m.name || '').trim()));
+    const foundersOnly = allFounders.filter(f => !electedNames.has((f.name || '').trim()));
+    
+    // For elected, mark which ones are also founders
+    const founderNames = new Set(allFounders.map(m => (m.name || '').trim()));
+    const electedWithFlag = allElected.map(m => ({
+      ...m,
+      isAlsoFounder: founderNames.has((m.name || '').trim())
+    }));
     
     // Update founders section
     const orgCards = document.querySelectorAll('.pub-org-card');
     if (orgCards.length >= 2) {
-      // Founders card (first one)
+      // Founders card (only those NOT in elected)
       const foundersMembers = orgCards[0].querySelector('.pub-org-members');
-      if (foundersMembers && founders.length) {
-        foundersMembers.innerHTML = founders.map(m => `<div class="pub-member">
-          ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar">${(m.name || '?').substring(0,2)}</div>`}
-          <div class="pub-member-name">${m.name}</div>
-          ${m.role ? '<div class="pub-member-role">' + m.role + '</div>' : ''}
-        </div>`).join('');
+      if (foundersMembers) {
+        if (foundersOnly.length) {
+          foundersMembers.innerHTML = foundersOnly.map(m => `<div class="pub-member">
+            ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar">${(m.name || '?').substring(0,2)}</div>`}
+            <div class="pub-member-name">${m.name}</div>
+            ${m.role ? '<div class="pub-member-role">' + m.role + '</div>' : ''}
+          </div>`).join('');
+        } else {
+          foundersMembers.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:14px">جميع المؤسسين أعضاء حاليون منتخبون</div>';
+        }
       }
       
-      // Elected card (second one)
+      // Update founders count to actual unique founders
+      const foundersMeta = orgCards[0].querySelectorAll('.pub-org-meta strong');
+      if (foundersMeta && foundersMeta.length >= 2) {
+        foundersMeta[1].textContent = '+' + allFounders.length;
+      }
+      
+      // Elected card (with founder badges)
       const electedMembers = orgCards[1].querySelector('.pub-org-members');
-      if (electedMembers && elected.length) {
-        electedMembers.innerHTML = elected.map(m => `<div class="pub-member">
+      if (electedMembers && electedWithFlag.length) {
+        electedMembers.innerHTML = electedWithFlag.map(m => `<div class="pub-member" style="position:relative">
+          ${m.isAlsoFounder ? '<div style="position:absolute;top:-6px;right:-6px;background:#fbbf24;color:#78350f;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,0.15);z-index:2" title="عضو مؤسس">⭐ مؤسس</div>' : ''}
           ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar" style="background:linear-gradient(135deg,#15803d,#005a00)">${(m.name || '?').substring(0,2)}</div>`}
           <div class="pub-member-name">${m.name}</div>
           <div class="pub-member-role">${m.role}${m.from || m.to ? ' · ' + (m.from || '') + '-' + (m.to || '') : ''}</div>
         </div>`).join('');
       }
       
-      // Update meta counts
-      const foundersMeta = orgCards[0].querySelectorAll('.pub-org-meta strong');
-      if (foundersMeta && foundersMeta.length >= 2) {
-        foundersMeta[1].textContent = '+' + founders.length;
-      }
+      // Update elected count
       const electedMeta = orgCards[1].querySelectorAll('.pub-org-meta strong');
       if (electedMeta && electedMeta.length >= 2) {
-        electedMeta[1].textContent = '+' + elected.length;
+        electedMeta[1].textContent = '+' + allElected.length;
       }
     }
   }
