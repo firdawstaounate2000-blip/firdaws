@@ -2159,11 +2159,19 @@ body.dark-mode .gs-result-item .gs-name {
   #pp-bank-rib-input { font-size: 13px !important; letter-spacing: 0 !important; }
 }
 
-/* Show admin/patient cards on mobile, hide tables */
+/* Show cards on mobile, hide tables (all major tables) */
   #admins-table-wrap,
-  #patients-table-wrap { display: none !important; }
+  #patients-table-wrap,
+  #pexp-table-wrap,
+  #salary-table-wrap,
+  #employees-table-wrap,
+  #util-table-wrap { display: none !important; }
   #admins-cards-mobile,
-  #patients-cards-mobile { display: block !important; }
+  #patients-cards-mobile,
+  #pexp-cards-mobile,
+  #salary-cards-mobile,
+  #employees-cards-mobile,
+  #util-cards-mobile { display: block !important; }
   
   /* Hide the permission matrix card on mobile (too complex) */
   #perm-matrix { 
@@ -3201,7 +3209,10 @@ window.installPWA = function() {
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">💰 مصاريف المرضى</span></div>
-    <table><thead><tr><th>المريض</th><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th>المصدر</th><th>المرجع</th><th>إجراءات</th></tr></thead><tbody id="pexp-table"></tbody></table>
+    <div class="table-wrap" id="pexp-table-wrap">
+      <table><thead><tr><th>المريض</th><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th>المصدر</th><th>المرجع</th><th>إجراءات</th></tr></thead><tbody id="pexp-table"></tbody></table>
+    </div>
+    <div id="pexp-cards-mobile" style="display:none;padding:8px"></div>
   </div>
 </div>
 
@@ -3269,11 +3280,17 @@ window.installPWA = function() {
   <div class="dash-grid">
     <div class="card">
       <div class="card-header"><span class="card-title">👔 سجل الرواتب</span></div>
-      <table><thead><tr><th id="th-employee"></th><th id="th-position"></th><th id="th-month"></th><th id="th-base"></th><th id="th-allow"></th><th id="th-ded"></th><th id="th-net"></th><th id="th-status"></th><th id="th-actions"></th></tr></thead><tbody id="salary-table"></tbody></table>
+      <div class="table-wrap" id="salary-table-wrap">
+        <table><thead><tr><th id="th-employee"></th><th id="th-position"></th><th id="th-month"></th><th id="th-base"></th><th id="th-allow"></th><th id="th-ded"></th><th id="th-net"></th><th id="th-status"></th><th id="th-actions"></th></tr></thead><tbody id="salary-table"></tbody></table>
+      </div>
+      <div id="salary-cards-mobile" style="display:none;padding:8px"></div>
     </div>
     <div class="card">
       <div class="card-header"><span class="card-title">👥 قائمة الموظفين</span></div>
-      <table><thead><tr><th>الاسم</th><th>الوظيفة</th><th>الراتب الأساسي</th><th>تاريخ التوظيف</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="employees-table"></tbody></table>
+      <div class="table-wrap" id="employees-table-wrap">
+        <table><thead><tr><th>الاسم</th><th>الوظيفة</th><th>الراتب الأساسي</th><th>تاريخ التوظيف</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="employees-table"></tbody></table>
+      </div>
+      <div id="employees-cards-mobile" style="display:none;padding:8px"></div>
     </div>
   </div>
 </div>
@@ -3324,7 +3341,10 @@ window.installPWA = function() {
   <div class="dash-grid">
     <div class="card">
       <div class="card-header"><span class="card-title">⚡ سجل الفواتير والخدمات</span></div>
-      <table><thead><tr><th>النوع</th><th>الشهر</th><th>التاريخ</th><th>المبلغ</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="util-table"></tbody></table>
+      <div class="table-wrap" id="util-table-wrap">
+        <table><thead><tr><th>النوع</th><th>الشهر</th><th>التاريخ</th><th>المبلغ</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="util-table"></tbody></table>
+      </div>
+      <div id="util-cards-mobile" style="display:none;padding:8px"></div>
     </div>
     <div>
       <div class="card">
@@ -6474,6 +6494,50 @@ function renderPexp(){
       <button class="btn btn-danger btn-xs finance-admin-only" onclick="deletePexp(${e.id})" title="حذف">🗑️</button>
     </div></td>
   </tr>`).join('');
+
+  
+  // ============ MOBILE CARDS ============
+  const mobileCards = document.getElementById('pexp-cards-mobile');
+  if (mobileCards) {
+    if (!list.length) {
+      mobileCards.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8"><div style="font-size:40px">💰</div><p>' + t("no_pexp") + '</p></div>';
+    } else {
+      mobileCards.innerHTML = list.map(e => {
+        const pname = pName(e.patientId);
+        return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+          <div style="display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:10px">
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px;color:#0f172a">${pname}</div>
+              <div style="font-size:11px;color:#64748b;margin-top:2px">${fmtDate(e.date)}</div>
+            </div>
+            <span class="badge b-blue" style="flex-shrink:0;font-size:10.5px">${e.type}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;background:#f8fafc;border-radius:8px;margin-bottom:10px">
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600">المبلغ</div>
+              <div style="font-size:14px;color:#dc2626;font-weight:800">${fmtNum(e.amount)} ${settings.currency||"درهم"}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600">المصدر</div>
+              <div style="font-size:12px;color:#0f172a;font-weight:600">${e.source||'—'}</div>
+            </div>
+            ${e.desc ? `<div style="grid-column:1/-1;border-top:1px solid #e2e8f0;padding-top:6px;margin-top:2px">
+              <div style="font-size:10px;color:#64748b;font-weight:600">الوصف</div>
+              <div style="font-size:12px;color:#334155">${e.desc}</div>
+            </div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline finance-admin-only" onclick="editPexp(${e.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700;background:#fef3c7;border-color:#fde68a;color:#92400e">
+              ✏️ تعديل
+            </button>
+            <button class="btn btn-danger finance-admin-only" onclick="deletePexp(${e.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700">
+              🗑️ حذف
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
 }
 
 // ===================== EMPLOYEES & SALARIES =====================
@@ -6562,41 +6626,130 @@ function deleteSalary(id){
  if(!confirm('حذف؟')) return; salaries=salaries.filter(s=>s.id!==id); saveAll(); renderSalaries(); }
 
 function renderSalaries(){
-  const q=document.getElementById('salary-search')?.value?.toLowerCase()||'';
-  let list=[...salaries].sort((a,b)=>b.month.localeCompare(a.month));
-  if(sf!=='all') list=list.filter(s=>s.status===sf);
-  if(q) list=list.filter(s=>emName(s.empId).toLowerCase().includes(q));
-  const totalPaid=salaries.filter(s=>s.status==='مدفوع').reduce((s,x)=>s+x.net,0);
-  const totalUnpaid=salaries.filter(s=>s.status==='غير مدفوع').reduce((s,x)=>s+x.net,0);
-  document.getElementById('salary-stats').innerHTML=`
+  const q = document.getElementById('salary-search')?.value?.toLowerCase()||'';
+  let list = [...salaries].sort((a,b) => b.month.localeCompare(a.month));
+  if (sf !== 'all') list = list.filter(s => s.status === sf);
+  if (q) list = list.filter(s => emName(s.empId).toLowerCase().includes(q));
+  
+  const totalPaid = salaries.filter(s => s.status === 'مدفوع').reduce((s,x) => s+x.net, 0);
+  const totalUnpaid = salaries.filter(s => s.status === 'غير مدفوع').reduce((s,x) => s+x.net, 0);
+  
+  document.getElementById('salary-stats').innerHTML = `
     <div class="stat-card c-teal"><div class="stat-icon">👥</div><div class="stat-val">${employees.length}</div><div class="stat-label">${t('employees_count')}</div></div>
     <div class="stat-card c-green"><div class="stat-icon">✅</div><div class="stat-val">${fmtNum(Math.round(totalPaid))}</div><div class="stat-label">${t('paid_salaries')} (${settings.currency||'د.م.'})</div></div>
     <div class="stat-card c-red"><div class="stat-icon">⏳</div><div class="stat-val">${fmtNum(Math.round(totalUnpaid))}</div><div class="stat-label">${t('unpaid_salaries')} (${settings.currency||'د.م.'})</div></div>`;
-  const stbody=document.getElementById('salary-table');
-  stbody.innerHTML=list.length?list.map(s=>`<tr>
-    <td><div class="name-cell"><div class="avatar">${initials(emName(s.empId))}</div>${emName(s.empId)}</div></td>
-    <td>${employees.find(e=>e.id===s.empId)?.title||'—'}</td>
-    <td>${s.month||'—'}</td>
-    <td>${fmtNum(s.base)} ${settings.currency||"درهم"}</td>
-    <td style="color:var(--green)">+${fmtNum(s.allow)} ${settings.currency||"درهم"}</td>
-    <td style="color:var(--red)">-${fmtNum(s.deduct)} ${settings.currency||"درهم"}</td>
-    <td style="font-weight:800;color:var(--teal-d)">${fmtNum(s.net)} ${settings.currency||"درهم"}</td>
-    <td>${statusBadge(s.status)}</td>
-    <td><div style="display:flex;gap:3px">
-      <button class="btn btn-purple btn-xs" onclick="printSalarySlip(${s.id})" title="طباعة / عرض القسيمة">🖨️</button>
-      <button class="btn btn-success btn-xs" onclick="downloadSalarySlip(${s.id})" title="تحميل PDF">⬇️</button>
-      <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteSalary(${s.id})">🗑️</button>
-    </div></td>
-  </tr>`).join(''):`<tr><td colspan="9"><div class="empty"><div class="ei">👔</div><p>${t("no_salaries")}</p></div></td></tr>`;
-  const etbody=document.getElementById('employees-table');
-  etbody.innerHTML=employees.length?employees.map(e=>`<tr>
-    <td><div class="name-cell"><div class="avatar">${initials(e.name)}</div>${e.name}</div></td>
-    <td>${e.title||'—'}</td>
-    <td style="font-weight:700;color:var(--teal-d)">${fmtNum(e.baseSalary)} ${settings.currency||"درهم"}</td>
-    <td>${fmtDate(e.hireDate)}</td>
-    <td>${statusBadge(e.status)}</td>
-    <td><button class="btn btn-danger btn-xs admin-only" onclick="deleteEmployee(${e.id})">🗑️</button></td>
-  </tr>`).join(''):`<tr><td colspan="6"><div class="empty"><div class="ei">👥</div><p>${t("no_employees")}</p></div></td></tr>`;
+  
+  // ===== SALARIES =====
+  // Desktop table
+  const stbody = document.getElementById('salary-table');
+  if (stbody) {
+    stbody.innerHTML = list.length ? list.map(s => `<tr>
+      <td><div class="name-cell"><div class="avatar">${initials(emName(s.empId))}</div>${emName(s.empId)}</div></td>
+      <td>${employees.find(e => e.id === s.empId)?.title || '—'}</td>
+      <td>${s.month || '—'}</td>
+      <td>${fmtNum(s.base)} ${settings.currency||"درهم"}</td>
+      <td style="color:var(--green)">+${fmtNum(s.allow)} ${settings.currency||"درهم"}</td>
+      <td style="color:var(--red)">-${fmtNum(s.deduct)} ${settings.currency||"درهم"}</td>
+      <td style="font-weight:800;color:var(--teal-d)">${fmtNum(s.net)} ${settings.currency||"درهم"}</td>
+      <td>${statusBadge(s.status)}</td>
+      <td><div style="display:flex;gap:3px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-xs finance-admin-only" onclick="editSalary(${s.id})" title="تعديل">✏️</button>
+        <button class="btn btn-purple btn-xs" onclick="printSalarySlip(${s.id})" title="طباعة">🖨️</button>
+        <button class="btn btn-success btn-xs" onclick="downloadSalarySlip(${s.id})" title="تحميل PDF">⬇️</button>
+        <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteSalary(${s.id})" title="حذف">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr><td colspan="9"><div class="empty"><div class="ei">👔</div><p>${t("no_salaries")}</p></div></td></tr>`;
+  }
+  
+  // Mobile cards for salaries
+  const sMobile = document.getElementById('salary-cards-mobile');
+  if (sMobile) {
+    if (!list.length) {
+      sMobile.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8"><div style="font-size:40px">👔</div><p>' + t("no_salaries") + '</p></div>';
+    } else {
+      sMobile.innerHTML = list.map(s => {
+        const empName = emName(s.empId);
+        const empTitle = employees.find(e => e.id === s.empId)?.title || '—';
+        const statusColor = s.status === 'مدفوع' ? '#16a34a' : '#dc2626';
+        return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+          <div style="display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:10px">
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px;color:#0f172a">${empName}</div>
+              <div style="font-size:11px;color:#64748b;margin-top:2px">${empTitle} · ${s.month || '—'}</div>
+            </div>
+            <span style="background:${statusColor};color:#fff;padding:3px 10px;border-radius:10px;font-size:10.5px;font-weight:700;flex-shrink:0">${s.status || '—'}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;background:#f8fafc;border-radius:8px;margin-bottom:10px;font-size:12px">
+            <div>الأساسي: <strong>${fmtNum(s.base)}</strong></div>
+            <div style="color:#16a34a">+${fmtNum(s.allow)}</div>
+            <div style="color:#dc2626">-${fmtNum(s.deduct)}</div>
+            <div style="text-align:left"><strong style="color:#0f766e;font-size:14px">${fmtNum(s.net)}</strong></div>
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button class="btn btn-outline finance-admin-only" onclick="editSalary(${s.id})" style="flex:1;min-width:48%;padding:10px 6px;font-size:12px;min-height:42px;font-weight:700;background:#fef3c7;border-color:#fde68a;color:#92400e">✏️ تعديل</button>
+            <button class="btn btn-outline" onclick="printSalarySlip(${s.id})" style="flex:1;min-width:48%;padding:10px 6px;font-size:12px;min-height:42px;font-weight:700;background:#ede9fe;border-color:#ddd6fe;color:#7c3aed">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="downloadSalarySlip(${s.id})" style="flex:1;min-width:48%;padding:10px 6px;font-size:12px;min-height:42px;font-weight:700;background:#dcfce7;border-color:#86efac;color:#166534">⬇️ PDF</button>
+            <button class="btn btn-danger finance-admin-only" onclick="deleteSalary(${s.id})" style="flex:1;min-width:48%;padding:10px 6px;font-size:12px;min-height:42px;font-weight:700">🗑️ حذف</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+  
+  // ===== EMPLOYEES =====
+  // Desktop table
+  const etbody = document.getElementById('employees-table');
+  if (etbody) {
+    etbody.innerHTML = employees.length ? employees.map(e => `<tr>
+      <td><div class="name-cell"><div class="avatar">${initials(e.name)}</div>${e.name}</div></td>
+      <td>${e.title || '—'}</td>
+      <td style="font-weight:700;color:var(--teal-d)">${fmtNum(e.baseSalary)} ${settings.currency||"درهم"}</td>
+      <td>${fmtDate(e.hireDate)}</td>
+      <td>${statusBadge(e.status)}</td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-xs admin-only" onclick="editEmployee(${e.id})" title="تعديل">✏️</button>
+        <button class="btn btn-danger btn-xs admin-only" onclick="deleteEmployee(${e.id})" title="حذف">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr><td colspan="6"><div class="empty"><div class="ei">👥</div><p>${t("no_employees")}</p></div></td></tr>`;
+  }
+  
+  // Mobile cards for employees
+  const eMobile = document.getElementById('employees-cards-mobile');
+  if (eMobile) {
+    if (!employees.length) {
+      eMobile.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8"><div style="font-size:40px">👥</div><p>' + t("no_employees") + '</p></div>';
+    } else {
+      eMobile.innerHTML = employees.map(e => {
+        const sColor = e.status === 'نشط' ? '#16a34a' : '#94a3b8';
+        return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+          <div style="display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+              <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0f766e,#134e4a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">${initials(e.name)}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:800;font-size:14px;color:#0f172a">${e.name}</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px">${e.title || '—'}</div>
+              </div>
+            </div>
+            <span style="background:${sColor};color:#fff;padding:3px 10px;border-radius:10px;font-size:10.5px;font-weight:700;flex-shrink:0">${e.status || 'نشط'}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;background:#f8fafc;border-radius:8px;margin-bottom:10px">
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600">الراتب الأساسي</div>
+              <div style="font-size:13px;color:#0f766e;font-weight:800">${fmtNum(e.baseSalary)} ${settings.currency||"درهم"}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600">تاريخ التوظيف</div>
+              <div style="font-size:12px;color:#334155;font-weight:600">${fmtDate(e.hireDate)}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline admin-only" onclick="editEmployee(${e.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700;background:#fef3c7;border-color:#fde68a;color:#92400e">✏️ تعديل</button>
+            <button class="btn btn-danger admin-only" onclick="deleteEmployee(${e.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700">🗑️ حذف</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
 }
 
 function deleteEmployee(id){
@@ -6796,15 +6949,61 @@ function renderUtil(){
     <div class="stat-card c-blue"><div class="stat-icon">💧</div><div class="stat-val">${fmtNum(Math.round(totalW))}</div><div class="stat-label">ماء (ر.س)</div></div>
     <div class="stat-card c-orange"><div class="stat-icon">🔥</div><div class="stat-val">${fmtNum(Math.round(totalG))}</div><div class="stat-label">غاز (ر.س)</div></div>
     <div class="stat-card c-purple"><div class="stat-icon">🏠</div><div class="stat-val">${fmtNum(Math.round(totalR))}</div><div class="stat-label">إيجار/سكن (ر.س)</div></div>`;
-  const tbody=document.getElementById('util-table');
-  tbody.innerHTML=list.length?list.map(u=>`<tr>
-    <td><span class="badge b-blue">${u.type}</span></td>
-    <td>${u.month||'—'}</td><td>${fmtDate(u.date)}</td>
-    <td style="font-weight:700;color:var(--teal-d)">${fmtNum(u.amount)} ${settings.currency||"درهم"}</td>
-    <td>${statusBadge(u.status)}</td>
-    <td>${u.notes||'—'}</td>
-    <td><button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteUtil(${u.id})">🗑️</button></td>
-  </tr>`).join(''):`<tr><td colspan="7"><div class="empty"><div class="ei">⚡</div><p>${t("no_bills")}</p></div></td></tr>`;
+  const tbody = document.getElementById('util-table');
+  if (tbody) {
+    tbody.innerHTML = list.length ? list.map(u => `<tr>
+      <td><span class="badge b-blue">${u.type}</span></td>
+      <td>${u.month||'—'}</td><td>${fmtDate(u.date)}</td>
+      <td style="font-weight:700;color:var(--teal-d)">${fmtNum(u.amount)} ${settings.currency||"درهم"}</td>
+      <td>${statusBadge(u.status)}</td>
+      <td>${u.notes||'—'}</td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-xs finance-admin-only" onclick="editUtil(${u.id})" title="تعديل">✏️</button>
+        <button class="btn btn-danger btn-xs finance-admin-only" onclick="deleteUtil(${u.id})" title="حذف">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr><td colspan="7"><div class="empty"><div class="ei">⚡</div><p>${t("no_bills")}</p></div></td></tr>`;
+  }
+  
+  // Mobile cards
+  const utilMobile = document.getElementById('util-cards-mobile');
+  if (utilMobile) {
+    if (!list.length) {
+      utilMobile.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8"><div style="font-size:40px">⚡</div><p>' + t("no_bills") + '</p></div>';
+    } else {
+      const typeIcons = {'كهرباء':'⚡','ماء':'💧','غاز':'🔥','إيجار/سكن':'🏠','أخرى':'📋'};
+      utilMobile.innerHTML = list.map(u => {
+        const icon = typeIcons[u.type] || '⚡';
+        const sColor = u.status === 'مدفوع' ? '#16a34a' : u.status === 'غير مدفوع' ? '#dc2626' : '#94a3b8';
+        return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex:1">
+              <div style="font-size:24px;flex-shrink:0">${icon}</div>
+              <div>
+                <div style="font-weight:800;font-size:14px;color:#0f172a">${u.type}</div>
+                <div style="font-size:11px;color:#64748b">${u.month || fmtDate(u.date)}</div>
+              </div>
+            </div>
+            <span style="background:${sColor};color:#fff;padding:3px 10px;border-radius:10px;font-size:10.5px;font-weight:700;flex-shrink:0">${u.status || '—'}</span>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:10px;color:#64748b;font-weight:600">المبلغ</div>
+              <div style="font-size:16px;color:#0f766e;font-weight:800">${fmtNum(u.amount)} ${settings.currency||"درهم"}</div>
+            </div>
+            <div style="text-align:left">
+              <div style="font-size:10px;color:#64748b;font-weight:600">التاريخ</div>
+              <div style="font-size:12px;color:#334155;font-weight:600">${fmtDate(u.date)}</div>
+            </div>
+          </div>
+          ${u.notes ? `<div style="font-size:12px;color:#64748b;background:#fef3c7;padding:6px 10px;border-radius:6px;margin-bottom:10px">📝 ${u.notes}</div>` : ''}
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline finance-admin-only" onclick="editUtil(${u.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700;background:#fef3c7;border-color:#fde68a;color:#92400e">✏️ تعديل</button>
+            <button class="btn btn-danger finance-admin-only" onclick="deleteUtil(${u.id})" style="flex:1;padding:11px 8px;font-size:13px;min-height:44px;font-weight:700">🗑️ حذف</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
   // Chart
   const byType={};
   utilities.forEach(u=>{byType[u.type]=(byType[u.type]||0)+u.amount;});
@@ -14144,6 +14343,256 @@ function _showCopyFeedback(btn, msg) {
     btn.style.borderColor = '';
   }, 2000);
 }
+
+
+
+// ================================================================
+// ✏️ EDIT FUNCTIONS — Salaries, Employees, Utilities
+// ================================================================
+
+function editSalary(id) {
+  if (typeof isFinanceAdmin === 'function' && !isFinanceAdmin()) {
+    if (!isAdmin()) { alert('⛔ لا تملك صلاحية التعديل'); return; }
+  }
+  
+  const s = salaries.find(x => x.id === id);
+  if (!s) { alert('⚠️ القيد غير موجود'); return; }
+  
+  window._editSalaryId = id;
+  populateSel('sl-employee', employees, 'name');
+  
+  document.getElementById('sl-employee').value = s.empId || '';
+  document.getElementById('sl-month').value = s.month || '';
+  document.getElementById('sl-date').value = s.date || today();
+  document.getElementById('sl-base').value = s.base || '';
+  document.getElementById('sl-allow').value = s.allow || '';
+  document.getElementById('sl-deduct').value = s.deduct || '';
+  document.getElementById('sl-net').value = s.net || '';
+  document.getElementById('sl-status').value = s.status || 'مدفوع';
+  const notesEl = document.getElementById('sl-notes');
+  if (notesEl) notesEl.value = s.notes || '';
+  
+  const titleEl = document.querySelector('#m-salary .modal-title');
+  if (titleEl) titleEl.textContent = '✏️ تعديل قسيمة راتب';
+  
+  openModal('m-salary');
+}
+
+function editEmployee(id) {
+  if (typeof isAdmin === 'function' && !isAdmin()) {
+    alert('⛔ لا تملك صلاحية التعديل'); return;
+  }
+  
+  const e = employees.find(x => x.id === id);
+  if (!e) { alert('⚠️ الموظف غير موجود'); return; }
+  
+  window._editEmployeeId = id;
+  
+  document.getElementById('em-name').value = e.name || '';
+  document.getElementById('em-title').value = e.title || '';
+  document.getElementById('em-phone').value = e.phone || '';
+  document.getElementById('em-pid').value = e.pid || '';
+  document.getElementById('em-salary').value = e.baseSalary || '';
+  document.getElementById('em-hdate').value = e.hireDate || '';
+  document.getElementById('em-status').value = e.status || 'نشط';
+  const notesEl = document.getElementById('em-notes');
+  if (notesEl) notesEl.value = e.notes || '';
+  
+  const titleEl = document.querySelector('#m-employee .modal-title');
+  if (titleEl) titleEl.textContent = '✏️ تعديل موظف';
+  
+  openModal('m-employee');
+}
+
+function editUtil(id) {
+  if (typeof isFinanceAdmin === 'function' && !isFinanceAdmin()) {
+    if (!isAdmin()) { alert('⛔ لا تملك صلاحية التعديل'); return; }
+  }
+  
+  const u = utilities.find(x => x.id === id);
+  if (!u) { alert('⚠️ الفاتورة غير موجودة'); return; }
+  
+  window._editUtilId = id;
+  
+  document.getElementById('ut-type').value = u.type || 'كهرباء';
+  document.getElementById('ut-month').value = u.month || '';
+  document.getElementById('ut-date').value = u.date || today();
+  document.getElementById('ut-amount').value = u.amount || '';
+  document.getElementById('ut-status').value = u.status || 'مدفوع';
+  const refEl = document.getElementById('ut-ref');
+  if (refEl) refEl.value = u.ref || '';
+  document.getElementById('ut-notes').value = u.notes || '';
+  
+  const titleEl = document.querySelector('#m-util .modal-title');
+  if (titleEl) titleEl.textContent = '✏️ تعديل فاتورة';
+  
+  openModal('m-util');
+}
+
+// ================================================================
+// PATCH save functions to handle edit mode
+// ================================================================
+
+// Save Salary - intercept original
+(function() {
+  const origSaveSalary = window.saveSalary;
+  window.saveSalary = function() {
+    const editId = window._editSalaryId;
+    if (!editId) {
+      // Reset title and call original
+      const titleEl = document.querySelector('#m-salary .modal-title');
+      if (titleEl && titleEl.textContent.includes('تعديل')) {
+        titleEl.textContent = '👔 إضافة قسيمة راتب';
+      }
+      return origSaveSalary && origSaveSalary();
+    }
+    
+    // EDIT MODE
+    const empId = parseInt(document.getElementById('sl-employee').value);
+    if (!empId) { alert('⚠️ يرجى اختيار موظف'); return; }
+    
+    const i = salaries.findIndex(s => s.id === editId);
+    if (i < 0) { alert('⚠️ القيد غير موجود'); return; }
+    
+    const base = parseFloat(document.getElementById('sl-base').value) || 0;
+    const allow = parseFloat(document.getElementById('sl-allow').value) || 0;
+    const deduct = parseFloat(document.getElementById('sl-deduct').value) || 0;
+    const net = parseFloat(document.getElementById('sl-net').value) || (base + allow - deduct);
+    
+    salaries[i] = {
+      ...salaries[i],
+      empId,
+      month: document.getElementById('sl-month').value,
+      date: document.getElementById('sl-date').value,
+      base, allow, deduct, net,
+      status: document.getElementById('sl-status').value,
+      notes: document.getElementById('sl-notes')?.value || ''
+    };
+    
+    saveAll();
+    closeModal('m-salary');
+    renderSalaries();
+    window._editSalaryId = null;
+    
+    if (typeof addNotification === 'function') {
+      addNotification('✏️ تم تعديل قسيمة راتب: ' + emName(empId), 'b-orange');
+    }
+  };
+})();
+
+// Save Employee - intercept original
+(function() {
+  const origSaveEmployee = window.saveEmployee;
+  window.saveEmployee = function() {
+    const editId = window._editEmployeeId;
+    if (!editId) {
+      const titleEl = document.querySelector('#m-employee .modal-title');
+      if (titleEl && titleEl.textContent.includes('تعديل')) {
+        titleEl.textContent = '👥 إضافة موظف';
+      }
+      return origSaveEmployee && origSaveEmployee();
+    }
+    
+    // EDIT MODE
+    const name = document.getElementById('em-name').value.trim();
+    if (!name) { alert('⚠️ الاسم مطلوب'); return; }
+    
+    const i = employees.findIndex(e => e.id === editId);
+    if (i < 0) { alert('⚠️ الموظف غير موجود'); return; }
+    
+    employees[i] = {
+      ...employees[i],
+      name,
+      title: document.getElementById('em-title').value,
+      phone: document.getElementById('em-phone').value,
+      pid: document.getElementById('em-pid').value,
+      baseSalary: parseFloat(document.getElementById('em-salary').value) || 0,
+      hireDate: document.getElementById('em-hdate').value,
+      status: document.getElementById('em-status').value,
+      notes: document.getElementById('em-notes')?.value || ''
+    };
+    
+    saveAll();
+    closeModal('m-employee');
+    renderSalaries();
+    window._editEmployeeId = null;
+    
+    if (typeof addNotification === 'function') {
+      addNotification('✏️ تم تعديل موظف: ' + name, 'b-orange');
+    }
+  };
+})();
+
+// Save Utility - intercept original
+(function() {
+  const origSaveUtil = window.saveUtil;
+  window.saveUtil = function() {
+    const editId = window._editUtilId;
+    if (!editId) {
+      const titleEl = document.querySelector('#m-util .modal-title');
+      if (titleEl && titleEl.textContent.includes('تعديل')) {
+        titleEl.textContent = '⚡ إضافة فاتورة';
+      }
+      return origSaveUtil && origSaveUtil();
+    }
+    
+    // EDIT MODE
+    const amount = parseFloat(document.getElementById('ut-amount').value) || 0;
+    if (!amount || amount <= 0) { alert('⚠️ المبلغ مطلوب'); return; }
+    
+    const i = utilities.findIndex(u => u.id === editId);
+    if (i < 0) { alert('⚠️ الفاتورة غير موجودة'); return; }
+    
+    utilities[i] = {
+      ...utilities[i],
+      type: document.getElementById('ut-type').value,
+      month: document.getElementById('ut-month').value,
+      date: document.getElementById('ut-date').value,
+      amount,
+      status: document.getElementById('ut-status').value,
+      ref: document.getElementById('ut-ref')?.value || '',
+      notes: document.getElementById('ut-notes').value
+    };
+    
+    saveAll();
+    closeModal('m-util');
+    renderUtil();
+    window._editUtilId = null;
+    
+    if (typeof addNotification === 'function') {
+      addNotification('✏️ تم تعديل فاتورة: ' + utilities[i].type, 'b-orange');
+    }
+  };
+})();
+
+// Reset edit state when opening fresh modal
+(function() {
+  const origOpenSalaryModal = window.openSalaryModal;
+  window.openSalaryModal = function() {
+    window._editSalaryId = null;
+    const titleEl = document.querySelector('#m-salary .modal-title');
+    if (titleEl) titleEl.textContent = '👔 إضافة قسيمة راتب';
+    return origOpenSalaryModal && origOpenSalaryModal();
+  };
+  
+  const origOpenEmployeeModal = window.openEmployeeModal;
+  window.openEmployeeModal = function() {
+    window._editEmployeeId = null;
+    const titleEl = document.querySelector('#m-employee .modal-title');
+    if (titleEl) titleEl.textContent = '👥 إضافة موظف';
+    return origOpenEmployeeModal && origOpenEmployeeModal();
+  };
+  
+  const origOpenUtilModal = window.openUtilModal;
+  window.openUtilModal = function() {
+    window._editUtilId = null;
+    const titleEl = document.querySelector('#m-util .modal-title');
+    if (titleEl) titleEl.textContent = '⚡ إضافة فاتورة';
+    return origOpenUtilModal && origOpenUtilModal();
+  };
+})();
+
+console.log('%c✏️ Edit functions ready (Salary, Employee, Util)', 'background:#92400e;color:#fff;padding:3px 8px;border-radius:3px');
 
 </script>
 
