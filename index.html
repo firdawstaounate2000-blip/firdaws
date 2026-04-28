@@ -2225,6 +2225,50 @@ body.dark-mode .gs-result-item .gs-name {
   display: none !important;
 }
 
+
+/* Multi-select category dropdown */
+.fn-cat-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Tajawal', sans-serif;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s;
+  min-height: 40px;
+}
+.fn-cat-opt:last-child { border-bottom: none; }
+.fn-cat-opt:hover { background: #f8fafc; }
+.fn-cat-opt input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #d23c1e;
+  flex-shrink: 0;
+}
+.fn-cat-opt span {
+  flex: 1;
+  color: #0f172a;
+  font-weight: 600;
+}
+#fn-cat-toggle:hover, #pe-type-toggle:hover {
+  border-color: #d23c1e;
+}
+#fn-cat-display, #pe-type-display {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fn-cat-display.has-selection, #pe-type-display.has-selection {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+@media (max-width: 768px) {
+  .fn-cat-opt { padding: 11px 14px; min-height: 44px; font-size: 14px; }
+}
+
 </style>
 
 <!-- ============================================================ -->
@@ -4611,41 +4655,53 @@ window.installPWA = function() {
   <div class="modal-body"><div class="form-grid">
     <div class="form-group"><label>النوع *</label><select id="fn-type"><option value="دخل">دخل (مداخيل)</option><option value="مصروف">مصروف</option></select></div>
     <div class="form-group"><label>التاريخ *</label><input type="date" id="fn-date"></div>
-    <div class="form-group">
-      <label>الفئة <span style="color:#94a3b8;font-size:11px;font-weight:normal">(اختر من القائمة أو اكتب يدوياً)</span></label>
-      <select id="fn-cat-select" onchange="onFinCatChange(this.value)">
-        <option value="">— اختر فئة —</option>
-        <optgroup label="📥 المداخيل" id="fn-cat-income-group">
-          <option>تبرع نقدي</option>
-          <option>تبرع عيني</option>
-          <option>تبرع حكومي</option>
-          <option>دعم شركات</option>
-          <option>انخراط أعضاء</option>
-          <option>فعاليات وأمسيات</option>
-          <option>منح</option>
-          <option>أخرى دخل</option>
-        </optgroup>
-        <optgroup label="📤 المصاريف" id="fn-cat-expense-group">
-          <option>أدوية</option>
-          <option>راديو</option>
-          <option>IRM</option>
-          <option>الكازوال</option>
-          <option>إصلاح السيارات</option>
-          <option>تأمين السيارات</option>
-          <option>رحلات ترفيهية</option>
-          <option>حملات طبية</option>
-          <option>رواتب المستخدمين</option>
-          <option>فاتورة الكهرباء</option>
-          <option>فاتورة الماء</option>
-          <option>مصاريف الباركينغ</option>
-          <option>إدارية وتشغيلية</option>
-          <option>مستلزمات مكتبية</option>
-          <option>صيانة</option>
-          <option>أخرى مصروف</option>
-        </optgroup>
-        <option value="__custom__">✏️ كتابة يدوية...</option>
-      </select>
-      <input type="text" id="fn-cat" placeholder="اسم الفئة" style="margin-top:6px;display:block">
+    <div class="form-group full">
+      <label>الفئة / الفئات <span style="color:#94a3b8;font-size:11px;font-weight:normal">(يمكن اختيار أكثر من فئة)</span></label>
+      <div class="multi-cat-wrap" style="position:relative">
+        <button type="button" id="fn-cat-toggle" onclick="toggleFinCatDropdown()" style="width:100%;padding:11px 14px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;text-align:right;font-family:Tajawal,sans-serif;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px">
+          <span id="fn-cat-display" style="flex:1;color:#94a3b8;text-align:right">— اختر فئة أو أكثر —</span>
+          <span style="color:#64748b;flex-shrink:0">▼</span>
+        </button>
+        <div id="fn-cat-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:100;max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+          <!-- Income categories -->
+          <div class="fn-cat-group" data-type="دخل">
+            <div style="padding:8px 12px;background:#dcfce7;color:#166534;font-size:12px;font-weight:800;border-bottom:1px solid #bbf7d0">📥 المداخيل</div>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="انخراط نقدي"><span>انخراط نقدي</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="انخراط عيني"><span>انخراط عيني</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="دعم حكومي"><span>دعم حكومي</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="دعم شركات"><span>دعم شركات</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="انخراط أعضاء"><span>انخراط أعضاء</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="فعاليات وأمسيات"><span>فعاليات وأمسيات</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="منح"><span>منح</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="دخل" value="أخرى دخل"><span>أخرى دخل</span></label>
+          </div>
+          <!-- Expense categories -->
+          <div class="fn-cat-group" data-type="مصروف">
+            <div style="padding:8px 12px;background:#fee2e2;color:#991b1b;font-size:12px;font-weight:800;border-top:1px solid #e2e8f0;border-bottom:1px solid #fecaca">📤 المصاريف</div>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="أدوية"><span>أدوية</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="راديو"><span>راديو</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="IRM"><span>IRM</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="الكازوال"><span>الكازوال</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="إصلاح السيارات"><span>إصلاح السيارات</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="تأمين السيارات"><span>تأمين السيارات</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="رحلات ترفيهية"><span>رحلات ترفيهية</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="حملات طبية"><span>حملات طبية</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="رواتب المستخدمين"><span>رواتب المستخدمين</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="فاتورة الكهرباء"><span>فاتورة الكهرباء</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="فاتورة الماء"><span>فاتورة الماء</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="مصاريف الباركينغ"><span>مصاريف الباركينغ</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="إدارية وتشغيلية"><span>إدارية وتشغيلية</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="مستلزمات مكتبية"><span>مستلزمات مكتبية</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="صيانة"><span>صيانة</span></label>
+            <label class="fn-cat-opt"><input type="checkbox" class="fn-cat-cb" data-type="مصروف" value="أخرى مصروف"><span>أخرى مصروف</span></label>
+          </div>
+          <!-- Custom -->
+          <div style="padding:8px 12px;background:#fef3c7;color:#92400e;font-size:12px;font-weight:800;border-top:1px solid #e2e8f0;border-bottom:1px solid #fde68a">✏️ كتابة يدوية</div>
+          <label class="fn-cat-opt"><input type="checkbox" id="fn-cat-custom-cb" onchange="onFinCustomToggle()"><span>كتابة فئة مخصصة...</span></label>
+        </div>
+      </div>
+      <!-- Custom text input - HIDDEN by default, shown only when "كتابة يدوية" is checked -->
+      <input type="text" id="fn-cat" placeholder="اكتب فئتك المخصصة..." style="margin-top:8px;display:none">
     </div>
     <div class="form-group"><label>المبلغ (ر.س) *</label><input type="number" id="fn-amount" placeholder="0" min="0"></div>
     <div class="form-group full"><label>الوصف</label><input id="fn-desc" placeholder="وصف القيد المالي..."></div>
@@ -4664,27 +4720,33 @@ window.installPWA = function() {
   <div class="modal-body"><div class="form-grid">
     <div class="form-group full"><label>المريض *</label><select id="pe-patient"></select></div>
     <div class="form-group"><label>التاريخ *</label><input type="date" id="pe-date"></div>
-    <div class="form-group">
-      <label>نوع المصروف <span style="color:#94a3b8;font-size:11px;font-weight:normal">(اختر أو اكتب يدوياً)</span></label>
-      <select id="pe-type-select" onchange="onPeTypeSelChange(this.value)">
-        <option value="">— اختر النوع —</option>
-        <option>أدوية</option>
-        <option>راديو</option>
-        <option>IRM</option>
-        <option>الكازوال</option>
-        <option>تحاليل</option>
-        <option>أشعة</option>
-        <option>جراحة</option>
-        <option>علاج كيماوي</option>
-        <option>علاج إشعاعي</option>
-        <option>نقل</option>
-        <option>إقامة</option>
-        <option>دعم مالي</option>
-        <option>مساعدات عينية</option>
-        <option>طبي</option>
-        <option value="__custom__">✏️ كتابة يدوية...</option>
-      </select>
-      <input type="text" id="pe-type" placeholder="نوع المصروف" style="margin-top:6px;display:block">
+    <div class="form-group full">
+      <label>نوع المصروف <span style="color:#94a3b8;font-size:11px;font-weight:normal">(يمكن اختيار أكثر من نوع)</span></label>
+      <div class="multi-cat-wrap" style="position:relative">
+        <button type="button" id="pe-type-toggle" onclick="togglePeTypeDropdown()" style="width:100%;padding:11px 14px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;text-align:right;font-family:Tajawal,sans-serif;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px">
+          <span id="pe-type-display" style="flex:1;color:#94a3b8;text-align:right">— اختر النوع —</span>
+          <span style="color:#64748b;flex-shrink:0">▼</span>
+        </button>
+        <div id="pe-type-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:100;max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="أدوية"><span>أدوية</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="راديو"><span>راديو</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="IRM"><span>IRM</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="الكازوال"><span>الكازوال</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="تحاليل"><span>تحاليل</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="أشعة"><span>أشعة</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="جراحة"><span>جراحة</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="علاج كيماوي"><span>علاج كيماوي</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="علاج إشعاعي"><span>علاج إشعاعي</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="نقل"><span>نقل</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="إقامة"><span>إقامة</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="دعم مالي"><span>دعم مالي</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="مساعدات عينية"><span>مساعدات عينية</span></label>
+          <label class="fn-cat-opt"><input type="checkbox" class="pe-type-cb" value="طبي"><span>طبي</span></label>
+          <div style="padding:8px 12px;background:#fef3c7;color:#92400e;font-size:12px;font-weight:800;border-top:1px solid #e2e8f0">✏️ كتابة يدوية</div>
+          <label class="fn-cat-opt"><input type="checkbox" id="pe-type-custom-cb" onchange="onPeCustomToggle()"><span>كتابة نوع مخصص...</span></label>
+        </div>
+      </div>
+      <input type="text" id="pe-type" placeholder="اكتب نوعك المخصص..." style="margin-top:8px;display:none">
     </div>
     <div class="form-group"><label>المبلغ (ر.س) *</label><input type="number" id="pe-amount" placeholder="0" min="0"></div>
     <div class="form-group full"><label>الوصف</label><input id="pe-desc" placeholder="..."></div>
@@ -14921,6 +14983,355 @@ function onPeTypeSelChange(value) {
     return result;
   };
 })();
+
+
+
+// ================================================================
+// 🏷️ MULTI-CATEGORY DROPDOWN — Finance & Patient Expense
+// ================================================================
+
+function toggleFinCatDropdown() {
+  const dd = document.getElementById('fn-cat-dropdown');
+  if (!dd) return;
+  dd.style.display = (dd.style.display === 'none') ? 'block' : 'none';
+}
+
+function togglePeTypeDropdown() {
+  const dd = document.getElementById('pe-type-dropdown');
+  if (!dd) return;
+  dd.style.display = (dd.style.display === 'none') ? 'block' : 'none';
+}
+
+// Click outside to close
+document.addEventListener('click', function(e) {
+  // Finance dropdown
+  const fnDD = document.getElementById('fn-cat-dropdown');
+  const fnBtn = document.getElementById('fn-cat-toggle');
+  if (fnDD && fnDD.style.display === 'block') {
+    if (!fnDD.contains(e.target) && e.target !== fnBtn && !fnBtn.contains(e.target)) {
+      fnDD.style.display = 'none';
+    }
+  }
+  // Pe dropdown
+  const peDD = document.getElementById('pe-type-dropdown');
+  const peBtn = document.getElementById('pe-type-toggle');
+  if (peDD && peDD.style.display === 'block') {
+    if (!peDD.contains(e.target) && e.target !== peBtn && !peBtn.contains(e.target)) {
+      peDD.style.display = 'none';
+    }
+  }
+});
+
+// When custom checkbox toggled, show/hide text input
+function onFinCustomToggle() {
+  const cb = document.getElementById('fn-cat-custom-cb');
+  const txt = document.getElementById('fn-cat');
+  if (!cb || !txt) return;
+  if (cb.checked) {
+    txt.style.display = 'block';
+    txt.value = '';
+    setTimeout(() => txt.focus(), 50);
+  } else {
+    txt.style.display = 'none';
+    txt.value = '';
+  }
+  updateFinCatDisplay();
+}
+
+function onPeCustomToggle() {
+  const cb = document.getElementById('pe-type-custom-cb');
+  const txt = document.getElementById('pe-type');
+  if (!cb || !txt) return;
+  if (cb.checked) {
+    txt.style.display = 'block';
+    txt.value = '';
+    setTimeout(() => txt.focus(), 50);
+  } else {
+    txt.style.display = 'none';
+    txt.value = '';
+  }
+  updatePeTypeDisplay();
+}
+
+// Update display label based on checked items
+function updateFinCatDisplay() {
+  const display = document.getElementById('fn-cat-display');
+  if (!display) return;
+  
+  const checked = Array.from(document.querySelectorAll('.fn-cat-cb:checked'))
+    .map(cb => cb.value);
+  
+  const customCb = document.getElementById('fn-cat-custom-cb');
+  const customTxt = document.getElementById('fn-cat')?.value?.trim();
+  if (customCb && customCb.checked && customTxt) {
+    checked.push('✏️ ' + customTxt);
+  } else if (customCb && customCb.checked) {
+    checked.push('(كتابة يدوية)');
+  }
+  
+  if (!checked.length) {
+    display.textContent = '— اختر فئة أو أكثر —';
+    display.classList.remove('has-selection');
+  } else if (checked.length === 1) {
+    display.textContent = checked[0];
+    display.classList.add('has-selection');
+  } else {
+    display.textContent = checked.length + ' فئات: ' + checked.slice(0, 2).join(', ') + (checked.length > 2 ? '...' : '');
+    display.classList.add('has-selection');
+  }
+}
+
+function updatePeTypeDisplay() {
+  const display = document.getElementById('pe-type-display');
+  if (!display) return;
+  
+  const checked = Array.from(document.querySelectorAll('.pe-type-cb:checked'))
+    .map(cb => cb.value);
+  
+  const customCb = document.getElementById('pe-type-custom-cb');
+  const customTxt = document.getElementById('pe-type')?.value?.trim();
+  if (customCb && customCb.checked && customTxt) {
+    checked.push('✏️ ' + customTxt);
+  } else if (customCb && customCb.checked) {
+    checked.push('(كتابة يدوية)');
+  }
+  
+  if (!checked.length) {
+    display.textContent = '— اختر النوع —';
+    display.classList.remove('has-selection');
+  } else if (checked.length === 1) {
+    display.textContent = checked[0];
+    display.classList.add('has-selection');
+  } else {
+    display.textContent = checked.length + ' أنواع: ' + checked.slice(0, 2).join(', ') + (checked.length > 2 ? '...' : '');
+    display.classList.add('has-selection');
+  }
+}
+
+// Hook checkboxes to update display + filter by type
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.fn-cat-cb').forEach(cb => {
+      cb.addEventListener('change', updateFinCatDisplay);
+    });
+    document.querySelectorAll('.pe-type-cb').forEach(cb => {
+      cb.addEventListener('change', updatePeTypeDisplay);
+    });
+    // Watch custom text input
+    const fnTxt = document.getElementById('fn-cat');
+    if (fnTxt) fnTxt.addEventListener('input', updateFinCatDisplay);
+    const peTxt = document.getElementById('pe-type');
+    if (peTxt) peTxt.addEventListener('input', updatePeTypeDisplay);
+  }, 600);
+});
+
+// Filter category dropdown based on selected type (دخل/مصروف)
+function filterFinCatByType() {
+  const typeSel = document.getElementById('fn-type');
+  if (!typeSel) return;
+  const type = typeSel.value;
+  
+  document.querySelectorAll('.fn-cat-group').forEach(group => {
+    const gType = group.getAttribute('data-type');
+    if (!type || type === gType) {
+      group.style.display = '';
+    } else {
+      group.style.display = 'none';
+      // Uncheck items in hidden group
+      group.querySelectorAll('.fn-cat-cb:checked').forEach(cb => cb.checked = false);
+    }
+  });
+  updateFinCatDisplay();
+}
+
+// Hook fn-type to filter
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const typeSel = document.getElementById('fn-type');
+    if (typeSel) {
+      typeSel.addEventListener('change', filterFinCatByType);
+    }
+  }, 600);
+});
+
+// ================================================================
+// Helper: Get all selected categories as comma-separated string
+// ================================================================
+function getSelectedFinCats() {
+  const checked = Array.from(document.querySelectorAll('.fn-cat-cb:checked'))
+    .map(cb => cb.value);
+  
+  const customCb = document.getElementById('fn-cat-custom-cb');
+  const customTxt = document.getElementById('fn-cat')?.value?.trim();
+  if (customCb && customCb.checked && customTxt) {
+    checked.push(customTxt);
+  }
+  
+  return checked.join('، ');
+}
+
+function getSelectedPeTypes() {
+  const checked = Array.from(document.querySelectorAll('.pe-type-cb:checked'))
+    .map(cb => cb.value);
+  
+  const customCb = document.getElementById('pe-type-custom-cb');
+  const customTxt = document.getElementById('pe-type')?.value?.trim();
+  if (customCb && customCb.checked && customTxt) {
+    checked.push(customTxt);
+  }
+  
+  return checked.join('، ');
+}
+
+// ================================================================
+// Reset multi-select state on modal open
+// ================================================================
+(function() {
+  const origOpen = window.openFinanceModal;
+  window.openFinanceModal = function() {
+    const result = origOpen ? origOpen() : null;
+    setTimeout(() => {
+      // Reset all checkboxes
+      document.querySelectorAll('.fn-cat-cb').forEach(cb => cb.checked = false);
+      const customCb = document.getElementById('fn-cat-custom-cb');
+      if (customCb) customCb.checked = false;
+      const txt = document.getElementById('fn-cat');
+      if (txt) { txt.value = ''; txt.style.display = 'none'; }
+      filterFinCatByType();
+      updateFinCatDisplay();
+    }, 60);
+    return result;
+  };
+  
+  const origPeOpen = window.openPexpModal;
+  window.openPexpModal = function() {
+    const result = origPeOpen ? origPeOpen() : null;
+    setTimeout(() => {
+      document.querySelectorAll('.pe-type-cb').forEach(cb => cb.checked = false);
+      const customCb = document.getElementById('pe-type-custom-cb');
+      if (customCb) customCb.checked = false;
+      const txt = document.getElementById('pe-type');
+      if (txt) { txt.value = ''; txt.style.display = 'none'; }
+      updatePeTypeDisplay();
+    }, 60);
+    return result;
+  };
+  
+  // Edit functions: parse existing comma-separated cats and check matching boxes
+  const origEditFin = window.editFinance;
+  if (typeof origEditFin === 'function') {
+    window.editFinance = function(id) {
+      const result = origEditFin(id);
+      setTimeout(() => {
+        const f = finance.find(x => x.id === id);
+        if (!f || !f.cat) return;
+        
+        // Parse comma-separated cats (support both Arabic comma and Latin)
+        const cats = f.cat.split(/[،,]/).map(c => c.trim()).filter(Boolean);
+        
+        // Reset
+        document.querySelectorAll('.fn-cat-cb').forEach(cb => cb.checked = false);
+        const customCb = document.getElementById('fn-cat-custom-cb');
+        const txtEl = document.getElementById('fn-cat');
+        if (customCb) customCb.checked = false;
+        if (txtEl) { txtEl.value = ''; txtEl.style.display = 'none'; }
+        
+        // Match each cat to a checkbox or fallback to custom
+        const allValues = Array.from(document.querySelectorAll('.fn-cat-cb')).map(cb => cb.value);
+        const customValues = [];
+        cats.forEach(c => {
+          if (allValues.includes(c)) {
+            const cb = document.querySelector(`.fn-cat-cb[value="${c}"]`);
+            if (cb) cb.checked = true;
+          } else {
+            customValues.push(c);
+          }
+        });
+        
+        if (customValues.length && customCb && txtEl) {
+          customCb.checked = true;
+          txtEl.value = customValues.join('، ');
+          txtEl.style.display = 'block';
+        }
+        
+        filterFinCatByType();
+        updateFinCatDisplay();
+      }, 80);
+      return result;
+    };
+  }
+  
+  const origEditPe = window.editPexp;
+  if (typeof origEditPe === 'function') {
+    window.editPexp = function(id) {
+      const result = origEditPe(id);
+      setTimeout(() => {
+        const e = patientExp.find(x => x.id === id);
+        if (!e || !e.type) return;
+        
+        const types = e.type.split(/[،,]/).map(c => c.trim()).filter(Boolean);
+        
+        document.querySelectorAll('.pe-type-cb').forEach(cb => cb.checked = false);
+        const customCb = document.getElementById('pe-type-custom-cb');
+        const txtEl = document.getElementById('pe-type');
+        if (customCb) customCb.checked = false;
+        if (txtEl) { txtEl.value = ''; txtEl.style.display = 'none'; }
+        
+        const allValues = Array.from(document.querySelectorAll('.pe-type-cb')).map(cb => cb.value);
+        const customValues = [];
+        types.forEach(t => {
+          if (allValues.includes(t)) {
+            const cb = document.querySelector(`.pe-type-cb[value="${t}"]`);
+            if (cb) cb.checked = true;
+          } else {
+            customValues.push(t);
+          }
+        });
+        
+        if (customValues.length && customCb && txtEl) {
+          customCb.checked = true;
+          txtEl.value = customValues.join('، ');
+          txtEl.style.display = 'block';
+        }
+        
+        updatePeTypeDisplay();
+      }, 80);
+      return result;
+    };
+  }
+})();
+
+// ================================================================
+// PATCH save functions to use multi-select values
+// ================================================================
+(function() {
+  const origSaveFin = window.saveFinance;
+  window.saveFinance = function() {
+    // Inject the combined cat value into fn-cat field BEFORE the original save
+    const txtEl = document.getElementById('fn-cat');
+    const combined = getSelectedFinCats();
+    
+    // Backup original txt value
+    const origTxtValue = txtEl ? txtEl.value : '';
+    if (txtEl) txtEl.value = combined;
+    
+    // Call original save which reads fn-cat
+    const result = origSaveFin && origSaveFin();
+    
+    // Note: original save reads fn-cat, so we already injected the right value
+    return result;
+  };
+  
+  const origSavePe = window.savePexp;
+  window.savePexp = function() {
+    const txtEl = document.getElementById('pe-type');
+    const combined = getSelectedPeTypes();
+    if (txtEl) txtEl.value = combined;
+    return origSavePe && origSavePe();
+  };
+})();
+
+console.log('%c🏷️ Multi-select categories ready', 'background:#d23c1e;color:#fff;padding:3px 8px;border-radius:3px');
 
 </script>
 
