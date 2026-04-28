@@ -3163,6 +3163,21 @@ window.installPWA = function() {
 <!-- ======== FINANCE ======== -->
 <div id="page-finance" class="page">
   <div class="cards-grid" id="finance-stats"></div>
+  
+  <!-- 📊 YEARLY SUMMARY (Surplus/Deficit per year) -->
+  <div class="card" style="margin-bottom:18px;border-radius:14px">
+    <div class="card-header" style="background:linear-gradient(90deg,#fef3c7,#fde68a)">
+      <span class="card-title">📊 ملخص الفائض / العجز السنوي</span>
+      <span style="font-size:11px;color:#92400e;background:#fff;padding:4px 10px;border-radius:10px;font-weight:700">سجل تاريخي</span>
+    </div>
+    <div class="card-body" style="padding:14px">
+      <div id="yearly-summary-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px"></div>
+      <div id="yearly-summary-empty" style="display:none;text-align:center;padding:30px;color:#94a3b8;font-size:13px">
+        لا توجد بيانات مالية بعد. أضف قيوداً لرؤية الملخص السنوي.
+      </div>
+    </div>
+  </div>
+
   <div class="dash-grid">
     <div>
       <div class="search-bar">
@@ -6363,6 +6378,89 @@ function renderFinance(){
   // Charts
   renderCatChart('income-chart', finance.filter(f=>f.type==='دخل'), 'c-green');
   renderCatChart('expense-chart-org', finance.filter(f=>f.type==='مصروف'), 'c-red');
+  
+  // Yearly Surplus/Deficit summary
+  renderYearlySummary();
+}
+
+// ================================================================
+// 📊 YEARLY FINANCIAL SUMMARY — Surplus / Deficit by year
+// ================================================================
+function renderYearlySummary() {
+  const grid = document.getElementById('yearly-summary-grid');
+  const empty = document.getElementById('yearly-summary-empty');
+  if (!grid) return;
+  
+  // Group finance entries by year
+  const byYear = {};
+  finance.forEach(f => {
+    if (!f.date) return;
+    const year = String(f.date).substring(0, 4);
+    if (!byYear[year]) byYear[year] = { income: 0, expense: 0, count: 0 };
+    if (f.type === 'دخل') byYear[year].income += (f.amount || 0);
+    else if (f.type === 'مصروف') byYear[year].expense += (f.amount || 0);
+    byYear[year].count++;
+  });
+  
+  const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a)); // newest first
+  
+  if (!years.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  
+  if (empty) empty.style.display = 'none';
+  
+  const cur = settings.currency || 'درهم';
+  
+  grid.innerHTML = years.map(year => {
+    const data = byYear[year];
+    const balance = data.income - data.expense;
+    const isSurplus = balance >= 0;
+    const isCurrentYear = year === String(new Date().getFullYear());
+    
+    const bgGradient = isSurplus 
+      ? 'linear-gradient(135deg,#dcfce7,#bbf7d0)' 
+      : 'linear-gradient(135deg,#fee2e2,#fecaca)';
+    const textColor = isSurplus ? '#166534' : '#991b1b';
+    const accentColor = isSurplus ? '#16a34a' : '#dc2626';
+    const icon = isSurplus ? '💰' : '⚠️';
+    const label = isSurplus ? 'فائض' : 'عجز';
+    
+    return `<div style="background:${bgGradient};border:2px solid ${accentColor};border-radius:14px;padding:16px;position:relative;${isCurrentYear ? 'box-shadow:0 6px 20px rgba(0,0,0,0.12);' : ''}">
+      ${isCurrentYear ? '<div style="position:absolute;top:-8px;right:12px;background:#0f766e;color:#fff;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:800">السنة الحالية</div>' : ''}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:22px;font-weight:900;color:${textColor}">${year}</div>
+        <div style="font-size:32px">${icon}</div>
+      </div>
+      
+      <!-- Surplus/Deficit big number -->
+      <div style="background:#fff;border-radius:10px;padding:12px;margin-bottom:10px;text-align:center">
+        <div style="font-size:11px;color:${textColor};font-weight:700;margin-bottom:3px">${label} السنة</div>
+        <div style="font-size:24px;font-weight:900;color:${accentColor};line-height:1">
+          ${isSurplus ? '+' : '-'}${fmtNum(Math.round(Math.abs(balance)))}
+        </div>
+        <div style="font-size:11px;color:${textColor};margin-top:3px;font-weight:600">${cur}</div>
+      </div>
+      
+      <!-- Income / Expense breakdown -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div style="background:rgba(255,255,255,0.7);padding:8px;border-radius:8px">
+          <div style="font-size:10px;color:#166534;font-weight:700">📥 الدخل</div>
+          <div style="color:#16a34a;font-weight:800;font-size:13px">${fmtNum(Math.round(data.income))}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.7);padding:8px;border-radius:8px">
+          <div style="font-size:10px;color:#991b1b;font-weight:700">📤 المصاريف</div>
+          <div style="color:#dc2626;font-weight:800;font-size:13px">${fmtNum(Math.round(data.expense))}</div>
+        </div>
+      </div>
+      
+      <div style="margin-top:8px;font-size:10.5px;color:${textColor};text-align:center;font-weight:600">
+        ${data.count} قيد مالي
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderCatChart(divId, data, cls){
@@ -7729,17 +7827,21 @@ function renderPublicPage(){
     // Update founders section
     const orgCards = document.querySelectorAll('.pub-org-card');
     if (orgCards.length >= 2) {
-      // Founders card (only those NOT in elected)
+      // Founders card - show ALL as clean numbered list (no photos)
       const foundersMembers = orgCards[0].querySelector('.pub-org-members');
       if (foundersMembers) {
-        if (foundersOnly.length) {
-          foundersMembers.innerHTML = foundersOnly.map(m => `<div class="pub-member">
-            ${m.photo ? `<img src="${m.photo}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.1)">` : `<div class="pub-member-avatar">${(m.name || '?').substring(0,2)}</div>`}
-            <div class="pub-member-name">${m.name}</div>
-            ${m.role ? '<div class="pub-member-role">' + m.role + '</div>' : ''}
+        if (allFounders.length) {
+          // Switch to grid-column: 1/-1 with list-style layout
+          foundersMembers.style.cssText = 'grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:8px';
+          foundersMembers.innerHTML = allFounders.map((m, idx) => `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;transition:transform .15s">
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#d23c1e,#b41e00);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">${idx + 1}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:700;font-size:14px;color:#0f172a;line-height:1.3">${m.name}</div>
+              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px">⭐ عضو مؤسس</div>
+            </div>
           </div>`).join('');
         } else {
-          foundersMembers.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:14px">جميع المؤسسين أعضاء حاليون منتخبون</div>';
+          foundersMembers.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:14px">لم يُسجَّل أعضاء مؤسسون بعد</div>';
         }
       }
       
